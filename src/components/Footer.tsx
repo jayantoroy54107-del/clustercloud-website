@@ -1,27 +1,49 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { lenis } from '../lib/lenis';
 
 export interface FooterProps {
   onGetStartedClick?: () => void;
+  onNavigate?: (route: 'home' | 'contact' | 'blog' | 'allblogs' | 'services', targetSection?: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onGetStartedClick }) => {
+export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate }) => {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Services', href: '#services' },
     { name: 'Work', href: '#work' },
     { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Insights', href: '#insights' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   const handleLinkClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
+    if (href === '/contact' || href === '#contact') {
+      if (onNavigate) {
+        onNavigate('contact');
+      } else {
+        window.location.href = '/contact';
+      }
+      return;
+    }
+
     if (href === '#home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (onNavigate) {
+        onNavigate('home');
+      } else {
+        lenis.scrollTo(0, { duration: 1.2 });
+      }
     } else {
-      const el = document.querySelector(href);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+      const sectionName = href.replace('#', '');
+      if (onNavigate) {
+        onNavigate('home', sectionName);
+      } else {
+        const el = document.querySelector(href);
+        if (el) {
+          lenis.scrollTo(el as HTMLElement, { offset: -80, duration: 1.2 });
+        }
       }
     }
   };
@@ -30,14 +52,20 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick }) => {
     <footer className="relative w-full bg-white overflow-hidden border-t border-slate-100 pt-16 pb-10">
       
       {/* Background Subtle Gradient Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-b from-blue-100/40 via-blue-50/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-b from-blue-100/40 via-blue-50/20 to-transparent rounded-full blur-2xl pointer-events-none -z-10" />
 
       <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20">
         
         {/* ========================================================================= */}
         {/* Top Main Grid: Left Column, Center 3D Isometric Art, Right Column          */}
         {/* ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center pb-16"
+        >
           
           {/* ----------------------------------------------------------------------- */}
           {/* 1. Left Side: Brand Logo, Slogan, Taglines, Pillar Marker               */}
@@ -53,6 +81,8 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick }) => {
                 <img
                   src="/logo-icon.png"
                   alt="Cluster Cloud"
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
                   width={48}
                   height={48}
@@ -297,10 +327,18 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick }) => {
 
             {/* Circular CTA Button + "LET'S BUILD TOGETHER" */}
             <div className="flex items-center gap-4 mb-10">
-              <button
+              <motion.button
                 type="button"
-                onClick={onGetStartedClick}
-                className="group relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-blue-50/90 hover:bg-blue-100/90 border border-blue-100 shadow-[0_8px_24px_-4px_rgba(37,99,235,0.18)] hover:shadow-[0_12px_30px_-4px_rgba(37,99,235,0.28)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate('contact');
+                  } else if (onGetStartedClick) {
+                    onGetStartedClick();
+                  }
+                }}
+                className="group relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-blue-50/90 hover:bg-blue-100/90 border border-blue-100 shadow-[0_8px_24px_-4px_rgba(37,99,235,0.18)] hover:shadow-[0_12px_30px_-4px_rgba(37,99,235,0.28)] transition-all duration-300 cursor-pointer"
                 title="Let's Build Together"
                 aria-label="Let's Build Together"
               >
@@ -309,7 +347,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick }) => {
                   strokeWidth={2.4}
                   className="text-[#2563EB] transition-transform duration-300 group-hover:translate-x-1"
                 />
-              </button>
+              </motion.button>
 
               <div className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.24em] text-slate-700 leading-tight text-left">
                 <p>LET&apos;S</p>
@@ -377,7 +415,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick }) => {
 
           </div>
 
-        </div>
+        </motion.div>
 
         {/* ========================================================================= */}
         {/* Bottom Bar: Copyright & Slogan Ribbon                                     */}

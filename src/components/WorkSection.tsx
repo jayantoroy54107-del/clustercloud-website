@@ -121,7 +121,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
       {/* ======================================================================= */}
       {/* 1. Header Area                                                          */}
       {/* ======================================================================= */}
-      <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 mb-12 sm:mb-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 mb-12 sm:mb-16"
+      >
         
         {/* Top Header Row */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 relative">
@@ -155,19 +161,21 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
 
           {/* Right: Explore Button */}
           <div className="flex items-center lg:self-end pt-2 lg:pt-0">
-            <button
+            <motion.button
               type="button"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setSelectedStudy(caseStudiesData[0])}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 text-slate-800 font-bold text-xs tracking-wide transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 text-slate-800 font-bold text-xs tracking-wide transition-shadow cursor-pointer"
             >
               <span>Explore All Case Studies</span>
               <ArrowRight size={13} className="stroke-[2.5]" />
-            </button>
+            </motion.button>
           </div>
 
         </div>
 
-      </div>
+      </motion.div>
 
       {/* ======================================================================= */}
       {/* 2. Three Asymmetric Case Study Columns                                  */}
@@ -183,10 +191,14 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
 
       <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 my-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-10 items-start">
-          {caseStudiesData.map((study) => {
+          {caseStudiesData.map((study, idx) => {
             return (
-              <div
+              <motion.div
                 key={study.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
                 className="relative flex flex-col justify-between group select-none"
               >
                 {/* Visual Card Container: Two distinct columns so text never touches or overlaps the photo */}
@@ -232,6 +244,8 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
                         <img
                           src={study.image}
                           alt={study.client}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover select-none"
                         />
 
@@ -261,9 +275,11 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
                   </div>
 
                   {/* Floating Metric Pill: Perfectly nested over bottom-left notch */}
-                  <div
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedStudy(study)}
-                    className="absolute left-0 bottom-3 sm:bottom-4 z-20 bg-white rounded-2xl py-3 px-4 shadow-[0_12px_32px_-6px_rgba(15,23,42,0.14)] border border-slate-100/90 flex items-center gap-3 cursor-pointer hover:shadow-[0_16px_36px_-6px_rgba(37,99,235,0.22)] transition-all duration-300"
+                    className="absolute left-0 bottom-3 sm:bottom-4 z-20 bg-white rounded-2xl py-3 px-4 shadow-[0_12px_32px_-6px_rgba(15,23,42,0.14)] border border-slate-100/90 flex items-center gap-3 cursor-pointer hover:shadow-[0_16px_36px_-6px_rgba(37,99,235,0.22)] transition-shadow duration-300"
                   >
                     {/* Circle Icon Badge */}
                     <div className="h-9 w-9 rounded-full bg-blue-50 text-[#2563EB] flex items-center justify-center shrink-0">
@@ -278,7 +294,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
                         {study.metricLabel}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
 
                 </div>
 
@@ -293,7 +309,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
                     <ArrowRight size={13} className="stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </button>
-              </div>
+              </motion.div>
             );
           })}
         </div>

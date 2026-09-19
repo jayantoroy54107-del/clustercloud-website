@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
@@ -167,51 +167,58 @@ interface IndustriesSectionProps {
 // 7 Fixed 3D Slot Configurations (Amphitheater Perspective)
 // Slot 3 is ALWAYS the Center Hero (facing front, 0deg tilt, taller)
 const slotConfigs = [
-  { slot: 0, rotateY: 48, scale: 0.96, zIndex: 10, isHero: false },
-  { slot: 1, rotateY: 36, scale: 0.98, zIndex: 15, isHero: false },
-  { slot: 2, rotateY: 22, scale: 0.99, zIndex: 20, isHero: false },
-  { slot: 3, rotateY: 0, scale: 1.06, zIndex: 30, isHero: true }, // CENTER HERO
-  { slot: 4, rotateY: -22, scale: 0.99, zIndex: 20, isHero: false },
-  { slot: 5, rotateY: -36, scale: 0.98, zIndex: 15, isHero: false },
-  { slot: 6, rotateY: -48, scale: 0.96, zIndex: 10, isHero: false },
+  { slot: 0, rotateY: 48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.72 },
+  { slot: 1, rotateY: 36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.82 },
+  { slot: 2, rotateY: 22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.92 },
+  { slot: 3, rotateY: 0,  scale: 1.06, zIndex: 30, isHero: true,  opacity: 1.00 }, // CENTER HERO
+  { slot: 4, rotateY: -22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.92 },
+  { slot: 5, rotateY: -36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.82 },
+  { slot: 6, rotateY: -48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.72 },
 ];
+
+// Smooth spring used for all card 3D position transitions
+const cardSpring = {
+  type: 'spring' as const,
+  stiffness: 180,
+  damping: 28,
+  mass: 1.0,
+};
+
+// Inner-card content crossfade — pure opacity, no spatial movement (prevents flicker)
+const contentFade = {
+  duration: 0.55,
+  ease: 'easeInOut' as const,
+};
 
 export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
   onStartProjectClick,
   onWatchImpactClick,
 }) => {
-  // Center active item index in industriesData.
-  // Initially 3 (SaaS & Technology: Card 04)
   const [centerIndex, setCenterIndex] = useState<number>(3);
-  const [direction, setDirection] = useState<number>(1); // 1 = next (slide left), -1 = prev (slide right)
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryItem | null>(null);
 
-  // Moving forward (Next →):
-  // Card 1 drops from the front, every card shifts left, and new card appears on right
-  const handleNext = () => {
-    setDirection(1);
-    setCenterIndex((prev) => (prev + 1) % industriesData.length);
-  };
+  // Prevent click spam stacking — ignore clicks while a transition is in flight
+  const isAnimating = useRef(false);
+  const lockDuration = 700; // ms — matches slower spring settle time
 
-  // Moving backward (Prev ←):
-  // Every card shifts right, and preceding card appears on left
-  const handlePrev = () => {
-    setDirection(-1);
-    setCenterIndex((prev) => (prev - 1 + industriesData.length) % industriesData.length);
-  };
+  const navigate = useCallback((dir: number) => {
+    if (isAnimating.current) return;
+    isAnimating.current = true;
+    setCenterIndex((prev) => (prev + dir + industriesData.length) % industriesData.length);
+    setTimeout(() => { isAnimating.current = false; }, lockDuration);
+  }, []);
 
-  // Click on any card slot to rotate it to center
-  const handleSlotClick = (slotIndex: number, item: IndustryItem) => {
+  const handleNext = useCallback(() => navigate(1), [navigate]);
+  const handlePrev = useCallback(() => navigate(-1), [navigate]);
+
+  const handleSlotClick = useCallback((slotIndex: number, item: IndustryItem) => {
     if (slotIndex === 3) {
-      // Center hero clicked -> Open interactive detail modal
       setSelectedIndustry(item);
     } else {
-      // Calculate how many positions to shift
       const shift = slotIndex - 3;
-      setDirection(shift > 0 ? 1 : -1);
-      setCenterIndex((prev) => (prev + shift + industriesData.length) % industriesData.length);
+      navigate(shift > 0 ? 1 : -1);
     }
-  };
+  }, [navigate]);
 
   return (
     <section
@@ -219,7 +226,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
       className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FBFDFF] to-[#F1F6FE]/30 pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-28 select-none"
     >
       {/* Ambient Lighting Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-blue-100/25 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-blue-100/25 rounded-full blur-2xl pointer-events-none -z-10" />
 
       {/* ======================================================================= */}
       {/* 1. Header Area                                                          */}
@@ -306,98 +313,95 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
       {/* Outer wrapper: Full width with spacious gutters so arrows sit OUTSIDE the cards */}
       <div className="relative w-full max-w-[1520px] 2xl:max-w-[1580px] mx-auto px-4 sm:px-8 xl:px-14 my-4">
         
-        {/* Navigation Button: Previous (Left) - Shifted OUTSIDE to the left */}
-        <button
+        {/* Navigation Button: Previous (Left) */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handlePrev}
-          className="absolute left-2 sm:left-4 xl:left-5 2xl:left-6 top-[40%] -translate-y-1/2 z-40 h-12 w-12 xl:h-13 xl:w-13 rounded-full bg-white border border-slate-200 shadow-[0_6px_20px_rgba(15,23,42,0.08)] flex items-center justify-center text-slate-700 hover:text-[#1D68F7] hover:border-blue-200 hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer select-none"
+          className="absolute left-2 sm:left-4 xl:left-5 2xl:left-6 top-[40%] -translate-y-1/2 z-40 h-12 w-12 xl:h-13 xl:w-13 rounded-full bg-white border border-slate-200 shadow-[0_6px_20px_rgba(15,23,42,0.08)] flex items-center justify-center text-slate-700 hover:text-[#1D68F7] hover:border-blue-200 transition-colors duration-200 cursor-pointer select-none"
           aria-label="Previous industry"
         >
           <ArrowLeft size={19} className="stroke-[2.5]" />
-        </button>
+        </motion.button>
 
-        {/* Navigation Button: Next (Right) - Shifted OUTSIDE to the right */}
-        <button
+        {/* Navigation Button: Next (Right) */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleNext}
-          className="absolute right-2 sm:right-4 xl:right-5 2xl:right-6 top-[40%] -translate-y-1/2 z-40 h-12 w-12 xl:h-13 xl:w-13 rounded-full bg-white border border-slate-200 shadow-[0_6px_20px_rgba(15,23,42,0.08)] flex items-center justify-center text-slate-700 hover:text-[#1D68F7] hover:border-blue-200 hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer select-none"
+          className="absolute right-2 sm:right-4 xl:right-5 2xl:right-6 top-[40%] -translate-y-1/2 z-40 h-12 w-12 xl:h-13 xl:w-13 rounded-full bg-white border border-slate-200 shadow-[0_6px_20px_rgba(15,23,42,0.08)] flex items-center justify-center text-slate-700 hover:text-[#1D68F7] hover:border-blue-200 transition-colors duration-200 cursor-pointer select-none"
           aria-label="Next industry"
         >
           <ArrowRight size={19} className="stroke-[2.5]" />
-        </button>
+        </motion.button>
 
         {/* ------------------------------------------------------------------- */}
-        {/* DESKTOP 3D AMPHITHEATER ROW (7 Distributed Cards with Clear Gaps)   */}
+        {/* DESKTOP 3D AMPHITHEATER ROW — Smooth spring-animated card positions  */}
         {/* ------------------------------------------------------------------- */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="hidden lg:flex items-end justify-center gap-3 xl:gap-4 2xl:gap-5 w-full max-w-[1240px] 2xl:max-w-[1300px] mx-auto pt-4 pb-2"
           style={{
             perspective: '1200px',
             transformStyle: 'preserve-3d',
           }}
         >
-          {slotConfigs.map(({ slot, rotateY, scale, zIndex, isHero }) => {
-            // Compute which industry item currently occupies this slot
-            // Formula: (centerIndex - 3 + slot + 7) % 7
+          {slotConfigs.map(({ slot, rotateY, scale, zIndex, isHero, opacity }) => {
+            // Which industry item occupies this fixed slot position?
             const itemIndex = (centerIndex - 3 + slot + industriesData.length) % industriesData.length;
             const item = industriesData[itemIndex];
 
             return (
-              <div
+              <motion.div
                 key={slot}
                 onClick={() => handleSlotClick(slot, item)}
                 className="group flex flex-col items-center cursor-pointer select-none"
-                style={{
-                  zIndex: zIndex,
+                style={{ zIndex }}
+                animate={{
+                  // Smoothly animate the card's 3D tilt + scale + depth fade on every index change
+                  rotateY,
+                  scale,
+                  opacity,
                 }}
+                transition={cardSpring}
               >
-                {/* 3D Tilted Card Element with Individual Perspective */}
-                <div
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    transform: `perspective(600px) rotateY(${rotateY}deg) scale(${scale})`,
-                    transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-                    willChange: 'transform',
+                {/* Sized card shell — hero is taller & wider */}
+                <motion.div
+                  animate={{
+                    boxShadow: isHero
+                      ? '0 24px 50px -10px rgba(29,104,247,0.28)'
+                      : '0 16px 36px -10px rgba(15,23,42,0.18)',
                   }}
-                  className={`relative rounded-[22px] xl:rounded-[26px] overflow-hidden border border-white/90 shadow-[0_16px_36px_-10px_rgba(15,23,42,0.18)] transition-all duration-300 ${
+                  transition={cardSpring}
+                  className={`relative rounded-[22px] xl:rounded-[26px] overflow-hidden border border-white/90 ${
                     isHero
-                      ? 'w-[165px] xl:w-[195px] 2xl:w-[210px] h-[310px] xl:h-[350px] 2xl:h-[375px] shadow-[0_24px_50px_-10px_rgba(29,104,247,0.28)] ring-2 ring-[#1D68F7]/50'
-                      : 'w-[130px] sm:w-[140px] xl:w-[155px] 2xl:w-[168px] h-[265px] sm:h-[285px] xl:h-[310px] 2xl:h-[330px] hover:shadow-[0_22px_45px_-10px_rgba(15,23,42,0.26)]'
+                      ? 'w-[165px] xl:w-[195px] 2xl:w-[210px] h-[310px] xl:h-[350px] 2xl:h-[375px] ring-2 ring-[#1D68F7]/50'
+                      : 'w-[130px] sm:w-[140px] xl:w-[155px] 2xl:w-[168px] h-[265px] sm:h-[285px] xl:h-[310px] 2xl:h-[330px]'
                   }`}
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
-                  {/* Fluid transition container inside the slot */}
-                  <div className="relative w-full h-full overflow-hidden">
-                    <AnimatePresence mode="popLayout" initial={false}>
+                  {/* Pure opacity crossfade — no scale/translate to prevent flicker in overflow:hidden */}
+                  <div className="relative w-full h-full">
+                    <AnimatePresence mode="sync" initial={false}>
                       <motion.div
                         key={item.id}
-                        initial={{
-                          x: direction > 0 ? 35 : -35,
-                          opacity: 0.6,
-                        }}
-                        animate={{
-                          x: 0,
-                          opacity: 1,
-                        }}
-                        exit={{
-                          x: direction > 0 ? -35 : 35,
-                          opacity: 0,
-                        }}
-                        transition={{
-                          duration: 0.32,
-                          ease: [0.22, 1, 0.36, 1], // fluid 60fps cubic-bezier
-                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={contentFade}
                         className="absolute inset-0 w-full h-full"
                       >
-                        {/* Photo Background */}
                         <img
                           src={item.image}
                           alt={item.title}
                           className="w-full h-full object-cover select-none"
-                          loading="eager"
+                          loading="lazy"
+                          decoding="async"
                         />
-
-                        {/* Dark Vignette Overlay for High Legibility */}
                         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40 pointer-events-none" />
-
-                        {/* Overlay Text on Card (Card 4 saas-tech-hero has embedded typography, others render crisp overlay) */}
                         {item.id !== 'saas-tech' && (
                           <div className="absolute top-5 left-4 right-4 text-left text-white select-none pointer-events-none">
                             <div className="font-extrabold text-[12px] xl:text-[13px] uppercase tracking-[0.14em] leading-[1.25] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
@@ -412,74 +416,50 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                     </AnimatePresence>
                   </div>
 
-                  {/* Specular White Rim Highlight */}
+                  {/* Specular rim highlight */}
                   <div className="absolute inset-0 rounded-[22px] xl:rounded-[26px] border border-white/40 pointer-events-none" />
-                </div>
+                </motion.div>
 
-                {/* Soft Contact Ground Shadow (NO inverted mirror reflection) */}
-                <div
-                  className={`h-2.5 bg-slate-900/15 blur-[4px] rounded-full mt-3 transition-all duration-300 pointer-events-none ${
-                    isHero ? 'w-[85%] bg-blue-900/20' : 'w-[75%]'
-                  }`}
+                {/* Ground shadow — hero has blue tint */}
+                <motion.div
+                  animate={{ width: isHero ? '85%' : '75%', opacity: isHero ? 0.22 : 0.15 }}
+                  transition={cardSpring}
+                  className="h-2.5 bg-slate-900 blur-[4px] rounded-full mt-3 pointer-events-none"
                 />
 
-                {/* Under-Card Metadata Column (Number, Title, Subtitle) */}
-                <div className="mt-3 text-center select-none w-[130px] sm:w-[140px] xl:w-[160px] 2xl:w-[175px] min-h-[64px]">
-                  <AnimatePresence mode="popLayout" initial={false}>
+                {/* Under-card metadata — smooth opacity fade, no y-movement */}
+                <div className="mt-3 text-center select-none w-[130px] sm:w-[140px] xl:w-[160px] 2xl:w-[175px] min-h-[64px] relative">
+                  <AnimatePresence mode="sync" initial={false}>
                     <motion.div
                       key={item.id}
-                      initial={{
-                        x: direction > 0 ? 25 : -25,
-                        opacity: 0,
-                      }}
-                      animate={{
-                        x: 0,
-                        opacity: 1,
-                      }}
-                      exit={{
-                        x: direction > 0 ? -25 : 25,
-                        opacity: 0,
-                      }}
-                      transition={{
-                        duration: 0.28,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, ease: 'easeInOut' }}
+                      className="absolute inset-0 flex flex-col items-center justify-start pt-0"
                     >
-                      {/* Number Badge */}
                       <div className="mb-0.5">
-                        <span
-                          className={`inline-block text-xs font-black tracking-wider transition-colors ${
-                            isHero
-                              ? 'text-[#1D68F7]'
-                              : 'text-slate-400 group-hover:text-slate-600'
-                          }`}
-                        >
+                        <span className={`inline-block text-xs font-black tracking-wider ${
+                          isHero ? 'text-[#1D68F7]' : 'text-slate-400 group-hover:text-slate-600'
+                        }`}>
                           {item.number}
                         </span>
                       </div>
-
-                      {/* Title */}
-                      <h4
-                        className={`text-sm xl:text-[15px] font-black tracking-tight leading-snug mb-0.5 transition-colors ${
-                          isHero
-                            ? 'text-[#0F172A]'
-                            : 'text-slate-800 group-hover:text-[#1D68F7]'
-                        }`}
-                      >
+                      <h4 className={`text-sm xl:text-[15px] font-black tracking-tight leading-snug mb-0.5 ${
+                        isHero ? 'text-[#0F172A]' : 'text-slate-800 group-hover:text-[#1D68F7]'
+                      }`}>
                         {item.title}
                       </h4>
-
-                      {/* Subtitle */}
                       <p className="text-[10.5px] xl:text-[11px] text-slate-500 font-medium leading-relaxed">
                         {item.subtitle}
                       </p>
                     </motion.div>
                   </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* ------------------------------------------------------------------- */}
         {/* MOBILE / TABLET COVERFLOW SWIPER                                     */}
@@ -492,10 +472,10 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                 return (
                   <motion.div
                     key={current.id}
-                    initial={{ opacity: 0, scale: 0.92, y: 15 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.92, y: -15 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.55, ease: 'easeInOut' }}
                     onClick={() => setSelectedIndustry(current)}
                     className="flex flex-col items-center cursor-pointer"
                   >
@@ -504,6 +484,8 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                       <img
                         src={current.image}
                         alt={current.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover select-none"
                       />
                       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40 pointer-events-none" />
@@ -545,10 +527,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
             {industriesData.map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => {
-                  setDirection(idx > centerIndex ? 1 : -1);
-                  setCenterIndex(idx);
-                }}
+                onClick={() => navigate(idx > centerIndex ? 1 : -1)}
                 className={`h-2 rounded-full transition-all cursor-pointer ${
                   idx === centerIndex
                     ? 'w-6 bg-[#1D68F7]'

@@ -6,6 +6,16 @@
     color-scheme: light;
   }
 
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  /* Prevent native scroll from fighting Lenis */
+  html {
+    overscroll-behavior: none;
+  }
+
   body {
     min-height: 100vh;
     background-color: #F8FAFC;
@@ -14,6 +24,26 @@
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+    /*
+     * FIX: Prevents subpixel text rendering ghosts during GPU-composited scroll.
+     * When Lenis moves the page via CSS transform, elements promoted to their own
+     * compositor layers (via will-change or backdrop-filter) can bleed a "shadow"
+     * of their previous position. backface-visibility:hidden forces a clean repaint.
+     */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    overscroll-behavior: none;
+  }
+
+  /*
+   * PRIMARY FIX for scroll shadow/clone artifact.
+   * isolation:isolate creates a new stacking context for each section, preventing
+   * GPU compositor layers inside one section from bleeding into sibling sections.
+   * This stops the "magnetic shadow" effect seen during Lenis scroll.
+   */
+  section {
+    isolation: isolate;
   }
 }
 
@@ -21,3 +51,68 @@
   font-family: 'Caveat', cursive, sans-serif;
 }
 
+/* =========================================================================
+   Hardware-Accelerated Marquee Animations
+   Only translate on X axis — no Z — to avoid unnecessary layer promotion depth
+   ========================================================================= */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+.animate-marquee:hover,
+.group:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 32s linear infinite;
+}
+
+.animate-marquee-reverse:hover,
+.group:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/*
+ * Only hint GPU layer promotion for marquee on capable devices.
+ * Using translate3d inside the @keyframes already hints the GPU.
+ * will-change is only added here for extra optimization — guarded to avoid
+ * layer bleed on lower-end GPUs.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    will-change: transform;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
+    will-change: auto !important;
+  }
+}

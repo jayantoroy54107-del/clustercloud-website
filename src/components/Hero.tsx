@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Play, Users, Rocket, BarChart3, X } from 'lucide-react';
 
 export interface HeroProps {
@@ -8,6 +8,7 @@ export interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#F8FAFC] via-[#FFFFFF] to-[#F1F5F9]/50 pt-6 sm:pt-10 pb-6 sm:pb-8 lg:pb-10">
@@ -15,12 +16,12 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
       {/* ========================================================================= */}
       {/* 1. Background Atmosphere & Ambient Radiant Lighting                       */}
       {/* ========================================================================= */}
-      {/* Center top ethereal radial glow */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-blue-100/50 via-indigo-50/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      {/* Center top ethereal radial glow (optimized from blur-3xl to blur-2xl) */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-blue-100/50 via-indigo-50/30 to-transparent rounded-full blur-2xl pointer-events-none -z-10" />
       {/* Left side ambient glow */}
-      <div className="absolute top-36 left-[5%] w-[420px] h-[420px] bg-blue-200/30 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-36 left-[5%] w-[420px] h-[420px] bg-blue-200/30 rounded-full blur-2xl pointer-events-none -z-10" />
       {/* Right side ambient glow */}
-      <div className="absolute top-28 right-[5%] w-[450px] h-[450px] bg-indigo-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-28 right-[5%] w-[450px] h-[450px] bg-indigo-100/40 rounded-full blur-2xl pointer-events-none -z-10" />
 
       {/* Subtle Dotted Matrix Texture on Right */}
       <div
@@ -90,12 +91,17 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           {/* 1. Top-Left Floating Stat Card (More Traffic +278%) */}
           <motion.div
             initial={{ opacity: 0, x: -30, rotate: -12 }}
-            animate={{ opacity: 1, x: 0, rotate: -8, y: [-4, 5, -4] }}
+            animate={
+              shouldReduceMotion
+                ? { opacity: 1, x: 0, rotate: -8 }
+                : { opacity: 1, x: 0, rotate: -8, y: [-4, 5, -4] }
+            }
             transition={{
               opacity: { duration: 0.7, delay: 0.2 },
               x: { duration: 0.7, delay: 0.2 },
               y: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
             }}
+            style={{ willChange: 'transform' }}
             className="hidden md:flex absolute top-2 left-2 lg:left-6 xl:left-12 z-20 items-center gap-3.5 rounded-2xl bg-white/95 backdrop-blur-md p-3.5 sm:p-4 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.12)] border border-slate-100 select-none hover:rotate-0 transition-transform duration-300"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#2563EB] shadow-xs">
@@ -116,15 +122,17 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
             
             {/* Small Floating Sphere Top-Left of Cube */}
             <motion.div
-              animate={{ y: [-5, 6, -5], x: [-3, 3, -3] }}
+              animate={shouldReduceMotion ? undefined : { y: [-5, 6, -5], x: [-3, 3, -3] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ willChange: 'transform' }}
               className="absolute -top-6 -left-4 w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 via-blue-400 to-sky-200 shadow-[0_4px_14px_rgba(37,99,235,0.4)]"
             />
 
             {/* Main 3D Cube Container */}
             <motion.div
-              animate={{ y: [-8, 8, -8], rotate: [-1, 2, -1] }}
+              animate={shouldReduceMotion ? undefined : { y: [-8, 8, -8], rotate: [-1, 2, -1] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ willChange: 'transform' }}
               className="relative w-36 h-36 lg:w-44 lg:h-44 flex items-center justify-center"
             >
               {/* Orbital Ring 1 */}
@@ -160,13 +168,16 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                 <circle cx="30" cy="110" r="3" fill="#2563EB" />
               </svg>
 
-              {/* 3D Glowing Hexagon Brand Logo */}
+              {/* 3D Glowing Hexagon Brand Logo (LCP Priority Image) */}
               <div className="relative z-10 w-28 h-28 lg:w-34 lg:h-34 flex items-center justify-center filter drop-shadow-[0_16px_32px_rgba(37,99,235,0.35)]">
                 {/* Soft ambient glow behind 3D logo */}
                 <div className="absolute inset-2 bg-blue-500/15 rounded-full blur-xl pointer-events-none -z-10" />
                 <img
                   src="/cluster-3d-logo.png"
                   alt="Cluster Cloud 3D Logo"
+                  fetchPriority="high"
+                  width={140}
+                  height={140}
                   className="w-full h-full object-contain select-none filter drop-shadow-[0_10px_20px_rgba(37,99,235,0.22)]"
                   draggable={false}
                 />
@@ -174,8 +185,9 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
 
               {/* Medium Floating Sphere to Bottom-Right of Cube */}
               <motion.div
-                animate={{ y: [6, -6, 6], x: [3, -3, 3] }}
+                animate={shouldReduceMotion ? undefined : { y: [6, -6, 6], x: [3, -3, 3] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ willChange: 'transform' }}
                 className="absolute -bottom-2 -right-4 w-9 h-9 rounded-full bg-gradient-to-tr from-[#1D4ED8] via-[#2563EB] to-[#60A5FA] shadow-[0_6px_18px_rgba(37,99,235,0.45)]"
               />
             </motion.div>
@@ -237,7 +249,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
               All in one growth partner.
             </motion.p>
 
-            {/* Action CTAs: Start a Project & Watch Our Story */}
+            {/* Action CTAs: Start a Project & Watch Our Story with Micro-interactions */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -245,10 +257,12 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
               className="flex flex-wrap items-center justify-center gap-4 sm:gap-6"
             >
               {/* Primary Pill Button */}
-              <button
+              <motion.button
                 type="button"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onStartProjectClick}
-                className="group relative inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] hover:from-[#1D4ED8] hover:to-[#1E40AF] px-8 sm:px-9 py-3.5 sm:py-4 text-[15px] font-bold text-white shadow-[0_8px_24px_rgba(37,99,235,0.38)] hover:shadow-[0_12px_32px_rgba(37,99,235,0.52)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+                className="group relative inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] hover:from-[#1D4ED8] hover:to-[#1E40AF] px-8 sm:px-9 py-3.5 sm:py-4 text-[15px] font-bold text-white shadow-[0_8px_24px_rgba(37,99,235,0.38)] hover:shadow-[0_12px_32px_rgba(37,99,235,0.52)] transition-shadow duration-200 cursor-pointer"
               >
                 <span>Start a Project</span>
                 <ArrowRight
@@ -256,13 +270,15 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                   strokeWidth={2.4}
                   className="transition-transform duration-200 group-hover:translate-x-1"
                 />
-              </button>
+              </motion.button>
 
               {/* Video Story Button */}
-              <button
+              <motion.button
                 type="button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setIsVideoModalOpen(true)}
-                className="group inline-flex items-center gap-3.5 py-2 px-3 rounded-full hover:bg-slate-100/70 transition-all duration-200 cursor-pointer select-none text-left"
+                className="group inline-flex items-center gap-3.5 py-2 px-3 rounded-full hover:bg-slate-100/70 transition-colors duration-200 cursor-pointer select-none text-left"
               >
                 <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] shadow-xs group-hover:bg-[#2563EB] group-hover:text-white group-hover:scale-105 transition-all duration-200">
                   <Play size={16} className="fill-current ml-0.5" />
@@ -275,7 +291,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                     In 60 Seconds
                   </span>
                 </div>
-              </button>
+              </motion.button>
             </motion.div>
 
           </div>
@@ -287,8 +303,9 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           {/* 1. Top-Right Glossy Blue Sphere & Faceted Crystal Gem */}
           <div className="hidden md:block absolute right-[22%] top-2 select-none pointer-events-none">
             <motion.div
-              animate={{ y: [-6, 6, -6] }}
+              animate={shouldReduceMotion ? undefined : { y: [-6, 6, -6] }}
               transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ willChange: 'transform' }}
               className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#1D4ED8] via-[#3B82F6] to-[#93C5FD] shadow-[0_6px_16px_rgba(37,99,235,0.35)]"
             />
           </div>
@@ -296,8 +313,9 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           {/* 3D Faceted Crystal Gem Top-Right */}
           <div className="hidden lg:block absolute right-8 xl:right-16 top-0 select-none pointer-events-none">
             <motion.div
-              animate={{ y: [-5, 7, -5], rotate: [-2, 3, -2] }}
+              animate={shouldReduceMotion ? undefined : { y: [-5, 7, -5], rotate: [-2, 3, -2] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ willChange: 'transform' }}
               className="w-12 h-12"
             >
               <svg viewBox="0 0 80 80" className="w-full h-full overflow-visible drop-shadow-[0_10px_20px_rgba(147,197,253,0.4)]">
@@ -325,12 +343,17 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           {/* 2. Top-Right Stat Card (Happy Clients 3K+) */}
           <motion.div
             initial={{ opacity: 0, x: 30, rotate: 10 }}
-            animate={{ opacity: 1, x: 0, rotate: 4, y: [4, -5, 4] }}
+            animate={
+              shouldReduceMotion
+                ? { opacity: 1, x: 0, rotate: 4 }
+                : { opacity: 1, x: 0, rotate: 4, y: [4, -5, 4] }
+            }
             transition={{
               opacity: { duration: 0.7, delay: 0.3 },
               x: { duration: 0.7, delay: 0.3 },
               y: { duration: 5.5, repeat: Infinity, ease: 'easeInOut' },
             }}
+            style={{ willChange: 'transform' }}
             className="hidden md:flex absolute top-12 right-4 lg:right-10 xl:right-16 z-20 items-center gap-3.5 rounded-2xl bg-white/95 backdrop-blur-md p-3.5 sm:p-4 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.12)] border border-slate-100 select-none hover:rotate-0 transition-transform duration-300"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#2563EB] shadow-xs">
@@ -348,16 +371,28 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&auto=format&fit=crop&q=80"
                   alt="Client"
+                  loading="lazy"
+                  decoding="async"
+                  width={20}
+                  height={20}
                   className="h-5 w-5 rounded-full object-cover ring-2 ring-white"
                 />
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&auto=format&fit=crop&q=80"
                   alt="Client"
+                  loading="lazy"
+                  decoding="async"
+                  width={20}
+                  height={20}
                   className="h-5 w-5 rounded-full object-cover ring-2 ring-white"
                 />
                 <img
                   src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=64&h=64&auto=format&fit=crop&q=80"
                   alt="Client"
+                  loading="lazy"
+                  decoding="async"
+                  width={20}
+                  height={20}
                   className="h-5 w-5 rounded-full object-cover ring-2 ring-white"
                 />
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 ring-2 ring-white text-[9px] font-bold text-[#2563EB]">
@@ -398,12 +433,17 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           {/* 4. Bottom-Right Stat Card (Leads Generated 5.2K) */}
           <motion.div
             initial={{ opacity: 0, x: 30, rotate: -6 }}
-            animate={{ opacity: 1, x: 0, rotate: -3, y: [-4, 5, -4] }}
+            animate={
+              shouldReduceMotion
+                ? { opacity: 1, x: 0, rotate: -3 }
+                : { opacity: 1, x: 0, rotate: -3, y: [-4, 5, -4] }
+            }
             transition={{
               opacity: { duration: 0.7, delay: 0.4 },
               x: { duration: 0.7, delay: 0.4 },
               y: { duration: 5.2, repeat: Infinity, ease: 'easeInOut' },
             }}
+            style={{ willChange: 'transform' }}
             className="hidden md:flex absolute bottom-4 right-6 lg:right-12 xl:right-20 z-20 items-center gap-3.5 rounded-2xl bg-white/95 backdrop-blur-md p-3.5 sm:p-4 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.12)] border border-slate-100 select-none hover:rotate-0 transition-transform duration-300"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#2563EB] shadow-xs">
@@ -424,7 +464,13 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
         {/* ========================================================================= */}
         {/* 4. Continuous Connected Sinuous Metrics Wave Bar                          */}
         {/* ========================================================================= */}
-        <div className="relative w-full max-w-7xl xl:max-w-[1400px] mx-auto mt-10 sm:mt-14 px-2 sm:px-4 select-none">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-full max-w-7xl xl:max-w-[1400px] mx-auto mt-10 sm:mt-14 px-2 sm:px-4 select-none"
+        >
           <div className="relative w-full overflow-x-auto sm:overflow-visible pb-4 sm:pb-0 scrollbar-none">
             <div className="relative w-full min-w-[560px] sm:min-w-0 h-[175px] sm:h-[195px] lg:h-[210px]">
               
@@ -530,7 +576,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
 
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
 

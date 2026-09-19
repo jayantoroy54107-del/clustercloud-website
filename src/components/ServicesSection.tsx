@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
+  Bot,
+  Globe,
+  Smartphone,
   Search,
-  BarChart3,
-  Users,
-  Code2,
-  Play,
-  Zap,
+  Share2,
+  BarChart2,
   ArrowRight,
   TrendingUp,
   X,
   CheckCircle2,
   Sparkles,
+  Play,
 } from 'lucide-react';
 
 export interface ServicesSectionProps {
   onStartProjectClick?: () => void;
   onWatchStoryClick?: () => void;
+  onExploreAllServices?: () => void;
 }
 
 export interface ServiceItem {
@@ -53,13 +55,13 @@ export interface ServiceItem {
 }
 
 const servicesData: ServiceItem[] = [
-  // 01: SEO & AEO (Top-Left)
+  // 01: AI Automation (Top-Left)
   {
-    id: 'seo-aeo',
+    id: 'ai-automation',
     number: '01',
-    title: 'SEO & AEO',
-    shortDesc: 'Rank higher. Be everywhere — Google, AI Overviews & beyond.',
-    icon: Search,
+    title: 'AI Automation',
+    shortDesc: 'Automate workflows, scale smarter, and unlock 24/7 growth.',
+    icon: Bot,
     accent: {
       name: 'Blue',
       haloBg: 'bg-blue-100/70',
@@ -72,13 +74,13 @@ const servicesData: ServiceItem[] = [
       glowHex: '#0070F3',
     },
     deliverables: [
-      'Semantic Topical Authority & Knowledge Graph Optimization',
-      'AI Answer Engine Optimization (ChatGPT, Perplexity, Gemini)',
-      'High-Authority Digital PR & Inbound Backlink Scaling',
-      'Technical Core Web Vitals & Crawl Budget Engineering',
+      'AI Chatbots & Voice Agents for 24/7 Lead Capture',
+      'CRM Automation, Lead Scoring & Smart Nurture Flows',
+      'Webhook & API Integrations Across All Tech Stacks',
+      'AI-Powered Reporting Dashboards & Predictive Analytics',
     ],
-    metrics: '+240% Organic Inbound Leads within 6 Months',
-    tools: ['Google Search Console', 'Ahrefs', 'Semrush', 'Schema Pro', 'SurferSEO'],
+    metrics: '14+ Hours Saved Weekly Per Team With Zero Leaked Leads',
+    tools: ['OpenAI API', 'Make.com', 'HubSpot', 'Zapier', 'Voiceflow'],
     positionStyle: {
       top: '4%',
       left: '6%',
@@ -90,13 +92,13 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'right',
     arrowPosition: 'under-icon',
   },
-  // 02: Paid Ads & Growth Campaigns (Top-Right)
+  // 02: Website Design (Top-Right)
   {
-    id: 'paid-ads',
+    id: 'website-design',
     number: '02',
-    title: 'Paid Ads & Growth Campaigns',
-    shortDesc: 'Target. Optimize. Scale with real ROI.',
-    icon: BarChart3,
+    title: 'Website Design',
+    shortDesc: 'High-converting websites engineered for growth & brand impact.',
+    icon: Globe,
     accent: {
       name: 'Purple',
       haloBg: 'bg-purple-100/70',
@@ -109,13 +111,13 @@ const servicesData: ServiceItem[] = [
       glowHex: '#8B5CF6',
     },
     deliverables: [
-      'High-Intent Google Search & Performance Max Campaigns',
-      'Precision B2B LinkedIn & Meta Retargeting Funnels',
-      'Continuous Creative A/B Testing & Conversion Attribution',
-      'Automated Bid Strategy Management & Waste Spend Elimination',
+      'Next.js 16 & React 19 Enterprise Web Architecture',
+      'Conversion-Optimised UI/UX Design & High-Performance Funnels',
+      'Interactive Micro-Animations with Framer Motion & GSAP',
+      'Sub-Second Page Load Speeds (100/100 Core Web Vitals)',
     ],
-    metrics: '4.6x Average Verified ROAS Across Client Verticals',
-    tools: ['Google Ads', 'Meta Business Suite', 'LinkedIn Campaign Mgr', 'Triple Whale'],
+    metrics: '+68% Average Uplift in On-Page Visitor Conversion Rate',
+    tools: ['Next.js', 'React', 'Tailwind CSS', 'Figma', 'Vercel'],
     positionStyle: {
       top: '4%',
       right: '6%',
@@ -127,13 +129,13 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'left',
     arrowPosition: 'under-icon',
   },
-  // 03: Social Media Marketing (Mid-Right)
+  // 03: App Development (Mid-Right)
   {
-    id: 'social-media',
+    id: 'app-development',
     number: '03',
-    title: 'Social Media Marketing',
-    shortDesc: 'Turn followers into loyal customers.',
-    icon: Users,
+    title: 'App Development',
+    shortDesc: 'Cross-platform apps that delight users & drive retention.',
+    icon: Smartphone,
     accent: {
       name: 'Orange',
       haloBg: 'bg-orange-100/70',
@@ -146,13 +148,13 @@ const servicesData: ServiceItem[] = [
       glowHex: '#F97316',
     },
     deliverables: [
-      'Multi-Platform Short-Form Video Strategy (Reels, TikTok, Shorts)',
-      'Community Engagement & Founder Personal Branding',
-      'High-Converting Social Funnels & DM Automation',
-      'Viral Trend Hijacking with Data-Driven Distribution',
+      'React Native & Flutter Cross-Platform App Development',
+      'Performance-Optimised iOS & Android Native Builds',
+      'App Store Optimisation (ASO) & Launch Growth Strategy',
+      'Backend API Architecture & Real-Time Data Integration',
     ],
-    metrics: '3.8M+ Monthly Organic Video Impressions Generated',
-    tools: ['Figma', 'CapCut Pro', 'Metricool', 'ManyChat', 'Brand24'],
+    metrics: '50+ Apps Launched with 4.7★ Average Store Rating',
+    tools: ['React Native', 'Flutter', 'Firebase', 'Supabase', 'Expo'],
     positionStyle: {
       top: '37%',
       right: '1.5%',
@@ -164,13 +166,13 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'left',
     arrowPosition: 'bottom-right',
   },
-  // 04: Web Design & Development (Bottom-Right)
+  // 04: SEO & AEO (Bottom-Right)
   {
-    id: 'web-dev',
+    id: 'seo-aeo',
     number: '04',
-    title: 'Web Design & Development',
-    shortDesc: 'Modern, high-converting websites built for growth.',
-    icon: Code2,
+    title: 'SEO & AEO',
+    shortDesc: 'Rank higher everywhere — Google, AI Overviews & beyond.',
+    icon: Search,
     accent: {
       name: 'Green',
       haloBg: 'bg-emerald-100/70',
@@ -183,13 +185,13 @@ const servicesData: ServiceItem[] = [
       glowHex: '#10B981',
     },
     deliverables: [
-      'Next.js 16 & React 19 Enterprise Web Architecture',
-      'Conversion-Optimized UI/UX Design & High-Performance Funnels',
-      'Interactive Micro-Animations with Framer Motion & GSAP',
-      'Sub-Second Page Load Speeds (100/100 Core Web Vitals)',
+      'Semantic Topical Authority & Knowledge Graph Optimisation',
+      'AI Answer Engine Optimisation (ChatGPT, Perplexity, Gemini)',
+      'High-Authority Digital PR & Inbound Backlink Scaling',
+      'Technical Core Web Vitals & Crawl Budget Engineering',
     ],
-    metrics: '+68% Average Uplift in On-Page Visitor Conversion Rate',
-    tools: ['Next.js', 'React', 'Tailwind CSS', 'Figma', 'TypeScript', 'Vercel'],
+    metrics: '+240% Organic Inbound Leads Within 6 Months',
+    tools: ['Google Search Console', 'Ahrefs', 'Semrush', 'SurferSEO', 'Schema Pro'],
     positionStyle: {
       top: '68%',
       right: '5.5%',
@@ -201,13 +203,13 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'left',
     arrowPosition: 'bottom-right',
   },
-  // 05: YouTube Growth (Bottom-Left)
+  // 05: Social Media (Bottom-Left)
   {
-    id: 'youtube-growth',
+    id: 'social-media',
     number: '05',
-    title: 'YouTube Growth',
-    shortDesc: 'More views. More subscribers. More revenue.',
-    icon: Play,
+    title: 'Social Media',
+    shortDesc: 'Turn followers into loyal, high-value customers.',
+    icon: Share2,
     accent: {
       name: 'Red',
       haloBg: 'bg-rose-100/70',
@@ -220,13 +222,13 @@ const servicesData: ServiceItem[] = [
       glowHex: '#EF4444',
     },
     deliverables: [
-      'High-CTR Thumbnail & Title Scientific Testing',
-      'Retention-Engineered Scriptwriting & Video Editing',
-      'YouTube SEO & Algorithmic Suggested Video Hacking',
-      'Channel Monetization Funnels & Sponsorship Integration',
+      'Multi-Platform Short-Form Video Strategy (Reels, TikTok, Shorts)',
+      'Community Engagement & Founder Personal Branding',
+      'High-Converting Social Funnels & DM Automation',
+      'Viral Trend Content with Data-Driven Distribution',
     ],
-    metrics: '850K+ Subscribers Scaled for Client Channels',
-    tools: ['TubeBuddy', 'VidIQ', 'Adobe Premiere', 'After Effects', 'Photoshop'],
+    metrics: '3.8M+ Monthly Organic Video Impressions Generated',
+    tools: ['Figma', 'CapCut Pro', 'Metricool', 'ManyChat', 'Brand24'],
     positionStyle: {
       top: '68%',
       left: '5.5%',
@@ -238,13 +240,13 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'right',
     arrowPosition: 'under-icon',
   },
-  // 06: Marketing Automation (Mid-Left)
+  // 06: Google Ads (Mid-Left)
   {
-    id: 'marketing-automation',
+    id: 'google-ads',
     number: '06',
-    title: 'Marketing Automation',
-    shortDesc: 'Save time. Nurture leads. Grow on autopilot.',
-    icon: Zap,
+    title: 'Google Ads',
+    shortDesc: 'Target the right searches. Scale with real, measurable ROI.',
+    icon: BarChart2,
     accent: {
       name: 'Violet',
       haloBg: 'bg-indigo-100/70',
@@ -257,13 +259,13 @@ const servicesData: ServiceItem[] = [
       glowHex: '#6366F1',
     },
     deliverables: [
-      'Full CRM Architecture & Multi-Touch Attribution Setup',
-      'Automated Lead Scoring, Qualification & SMS/Email Nurturing',
-      'AI Voice Agents & Dynamic Chatbot Funnels',
-      'Webhook & API Integrations Across Tech Stacks',
+      'High-Intent Google Search & Performance Max Campaigns',
+      'Smart Bidding Strategy & Waste Spend Elimination',
+      'Continuous Creative A/B Testing & Conversion Attribution',
+      'Google Shopping, Display & YouTube Ad Integration',
     ],
-    metrics: '14+ Hours Saved Weekly per Sales Rep with 0 Leaked Leads',
-    tools: ['HubSpot', 'Make.com', 'Zapier', 'OpenAI API', 'ActiveCampaign'],
+    metrics: '4.6x Average Verified ROAS Across Client Verticals',
+    tools: ['Google Ads', 'Google Analytics 4', 'Search Ads 360', 'Triple Whale'],
     positionStyle: {
       top: '37%',
       left: '1.5%',
@@ -280,8 +282,10 @@ const servicesData: ServiceItem[] = [
 export const ServicesSection: React.FC<ServicesSectionProps> = ({
   onStartProjectClick,
   onWatchStoryClick,
+  onExploreAllServices,
 }) => {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section
@@ -334,7 +338,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       </div>
 
       {/* Center ambient radial blue glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] bg-gradient-to-tr from-blue-100/40 via-indigo-50/30 to-violet-100/30 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] bg-gradient-to-tr from-blue-100/40 via-indigo-50/30 to-violet-100/30 rounded-full blur-2xl pointer-events-none -z-10" />
 
       {/* ======================================================================= */}
       {/* 2. Outer Screen Gutters: Left & Right Vertical Milestone Trackers       */}
@@ -690,19 +694,26 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
             {/* 3D Isometric Cluster Cloud Official Logo */}
             <motion.div
-              animate={{
-                y: [-4, 4, -4],
-              }}
+              animate={
+                shouldReduceMotion
+                  ? undefined
+                  : {
+                      y: [-4, 4, -4],
+                    }
+              }
               transition={{
                 duration: 5,
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
+              style={{ willChange: 'transform' }}
               className="relative w-44 h-44 sm:w-52 sm:h-52 lg:w-60 lg:h-60 filter drop-shadow-[0_22px_35px_rgba(0,112,243,0.35)] flex items-center justify-center pointer-events-none"
             >
               <img
                 src="/cluster-3d-logo.png"
                 alt="Cluster Cloud 3D Logo"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain select-none"
               />
             </motion.div>
@@ -771,7 +782,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedService(servicesData[0])}
+                  onClick={() => onExploreAllServices ? onExploreAllServices() : setSelectedService(servicesData[0])}
                   className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm tracking-wide shadow-[0_10px_24px_rgba(29,104,247,0.35)] transition-all cursor-pointer"
                 >
                   <span>Explore All Services</span>
@@ -849,7 +860,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           {/* Primary & Secondary Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
             <button
-              onClick={() => setSelectedService(servicesData[0])}
+              onClick={() => onExploreAllServices ? onExploreAllServices() : setSelectedService(servicesData[0])}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm tracking-wide shadow-md transition-all cursor-pointer"
             >
               <span>Explore All Services</span>

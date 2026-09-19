@@ -64,7 +64,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
           {/* ================================================================= */}
           {/* Left Column: Typography, Stats, CTAs & 4 Core Pillars              */}
           {/* ================================================================= */}
-          <div className="flex flex-col text-left">
+          <motion.div
+            initial={{ opacity: 0, x: -25 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col text-left"
+          >
             
             {/* Top Badge: — ABOUT CLUSTER CLOUD */}
             <div className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.25em] text-[#2563EB] mb-3.5">
@@ -105,18 +111,22 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             {/* CTA Row: Get to Know Us + Watch Our Story */}
             <div className="flex flex-wrap items-center gap-5 sm:gap-6 mb-12 sm:mb-14">
               {/* Primary Pill Button */}
-              <button
+              <motion.button
                 type="button"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onStartProjectClick}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md shadow-blue-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/35 cursor-pointer"
               >
                 <span>Get to Know Us</span>
                 <ArrowRight size={14} className="stroke-[2.5]" />
-              </button>
+              </motion.button>
 
               {/* Secondary Play Button */}
-              <button
+              <motion.button
                 type="button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setIsStoryOpen(true)}
                 className="inline-flex items-center gap-3.5 group cursor-pointer text-left"
               >
@@ -131,7 +141,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                     1 min
                   </span>
                 </div>
-              </button>
+              </motion.button>
             </div>
 
             {/* Bottom 4 Core Feature Icons Row */}
@@ -169,14 +179,14 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                   <Lightbulb size={20} className="stroke-[2.2]" />
                 </div>
                 <h4 className="text-xs font-black text-[#0F172A] mb-1 tracking-tight">Innovation Driven</h4>
-                <p className="text-[11px] text-slate-500 leading-snug font-medium">Always one step ahead.</p>
+                <p className="text-[11px] text-slate-500 leading-snug font-medium">Smart workflows that scale.</p>
               </div>
             </div>
 
-          </div>
+          </motion.div>
 
           {/* ================================================================= */}
-          {/* Right Column: Dynamic Organic Shape + Separate Floating Cards     */}
+          {/* Right Column: Visual Showcase Stage with Organic Image Container    */}
           {/* ================================================================= */}
           <div className="relative w-full flex flex-col items-center justify-center">
             
@@ -234,6 +244,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                   <img
                     src={heroImage}
                     alt="Cluster Cloud Office"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 select-none"
                   />
                   {/* Subtle lighting overlay for extra depth */}
@@ -248,6 +260,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.03, y: -4 }}
                 transition={{ duration: 0.3 }}
+                style={{ willChange: 'transform' }}
                 className="absolute left-2 sm:-left-4 bottom-6 sm:bottom-8 z-30 w-[150px] sm:w-[170px] rounded-[24px] sm:rounded-[26px] bg-gradient-to-br from-[#2563EB] via-[#1D68F7] to-[#1D4ED8] p-5 sm:p-5.5 text-white shadow-[0_20px_40px_-10px_rgba(37,99,235,0.48)] border border-white/20 select-none text-left cursor-default"
               >
                 <span className="block text-4xl sm:text-5xl font-black text-white leading-none tracking-tight mb-1.5">
@@ -269,6 +282,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.03, y: -4 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
+                style={{ willChange: 'transform' }}
                 className="absolute right-0 sm:-right-6 top-16 sm:top-20 z-30 w-[180px] sm:w-[200px] rounded-[24px] sm:rounded-[26px] bg-white/95 backdrop-blur-md p-4 sm:p-5 shadow-[0_20px_45px_-10px_rgba(15,23,42,0.14)] border border-slate-100/90 select-none text-left cursor-default"
               >
                 {/* Pillar 1: Strategic Thinking */}

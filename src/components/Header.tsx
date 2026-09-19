@@ -1,17 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown, ArrowRight, Menu, X } from 'lucide-react';
+import { lenis } from '../lib/lenis';
+
+export type NavRoute = 'home' | 'contact' | 'blog' | 'allblogs' | 'services';
 
 export interface HeaderProps {
   onSearchClick?: () => void;
   onGetStartedClick?: () => void;
+  currentRoute?: NavRoute;
+  onNavigate?: (route: NavRoute, targetSection?: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
+export const Header: React.FC<HeaderProps> = React.memo(({
   onSearchClick,
   onGetStartedClick,
+  currentRoute = 'home',
+  onNavigate,
 }) => {
-  const [activeItem, setActiveItem] = useState('Home');
+  const [activeItem, setActiveItem] = useState(
+    currentRoute === 'contact'
+      ? 'Contact'
+      : currentRoute === 'blog' || currentRoute === 'allblogs'
+      ? 'Insights'
+      : currentRoute === 'services'
+      ? 'Services'
+      : 'Home'
+  );
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Sync activeItem when route changes
+  useEffect(() => {
+    if (currentRoute === 'contact') {
+      setActiveItem('Contact');
+    } else if (currentRoute === 'blog' || currentRoute === 'allblogs') {
+      setActiveItem('Insights');
+    } else if (currentRoute === 'services') {
+      setActiveItem('Services');
+    } else {
+      setActiveItem('Home');
+    }
+  }, [currentRoute]);
 
   // Separate dropdown states for floating and sticky headers
   const [floatServicesOpen, setFloatServicesOpen] = useState(false);
@@ -22,20 +50,23 @@ export const Header: React.FC<HeaderProps> = ({
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Scroll listener to toggle sticky header
+  // Scroll listener to toggle sticky header ONLY on actual boolean transition (0 redundant re-renders)
   useEffect(() => {
-    const handleScroll = () => {
-      // When scrolled past 90px, show the full-width sticky header
-      if (window.scrollY > 90) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+    let lastState = window.scrollY > 90;
+    setIsScrolled(lastState);
+
+    const lenisScrollHandler = (instance: { scroll: number }) => {
+      const nowScrolled = instance.scroll > 90;
+      if (nowScrolled !== lastState) {
+        lastState = nowScrolled;
+        setIsScrolled(nowScrolled);
       }
     };
+    lenis.on('scroll', lenisScrollHandler);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      lenis.off('scroll', lenisScrollHandler);
+    };
   }, []);
 
   // Close dropdowns on escape
@@ -54,12 +85,16 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const servicesList = [
-    'SEO & AI Search Optimization',
-    'Paid Advertising',
-    'Social Media Marketing',
-    'Content Marketing',
-    'Web Design & Development',
-    'Marketing Automation',
+    'AI Automation',
+    'Website Design',
+    'App Development',
+    'SEO & AEO',
+    'Social Media',
+    'Google Ads',
+    'Meta Ads',
+    'Call & Email Handling',
+    'Image Design',
+    'Video Editing',
   ];
 
   const industriesList = [
@@ -82,6 +117,19 @@ export const Header: React.FC<HeaderProps> = ({
     { name: 'Contact', type: 'link' },
   ];
 
+  const handleServiceClick = (serviceName?: string, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    setActiveItem('Services');
+    setFloatServicesOpen(false);
+    setStickyServicesOpen(false);
+    setMobileMenuOpen(false);
+    if (onNavigate) {
+      onNavigate('services', serviceName);
+    } else {
+      window.location.href = serviceName ? `/services?service=${encodeURIComponent(serviceName)}` : '/services';
+    }
+  };
+
   const handleNavClick = (name: string, e?: React.MouseEvent) => {
     e?.preventDefault();
     setActiveItem(name);
@@ -91,12 +139,52 @@ export const Header: React.FC<HeaderProps> = ({
     setStickyIndustriesOpen(false);
     setMobileMenuOpen(false);
 
+    if (name === 'Contact') {
+      if (currentRoute === 'contact') {
+        lenis.scrollTo(0, { duration: 0.8 });
+      } else {
+        if (onNavigate) {
+          onNavigate('contact');
+        } else {
+          window.location.href = '/contact';
+        }
+      }
+      return;
+    }
+
+    if (name === 'Services') {
+      if (currentRoute === 'services') {
+        lenis.scrollTo(0, { duration: 0.8 });
+      } else if (currentRoute === 'home') {
+        const section = document.getElementById('services');
+        if (section) {
+          lenis.scrollTo(section, { offset: -80, duration: 1.2 });
+        }
+      } else {
+        if (onNavigate) {
+          onNavigate('home', 'services');
+        } else {
+          window.location.href = '/#services';
+        }
+      }
+      return;
+    }
+
+    if (currentRoute !== 'home') {
+      if (onNavigate) {
+        onNavigate('home', name === 'Home' ? undefined : name.toLowerCase());
+      } else {
+        window.location.href = name === 'Home' ? '/' : `/#${name.toLowerCase()}`;
+      }
+      return;
+    }
+
     if (name === 'Home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lenis.scrollTo(0, { duration: 1.2 });
     } else {
       const section = document.getElementById(name.toLowerCase());
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        lenis.scrollTo(section, { offset: -80, duration: 1.2 });
       }
     }
   };
@@ -183,9 +271,21 @@ export const Header: React.FC<HeaderProps> = ({
                               key={sub}
                               href="#"
                               onClick={(e) => {
-                                e.preventDefault();
-                                setActiveItem(item.name);
-                                setOpen(false);
+                                if (isServices) {
+                                  handleServiceClick(sub, e);
+                                } else {
+                                  e.preventDefault();
+                                  setActiveItem(item.name);
+                                  setOpen(false);
+                                  if (currentRoute !== 'home') {
+                                    onNavigate ? onNavigate('home', item.name.toLowerCase()) : (window.location.href = `/#${item.name.toLowerCase()}`);
+                                  } else {
+                                    const section = document.getElementById(item.name.toLowerCase());
+                                    if (section) {
+                                      lenis.scrollTo(section, { offset: -80, duration: 1.2 });
+                                    }
+                                  }
+                                }
                               }}
                               className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13.5px] font-semibold text-slate-700 hover:bg-blue-50 hover:text-[#2563EB] transition-all duration-150"
                             >
@@ -193,6 +293,18 @@ export const Header: React.FC<HeaderProps> = ({
                               <span>{sub}</span>
                             </a>
                           ))}
+                          {isServices && (
+                            <div className="pt-2 mt-1 border-t border-slate-100">
+                              <button
+                                type="button"
+                                onClick={(e) => handleServiceClick(undefined, e)}
+                                className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-[12.5px] font-bold text-[#2563EB] bg-blue-50/70 hover:bg-blue-100/70 transition-colors cursor-pointer"
+                              >
+                                <span>Explore All 10 Services</span>
+                                <ArrowRight size={13} />
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -347,9 +459,21 @@ export const Header: React.FC<HeaderProps> = ({
                               key={sub}
                               href="#"
                               onClick={(e) => {
-                                e.preventDefault();
-                                setActiveItem(item.name);
-                                setOpen(false);
+                                if (isServices) {
+                                  handleServiceClick(sub, e);
+                                } else {
+                                  e.preventDefault();
+                                  setActiveItem(item.name);
+                                  setOpen(false);
+                                  if (currentRoute !== 'home') {
+                                    onNavigate ? onNavigate('home', item.name.toLowerCase()) : (window.location.href = `/#${item.name.toLowerCase()}`);
+                                  } else {
+                                    const section = document.getElementById(item.name.toLowerCase());
+                                    if (section) {
+                                      lenis.scrollTo(section, { offset: -80, duration: 1.2 });
+                                    }
+                                  }
+                                }
                               }}
                               className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13.5px] font-semibold text-slate-700 hover:bg-blue-50 hover:text-[#2563EB] transition-all duration-150"
                             >
@@ -357,6 +481,18 @@ export const Header: React.FC<HeaderProps> = ({
                               <span>{sub}</span>
                             </a>
                           ))}
+                          {isServices && (
+                            <div className="pt-2 mt-1 border-t border-slate-100">
+                              <button
+                                type="button"
+                                onClick={(e) => handleServiceClick(undefined, e)}
+                                className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-[12.5px] font-bold text-[#2563EB] bg-blue-50/70 hover:bg-blue-100/70 transition-colors cursor-pointer"
+                              >
+                                <span>Explore All 10 Services</span>
+                                <ArrowRight size={13} />
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -477,6 +613,6 @@ export const Header: React.FC<HeaderProps> = ({
       )}
     </>
   );
-};
+});
 
 export default Header;

@@ -1,34 +1,307 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { BrandSection } from './components/BrandSection';
-import { ServicesSection } from './components/ServicesSection';
-import { IndustriesSection } from './components/IndustriesSection';
-import { WorkSection } from './components/WorkSection';
-import { AboutSection } from './components/AboutSection';
-import { Footer } from './components/Footer';
-import {
-  Search,
-  X,
-  CheckCircle2,
-  Sparkles,
-  Send,
-} from 'lucide-react';
+import { lenis } from './lib/lenis';
+
+// Lazy-load all below-fold section components & Pages
+const ServicesSection = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })));
+const IndustriesSection = lazy(() => import('./components/IndustriesSection').then(m => ({ default: m.IndustriesSection })));
+const WorkSection = lazy(() => import('./components/WorkSection').then(m => ({ default: m.WorkSection })));
+const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
+const InsightsSection = lazy(() => import('./components/InsightsSection').then(m => ({ default: m.InsightsSection })));
+const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
+const ContactPage = lazy(() => import('./components/ContactPage').then(m => ({ default: m.ContactPage })));
+const SingleBlogPage = lazy(() => import('./components/SingleBlogPage').then(m => ({ default: m.SingleBlogPage })));
+const AllBlogsPage = lazy(() => import('./components/AllBlogsPage').then(m => ({ default: m.AllBlogsPage })));
+const AllServicesPage = lazy(() => import('./components/AllServicesPage').then(m => ({ default: m.AllServicesPage })));
+
+// Lazy-loaded interactive modal dialogs
+const SearchModal = lazy(() => import('./components/SearchModal'));
+const GetStartedModal = lazy(() => import('./components/GetStartedModal'));
+
+export type AppRoute = 'home' | 'contact' | 'blog' | 'allblogs' | 'services';
 
 export const App: React.FC = () => {
+  const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
+  // Determine initial slug if deep linked
+  const [selectedArticleSlug, setSelectedArticleSlug] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/blog/')) {
+        const slug = path.replace('/blog/', '').replace(/\/$/, '');
+        if (slug) return slug;
+      }
+    }
+    return 'how-ai-search-is-changing-seo-forever';
+  });
+
+  // Determine initial route from URL pathname or hash
+  const [route, setRoute] = useState<AppRoute>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path === '/contact' || path.startsWith('/contact/') || hash === '#contact') {
+        return 'contact';
+      }
+      if (path === '/services' || path.startsWith('/services/') || hash === '#services-page') {
+        return 'services';
+      }
+      if (path === '/blogs' || hash === '#blogs') {
+        return 'allblogs';
+      }
+      if (path === '/blog' || path.startsWith('/blog/') || hash.startsWith('#blog')) {
+        return 'blog';
+      }
+    }
+    return 'home';
+  });
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isGetStartedOpen, setIsGetStartedOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [submitted, setSubmitted] = useState(false);
 
-  const quickSearches = [
-    'SEO & AI Search Optimization',
-    'Paid Advertising',
-    'Web Design & Development',
-    'Content Marketing',
-    'Marketing Automation',
-  ];
+  // Memoized modal handlers
+  const handleOpenSearch = useCallback(() => setIsSearchOpen(true), []);
+  const handleCloseSearch = useCallback(() => setIsSearchOpen(false), []);
+  const handleOpenGetStarted = useCallback(() => setIsGetStartedOpen(true), []);
+  const handleCloseGetStarted = useCallback(() => setIsGetStartedOpen(false), []);
 
+  // Update browser document title on route change
+  useEffect(() => {
+    if (route === 'contact') {
+      document.title = "Contact Us | Cluster Cloud - Let's Turn Ideas Into Impact";
+    } else if (route === 'services') {
+      document.title = "Our Services | Cluster Cloud - AI, Design, Development & Growth";
+    } else if (route === 'blog') {
+      document.title = "Insights & Strategy | Cluster Cloud Growth Blog";
+    } else {
+      document.title = "Cluster Cloud | Strategy, Digital & Growth Studio";
+    }
+  }, [route]);
+
+  // Listen for browser Back and Forward button events
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path === '/contact' || path.startsWith('/contact/') || hash === '#contact') {
+        setRoute('contact');
+        window.scrollTo(0, 0);
+      } else if (path === '/services' || path.startsWith('/services/') || hash === '#services-page') {
+        setRoute('services');
+        window.scrollTo(0, 0);
+      } else if (path === '/blogs' || hash === '#blogs') {
+        setRoute('allblogs');
+        window.scrollTo(0, 0);
+      } else if (path === '/blog' || path.startsWith('/blog/') || hash.startsWith('#blog')) {
+        if (path.startsWith('/blog/')) {
+          const slug = path.replace('/blog/', '').replace(/\/$/, '');
+          if (slug) setSelectedArticleSlug(slug);
+        }
+        setRoute('blog');
+        window.scrollTo(0, 0);
+      } else {
+        setRoute('home');
+      }
+    };
+
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
+  }, []);
+
+  // View all blogs page
+  const handleViewAllBlogs = useCallback(() => {
+    setRoute('allblogs');
+    window.history.pushState(null, '', '/blogs');
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, { duration: 0.6, immediate: true });
+  }, []);
+
+  // Select article & navigate to single blog page
+  const handleSelectArticle = useCallback((slug: string) => {
+    setSelectedArticleSlug(slug);
+    setRoute('blog');
+    window.history.pushState(null, '', `/blog/${slug}`);
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, { duration: 0.6, immediate: true });
+  }, []);
+
+  // View all services page
+  const handleExploreAllServices = useCallback((serviceId?: string) => {
+    setSelectedServiceId(serviceId);
+    setRoute('services');
+    window.history.pushState(null, '', '/services');
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, { duration: 0.6, immediate: true });
+  }, []);
+
+  // Central Navigation Handler
+  const handleNavigate = useCallback((targetRoute: AppRoute, targetSection?: string) => {
+    if (targetRoute === 'contact') {
+      window.history.pushState(null, '', '/contact');
+      setRoute('contact');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'services') {
+      setSelectedServiceId(targetSection);
+      window.history.pushState(null, '', '/services');
+      setRoute('services');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'allblogs') {
+      window.history.pushState(null, '', '/blogs');
+      setRoute('allblogs');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'blog') {
+      window.history.pushState(null, '', `/blog/${selectedArticleSlug}`);
+      setRoute('blog');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else {
+      const newUrl = targetSection ? `/#${targetSection}` : '/';
+      window.history.pushState(null, '', newUrl);
+      setRoute('home');
+      
+      if (targetSection) {
+        // Wait for Home layout to render before scrolling to target section
+        setTimeout(() => {
+          const section = document.getElementById(targetSection);
+          if (section) {
+            lenis.scrollTo(section, { offset: -80, duration: 1.2 });
+          } else {
+            window.scrollTo(0, 0);
+          }
+        }, 80);
+      } else {
+        window.scrollTo(0, 0);
+        lenis.scrollTo(0, { duration: 0.6, immediate: true });
+      }
+    }
+  }, [selectedArticleSlug]);
+
+  // Dedicated All Services page
+  if (route === 'services') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <AllServicesPage
+            initialServiceId={selectedServiceId}
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // All Blogs archive page
+  if (route === 'allblogs') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <AllBlogsPage
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onSelectArticle={handleSelectArticle}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // If currently on dedicated Single Blog Post page
+  if (route === 'blog') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <SingleBlogPage
+            articleSlug={selectedArticleSlug}
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onSelectArticle={handleSelectArticle}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+          />
+        </Suspense>
+
+        {/* Lazy Loaded Modals */}
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // If currently on dedicated Contact page
+  if (route === 'contact') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <ContactPage
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+          />
+        </Suspense>
+
+        {/* Lazy Loaded Modals */}
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Otherwise, render full Home Page
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
       
@@ -36,15 +309,17 @@ export const App: React.FC = () => {
       {/* 01. Dual Header System (Floating Pill at Top + Full-Width Sticky on Scroll) */}
       {/* ========================================================================= */}
       <Header
-        onSearchClick={() => setIsSearchOpen(true)}
-        onGetStartedClick={() => setIsGetStartedOpen(true)}
+        onSearchClick={handleOpenSearch}
+        onGetStartedClick={handleOpenGetStarted}
+        currentRoute="home"
+        onNavigate={handleNavigate}
       />
 
       {/* ========================================================================= */}
       {/* 02. Exact-Match Animated 3D Hero Section (Home)                           */}
       {/* ========================================================================= */}
       <div id="home">
-        <Hero onStartProjectClick={() => setIsGetStartedOpen(true)} />
+        <Hero onStartProjectClick={handleOpenGetStarted} />
       </div>
 
       {/* ========================================================================= */}
@@ -55,191 +330,82 @@ export const App: React.FC = () => {
       {/* ========================================================================= */}
       {/* 04. Futuristic 3D Growth Ecosystem Services Section                       */}
       {/* ========================================================================= */}
-      <ServicesSection
-        onStartProjectClick={() => setIsGetStartedOpen(true)}
-      />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <ServicesSection
+          onStartProjectClick={handleOpenGetStarted}
+          onExploreAllServices={() => handleExploreAllServices()}
+        />
+      </Suspense>
 
       {/* ========================================================================= */}
       {/* 05. Industries Section ("Different Industries. Same Growth Mindset.")       */}
       {/* ========================================================================= */}
-      <IndustriesSection
-        onStartProjectClick={() => setIsGetStartedOpen(true)}
-        onWatchImpactClick={() => setIsGetStartedOpen(true)}
-      />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <IndustriesSection
+          onStartProjectClick={handleOpenGetStarted}
+          onWatchImpactClick={handleOpenGetStarted}
+        />
+      </Suspense>
 
       {/* ========================================================================= */}
       {/* 06. Work / Case Studies Section                                           */}
       {/* ========================================================================= */}
-      <WorkSection
-        onStartProjectClick={() => setIsGetStartedOpen(true)}
-      />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <WorkSection
+          onStartProjectClick={handleOpenGetStarted}
+        />
+      </Suspense>
 
       {/* ========================================================================= */}
       {/* 07. About Section                                                         */}
       {/* ========================================================================= */}
-      <AboutSection
-        onStartProjectClick={() => setIsGetStartedOpen(true)}
-      />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <AboutSection
+          onStartProjectClick={handleOpenGetStarted}
+        />
+      </Suspense>
 
       {/* ========================================================================= */}
-      {/* 08. Exact-Match 3D Isometric Footer Component                             */}
+      {/* 08. Exact-Match Insights Section ("Ideas that drive real growth.")       */}
       {/* ========================================================================= */}
-      <div id="contact">
-        <Footer onGetStartedClick={() => setIsGetStartedOpen(true)} />
+      <div id="insights">
+        <Suspense fallback={<div className="min-h-[400px]" />}>
+          <InsightsSection
+            onSelectArticle={handleSelectArticle}
+            onViewAllBlogs={handleViewAllBlogs}
+          />
+        </Suspense>
       </div>
 
       {/* ========================================================================= */}
-      {/* 09. Interactive Search Spotlight Modal                                     */}
+      {/* 09. Exact-Match 3D Isometric Footer Component                             */}
       {/* ========================================================================= */}
-      {isSearchOpen && (
-        <div
-          className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-          onClick={() => setIsSearchOpen(false)}
-        >
-          <div
-            className="w-full max-w-xl rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200 text-left"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3 w-full">
-                <Search size={22} className="text-[#2563EB]" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search services, industries, case studies..."
-                  className="w-full text-base font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none bg-transparent"
-                  autoFocus
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsSearchOpen(false)}
-                className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition cursor-pointer"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="pt-5 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Recommended Shortcuts</p>
-              <div className="flex flex-wrap gap-2">
-                {quickSearches.map((term) => (
-                  <button
-                    key={term}
-                    type="button"
-                    onClick={() => {
-                      setSearchQuery(term);
-                    }}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 hover:bg-blue-100 px-3.5 py-1.5 text-xs font-semibold text-[#2563EB] transition cursor-pointer"
-                  >
-                    <Sparkles size={12} />
-                    <span>{term}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <div id="contact">
+        <Suspense fallback={<div className="min-h-[200px]" />}>
+          <Footer
+            onGetStartedClick={handleOpenGetStarted}
+            onNavigate={handleNavigate}
+          />
+        </Suspense>
+      </div>
 
       {/* ========================================================================= */}
-      {/* 10. Interactive Get Started Modal                                         */}
+      {/* 09. Lazy Loaded Interactive Search Spotlight Modal                        */}
       {/* ========================================================================= */}
-      {isGetStartedOpen && (
-        <div
-          className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-          onClick={() => setIsGetStartedOpen(false)}
-        >
-          <div
-            className="w-full max-w-lg rounded-3xl bg-white p-7 sm:p-8 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200 text-left"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <img src="/logo-icon.png" alt="Logo" className="h-8 w-8 object-contain" />
-                <h3 className="text-lg font-bold text-slate-900">Book Strategy Consultation</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsGetStartedOpen(false);
-                  setSubmitted(false);
-                }}
-                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition cursor-pointer"
-              >
-                <X size={20} />
-              </button>
-            </div>
+      <Suspense fallback={null}>
+        {isSearchOpen && (
+          <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+        )}
+      </Suspense>
 
-            {submitted ? (
-              <div className="py-8 text-center flex flex-col items-center">
-                <div className="h-12 w-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
-                  <CheckCircle2 size={28} />
-                </div>
-                <h4 className="text-base font-bold text-slate-900 mb-1">Inquiry Received!</h4>
-                <p className="text-sm text-slate-500 max-w-sm mb-4">
-                  Our agency strategy pod will review your details and respond within 15 minutes.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsGetStartedOpen(false);
-                    setSubmitted(false);
-                  }}
-                  className="px-5 py-2 rounded-full bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 transition cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="py-5 space-y-4">
-                  <p className="text-sm text-slate-600">
-                    Enter your contact details to connect with the Cluster Cloud growth team.
-                  </p>
-                  <div className="space-y-3">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Your Name</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. Faisal Ahmed"
-                        className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Work Email</label>
-                      <input
-                        type="email"
-                        placeholder="name@company.com"
-                        className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2 flex items-center justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsGetStartedOpen(false)}
-                    className="px-5 py-2.5 rounded-full text-sm font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSubmitted(true)}
-                    className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition cursor-pointer"
-                  >
-                    <span>Submit</span>
-                    <Send size={14} />
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {/* ========================================================================= */}
+      {/* 10. Lazy Loaded Interactive Get Started Modal                             */}
+      {/* ========================================================================= */}
+      <Suspense fallback={null}>
+        {isGetStartedOpen && (
+          <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+        )}
+      </Suspense>
 
     </div>
   );
