@@ -12,11 +12,10 @@ import {
   Image,
   Video,
   ArrowRight,
-  ArrowUpRight,
+  TrendingUp,
   CheckCircle2,
-  ChevronRight,
-  X,
   Sparkles,
+  ArrowUpRight,
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -27,6 +26,7 @@ export interface AllServicesPageProps {
   onOpenSearch?: () => void;
   onOpenGetStarted?: () => void;
   initialServiceId?: string;
+  onNavigateServiceDetail?: (serviceId: string) => void;
 }
 
 interface ServiceDef {
@@ -36,11 +36,6 @@ interface ServiceDef {
   shortDesc: string;
   longDesc: string;
   icon: React.ElementType;
-  gradient: string;
-  shadow: string;
-  textColor: string;
-  borderColor: string;
-  bgLight: string;
   deliverables: string[];
   metrics: string;
   tools: string[];
@@ -52,15 +47,15 @@ const allServices: ServiceDef[] = [
     id: 'ai-automation',
     number: '01',
     title: 'AI Automation',
-    shortDesc: 'Automate workflows, scale smarter, and unlock 24/7 growth.',
+    shortDesc: 'Automate workflows, scale smarter, and unlock 24/7 autonomous pipeline growth.',
     longDesc: 'We design and deploy intelligent automation systems that eliminate repetitive work and keep your pipeline full around the clock — from AI chatbots and voice agents to CRM workflows and predictive reporting.',
     icon: Bot,
-    gradient: 'from-[#38BDF8] via-[#0070F3] to-[#0A3D91]',
-    shadow: 'shadow-[0_16px_40px_rgba(0,112,243,0.32)]',
-    textColor: 'text-[#0070F3]',
-    borderColor: 'border-blue-200',
-    bgLight: 'bg-blue-50',
-    deliverables: ['AI Chatbots & Voice Agents for 24/7 Lead Capture','CRM Automation, Lead Scoring & Smart Nurture Flows','Webhook & API Integrations Across All Tech Stacks','AI-Powered Reporting Dashboards & Predictive Analytics'],
+    deliverables: [
+      'AI Chatbots & Voice Agents for 24/7 Lead Capture',
+      'CRM Automation, Lead Scoring & Smart Nurture Flows',
+      'Webhook & API Integrations Across All Tech Stacks',
+      'AI-Powered Reporting Dashboards & Predictive Analytics',
+    ],
     metrics: '14+ Hours Saved Weekly Per Team With Zero Leaked Leads',
     tools: ['OpenAI API', 'Make.com', 'HubSpot', 'Zapier', 'Voiceflow'],
     category: 'Technology',
@@ -69,15 +64,15 @@ const allServices: ServiceDef[] = [
     id: 'website-design',
     number: '02',
     title: 'Website Design',
-    shortDesc: 'High-converting websites engineered for growth & brand impact.',
+    shortDesc: 'High-converting websites engineered for maximum engagement and brand impact.',
     longDesc: 'Every pixel is intentional. We craft bespoke, performance-first websites that do not just look stunning — they convert visitors into loyal clients using proven UX principles and cutting-edge animation.',
     icon: Globe,
-    gradient: 'from-[#C084FC] via-[#8B5CF6] to-[#4C1D95]',
-    shadow: 'shadow-[0_16px_40px_rgba(139,92,246,0.32)]',
-    textColor: 'text-[#7C3AED]',
-    borderColor: 'border-purple-200',
-    bgLight: 'bg-purple-50',
-    deliverables: ['Next.js 16 & React 19 Enterprise Web Architecture','Conversion-Optimised UI/UX Design & High-Performance Funnels','Interactive Micro-Animations with Framer Motion & GSAP','Sub-Second Page Load Speeds (100/100 Core Web Vitals)'],
+    deliverables: [
+      'Next.js 16 & React 19 Enterprise Web Architecture',
+      'Conversion-Optimised UI/UX Design & High-Performance Funnels',
+      'Interactive Micro-Animations with Framer Motion & GSAP',
+      'Sub-Second Page Load Speeds (100/100 Core Web Vitals)',
+    ],
     metrics: '+68% Average Uplift in On-Page Visitor Conversion Rate',
     tools: ['Next.js', 'React', 'Tailwind CSS', 'Figma', 'Vercel'],
     category: 'Design',
@@ -86,15 +81,15 @@ const allServices: ServiceDef[] = [
     id: 'app-development',
     number: '03',
     title: 'App Development',
-    shortDesc: 'Cross-platform apps that delight users & drive retention.',
+    shortDesc: 'Polished cross-platform mobile apps that delight users and drive retention.',
     longDesc: 'From MVP to enterprise-scale, we build polished cross-platform mobile apps that combine beautiful design with rock-solid engineering — delivered fast and optimised for App Store success.',
     icon: Smartphone,
-    gradient: 'from-[#FDBA74] via-[#FB923C] to-[#9A3412]',
-    shadow: 'shadow-[0_16px_40px_rgba(249,115,22,0.32)]',
-    textColor: 'text-[#EA580C]',
-    borderColor: 'border-orange-200',
-    bgLight: 'bg-orange-50',
-    deliverables: ['React Native & Flutter Cross-Platform App Development','Performance-Optimised iOS & Android Native Builds','App Store Optimisation (ASO) & Launch Growth Strategy','Backend API Architecture & Real-Time Data Integration'],
+    deliverables: [
+      'React Native & Flutter Cross-Platform App Development',
+      'Performance-Optimised iOS & Android Native Builds',
+      'App Store Optimisation (ASO) & Launch Growth Strategy',
+      'Backend API Architecture & Real-Time Data Integration',
+    ],
     metrics: '50+ Apps Launched with 4.7 Star Average Store Rating',
     tools: ['React Native', 'Flutter', 'Firebase', 'Supabase', 'Expo'],
     category: 'Technology',
@@ -103,15 +98,15 @@ const allServices: ServiceDef[] = [
     id: 'seo-aeo',
     number: '04',
     title: 'SEO & AEO',
-    shortDesc: 'Rank higher everywhere — Google, AI Overviews & beyond.',
+    shortDesc: 'Rank higher everywhere — Google, AI Overviews, Perplexity & beyond.',
     longDesc: 'We go beyond traditional SEO. Our dual approach dominates both traditional search rankings and the new AI-powered answer engines like ChatGPT, Perplexity, and Google SGE.',
     icon: Search,
-    gradient: 'from-[#6EE7B7] via-[#10B981] to-[#064E3B]',
-    shadow: 'shadow-[0_16px_40px_rgba(16,185,129,0.32)]',
-    textColor: 'text-[#059669]',
-    borderColor: 'border-emerald-200',
-    bgLight: 'bg-emerald-50',
-    deliverables: ['Semantic Topical Authority & Knowledge Graph Optimisation','AI Answer Engine Optimisation (ChatGPT, Perplexity, Gemini)','High-Authority Digital PR & Inbound Backlink Scaling','Technical Core Web Vitals & Crawl Budget Engineering'],
+    deliverables: [
+      'Semantic Topical Authority & Knowledge Graph Optimisation',
+      'AI Answer Engine Optimisation (ChatGPT, Perplexity, Gemini)',
+      'High-Authority Digital PR & Inbound Backlink Scaling',
+      'Technical Core Web Vitals & Crawl Budget Engineering',
+    ],
     metrics: '+240% Organic Inbound Leads Within 6 Months',
     tools: ['Google Search Console', 'Ahrefs', 'Semrush', 'SurferSEO', 'Schema Pro'],
     category: 'Marketing',
@@ -120,15 +115,15 @@ const allServices: ServiceDef[] = [
     id: 'social-media',
     number: '05',
     title: 'Social Media',
-    shortDesc: 'Turn followers into loyal, high-value customers.',
+    shortDesc: 'Turn passive followers into loyal, high-value clients and brand champions.',
     longDesc: 'We manage your full social media presence — content, community, DM funnels, and distribution strategy — turning your platforms into always-on lead generation machines.',
     icon: Share2,
-    gradient: 'from-[#FCA5A5] via-[#EF4444] to-[#7F1D1D]',
-    shadow: 'shadow-[0_16px_40px_rgba(239,68,68,0.32)]',
-    textColor: 'text-[#DC2626]',
-    borderColor: 'border-rose-200',
-    bgLight: 'bg-rose-50',
-    deliverables: ['Multi-Platform Short-Form Video Strategy (Reels, TikTok, Shorts)','Community Engagement & Founder Personal Branding','High-Converting Social Funnels & DM Automation','Viral Trend Content with Data-Driven Distribution'],
+    deliverables: [
+      'Multi-Platform Short-Form Video Strategy (Reels, TikTok, Shorts)',
+      'Community Engagement & Founder Personal Branding',
+      'High-Converting Social Funnels & DM Automation',
+      'Viral Trend Content with Data-Driven Distribution',
+    ],
     metrics: '3.8M+ Monthly Organic Video Impressions Generated',
     tools: ['Figma', 'CapCut Pro', 'Metricool', 'ManyChat', 'Brand24'],
     category: 'Marketing',
@@ -137,15 +132,15 @@ const allServices: ServiceDef[] = [
     id: 'google-ads',
     number: '06',
     title: 'Google Ads',
-    shortDesc: 'Target the right searches. Scale with real, measurable ROI.',
+    shortDesc: 'Target high-intent searches and scale aggressively with verified, real ROI.',
     longDesc: 'We build and manage high-intent Google Ads campaigns that cut wasted spend and amplify results — from Search and Performance Max to Shopping, Display, and YouTube pre-rolls.',
     icon: BarChart2,
-    gradient: 'from-[#A5B4FC] via-[#6366F1] to-[#312E81]',
-    shadow: 'shadow-[0_16px_40px_rgba(99,102,241,0.32)]',
-    textColor: 'text-[#4F46E5]',
-    borderColor: 'border-indigo-200',
-    bgLight: 'bg-indigo-50',
-    deliverables: ['High-Intent Google Search & Performance Max Campaigns','Smart Bidding Strategy & Waste Spend Elimination','Continuous Creative A/B Testing & Conversion Attribution','Google Shopping, Display & YouTube Ad Integration'],
+    deliverables: [
+      'High-Intent Google Search & Performance Max Campaigns',
+      'Smart Bidding Strategy & Waste Spend Elimination',
+      'Continuous Creative A/B Testing & Conversion Attribution',
+      'Google Shopping, Display & YouTube Ad Integration',
+    ],
     metrics: '4.6x Average Verified ROAS Across Client Verticals',
     tools: ['Google Ads', 'Google Analytics 4', 'Search Ads 360', 'Triple Whale'],
     category: 'Advertising',
@@ -154,15 +149,15 @@ const allServices: ServiceDef[] = [
     id: 'meta-ads',
     number: '07',
     title: 'Meta Ads',
-    shortDesc: 'Facebook & Instagram ads that sell, not just scroll.',
+    shortDesc: 'Facebook & Instagram ads engineered to stop scrollers and drive sales.',
     longDesc: 'We craft high-converting Meta ad campaigns using precision audience targeting, dynamic creatives, and data-driven funnel strategy — stopping scrollers and converting them.',
     icon: Target,
-    gradient: 'from-[#93C5FD] via-[#3B82F6] to-[#1E3A8A]',
-    shadow: 'shadow-[0_16px_40px_rgba(59,130,246,0.32)]',
-    textColor: 'text-[#1D4ED8]',
-    borderColor: 'border-blue-300',
-    bgLight: 'bg-blue-50',
-    deliverables: ['Facebook & Instagram Campaign Architecture & Scaling','Precision Audience Targeting, Lookalikes & Retargeting','High-Converting UGC & Creative Ad Production','Full-Funnel Attribution & ROAS Optimisation'],
+    deliverables: [
+      'Facebook & Instagram Campaign Architecture & Scaling',
+      'Precision Audience Targeting, Lookalikes & Retargeting',
+      'High-Converting UGC & Creative Ad Production',
+      'Full-Funnel Attribution & ROAS Optimisation',
+    ],
     metrics: '3.9x Average Meta ROAS With 40% Lower CPL',
     tools: ['Meta Business Suite', 'Meta Ads Manager', 'Advantage+', 'Hotjar', 'Triple Whale'],
     category: 'Advertising',
@@ -171,15 +166,15 @@ const allServices: ServiceDef[] = [
     id: 'call-email-handling',
     number: '08',
     title: 'Call & Email Handling',
-    shortDesc: 'Never miss a lead — intelligent, human-quality follow-up.',
+    shortDesc: 'Intelligent, 24/7 lead qualification and human-grade automated response.',
     longDesc: 'We deploy AI-powered call and email handling systems that respond, qualify, and nurture leads instantly — giving every prospect a professional, personalised experience without adding headcount.',
     icon: PhoneCall,
-    gradient: 'from-[#6EE7B7] via-[#14B8A6] to-[#134E4A]',
-    shadow: 'shadow-[0_16px_40px_rgba(20,184,166,0.32)]',
-    textColor: 'text-[#0D9488]',
-    borderColor: 'border-teal-200',
-    bgLight: 'bg-teal-50',
-    deliverables: ['AI Voice Agents for Inbound & Outbound Call Handling','Automated Email Sequences & Smart Follow-Up Flows','CRM Integration & Lead Qualification Scoring','24/7 Lead Response with Human-Quality Personalisation'],
+    deliverables: [
+      'AI Voice Agents for Inbound & Outbound Call Handling',
+      'Automated Email Sequences & Smart Follow-Up Flows',
+      'CRM Integration & Lead Qualification Scoring',
+      '24/7 Lead Response with Human-Quality Personalisation',
+    ],
     metrics: '94% Lead Response Rate Within 60 Seconds',
     tools: ['Voiceflow', 'Vapi.ai', 'HubSpot', 'ActiveCampaign', 'Twilio'],
     category: 'Technology',
@@ -188,15 +183,15 @@ const allServices: ServiceDef[] = [
     id: 'image-design',
     number: '09',
     title: 'Image Design',
-    shortDesc: 'Visual assets that stop the scroll and build brand authority.',
+    shortDesc: 'High-end visual identity and ad creative that cements brand authority.',
     longDesc: 'From brand identity and social graphics to ad creatives and pitch decks, we produce premium visual assets that make your brand look unmistakably premium in every format.',
     icon: Image,
-    gradient: 'from-[#F9A8D4] via-[#EC4899] to-[#831843]',
-    shadow: 'shadow-[0_16px_40px_rgba(236,72,153,0.32)]',
-    textColor: 'text-[#DB2777]',
-    borderColor: 'border-pink-200',
-    bgLight: 'bg-pink-50',
-    deliverables: ['Brand Identity Design — Logo, Typography & Colour Systems','Social Media Graphics, Banners & Story Templates','Ad Creatives, Thumbnails & Landing Page Imagery','Pitch Decks, Reports & Branded Document Design'],
+    deliverables: [
+      'Brand Identity Design — Logo, Typography & Colour Systems',
+      'Social Media Graphics, Banners & Story Templates',
+      'Ad Creatives, Thumbnails & Landing Page Imagery',
+      'Pitch Decks, Reports & Branded Document Design',
+    ],
     metrics: '200+ Brands Elevated with Award-Worthy Visual Identity',
     tools: ['Figma', 'Adobe Illustrator', 'Photoshop', 'Canva Pro', 'Spline'],
     category: 'Design',
@@ -205,15 +200,15 @@ const allServices: ServiceDef[] = [
     id: 'video-editing',
     number: '10',
     title: 'Video Editing',
-    shortDesc: 'Scroll-stopping video content engineered for virality.',
+    shortDesc: 'Scroll-stopping video content engineered for engagement and virality.',
     longDesc: 'Our video team transforms raw footage into polished, platform-native content — from short-form social reels and ad spots to long-form YouTube content — built to maximise watch time and conversions.',
     icon: Video,
-    gradient: 'from-[#FDE68A] via-[#F59E0B] to-[#78350F]',
-    shadow: 'shadow-[0_16px_40px_rgba(245,158,11,0.32)]',
-    textColor: 'text-[#D97706]',
-    borderColor: 'border-amber-200',
-    bgLight: 'bg-amber-50',
-    deliverables: ['Short-Form Reels, TikToks & YouTube Shorts Editing','Long-Form YouTube & Podcast Video Production','Ad Video Editing with CTA-Optimised Hooks','Motion Graphics, Captions & Brand Intro/Outros'],
+    deliverables: [
+      'Short-Form Reels, TikToks & YouTube Shorts Editing',
+      'Long-Form YouTube & Podcast Video Production',
+      'Ad Video Editing with CTA-Optimised Hooks',
+      'Motion Graphics, Captions & Brand Intro/Outros',
+    ],
     metrics: '50M+ Views Generated Across Client Video Content',
     tools: ['Adobe Premiere Pro', 'After Effects', 'DaVinci Resolve', 'CapCut Pro', 'Descript'],
     category: 'Content',
@@ -228,33 +223,15 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
   onOpenSearch,
   onOpenGetStarted,
   initialServiceId,
+  onNavigateServiceDetail,
 }) => {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [activeService, setActiveService] = useState<ServiceDef | null>(() => {
-    if (initialServiceId) {
-      return (
-        allServices.find(
-          (s) =>
-            s.id.toLowerCase() === initialServiceId.toLowerCase() ||
-            s.title.toLowerCase() === initialServiceId.toLowerCase()
-        ) || null
-      );
-    }
-    return null;
-  });
 
   useEffect(() => {
-    if (initialServiceId) {
-      const match = allServices.find(
-        (s) =>
-          s.id.toLowerCase() === initialServiceId.toLowerCase() ||
-          s.title.toLowerCase() === initialServiceId.toLowerCase()
-      );
-      if (match) {
-        setActiveService(match);
-      }
+    if (initialServiceId && onNavigateServiceDetail) {
+      onNavigateServiceDetail(initialServiceId);
     }
-  }, [initialServiceId]);
+  }, [initialServiceId, onNavigateServiceDetail]);
 
   const filtered =
     activeCategory === 'All'
@@ -270,7 +247,7 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
   };
 
   return (
-    <div className="relative min-h-screen bg-[#F8FAFC] text-[#0F172A] antialiased">
+    <div className="relative min-h-screen bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
       <Header
         onNavigate={(route, section) => handleNavigate(route, section)}
         onSearchClick={onOpenSearch}
@@ -278,93 +255,184 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
         currentRoute="services"
       />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-28 pb-14 sm:pt-36 sm:pb-20">
+        {/* Ambient Subtle Blue Atmosphere */}
         <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-0 left-0 w-[600px] h-[400px] bg-gradient-to-br from-blue-100/60 via-indigo-50/30 to-transparent rounded-full blur-3xl -translate-x-1/4 -translate-y-1/4" />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-gradient-to-tl from-purple-100/50 to-transparent rounded-full blur-3xl translate-x-1/4 translate-y-1/4" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-gradient-to-b from-blue-100/50 via-blue-50/30 to-transparent rounded-full blur-3xl" />
         </div>
+
         <div className="max-w-5xl mx-auto px-5 sm:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-bold uppercase tracking-widest mb-6">
-            <Sparkles size={13} className="shrink-0" />
-            Everything You Need to Scale
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-blue-200/90 text-[#2563EB] text-xs font-bold uppercase tracking-widest shadow-xs mb-6"
+          >
+            <span className="h-2 w-2 rounded-full bg-[#2563EB] animate-pulse" />
+            <span>GROWTH &amp; MARKETING SUITE</span>
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-tight leading-[1.06] mb-5">
-            All{' '}
-            <span className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">10 Services</span>
-            <br />Under One Roof
+
+          {/* Main Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-tight leading-[1.08] mb-5"
+          >
+            All <span className="text-[#2563EB]">10 Core Services</span>
+            <br />
+            Engineered for Scale
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }}
-            className="text-slate-500 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
-            From AI automation to stunning design and paid growth — every capability your business needs, delivered by one tightly-integrated team.
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-slate-600 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
+          >
+            From autonomous AI systems and bespoke digital design to data-driven ad growth — every core capability your brand needs, unified under one roof.
           </motion.p>
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.22 }}
-            className="flex flex-wrap items-center justify-center gap-8 mt-10">
-            {[{ value: '3K+', label: 'Clients Scaled' }, { value: '10', label: 'Core Services' }, { value: '98%', label: 'Retention Rate' }].map((stat) => (
+
+          {/* Stats Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.22 }}
+            className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 mt-10 pt-6 border-t border-slate-200/60 max-w-xl mx-auto"
+          >
+            {[
+              { value: '3K+', label: 'Clients Scaled' },
+              { value: '10', label: 'Core Services' },
+              { value: '98%', label: 'Retention Rate' },
+            ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-3xl font-black text-[#0F172A] tracking-tight">{stat.value}</div>
-                <div className="text-xs font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight">
+                  {stat.value}
+                </div>
+                <div className="text-[11px] font-bold text-slate-400 mt-0.5 uppercase tracking-wider">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="sticky top-16 z-30 bg-white/80 backdrop-blur-lg border-b border-slate-100 py-4">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center gap-2.5 overflow-x-auto">
-          {CATEGORIES.map((cat) => (
-            <button key={cat} onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${activeCategory === cat ? 'bg-[#0F172A] text-white shadow-sm' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
-              {cat}
-              {cat !== 'All' && (
-                <span className={`ml-1.5 text-[10px] font-black ${activeCategory === cat ? 'text-white/60' : 'text-slate-400'}`}>
-                  {allServices.filter((s) => s.category === cat).length}
-                </span>
-              )}
-            </button>
-          ))}
+      {/* Category Filter Chips */}
+      <section className="sticky top-[74px] sm:top-[78px] z-30 bg-white/90 backdrop-blur-md border-y border-slate-200/80 py-3.5 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center gap-2.5 overflow-x-auto scrollbar-none">
+          {CATEGORIES.map((cat) => {
+            const isCatActive = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                className={`shrink-0 px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer select-none ${
+                  isCatActive
+                    ? 'bg-[#2563EB] text-white shadow-md shadow-blue-500/25'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-200 hover:text-[#2563EB]'
+                }`}
+              >
+                <span>{cat}</span>
+                {cat !== 'All' && (
+                  <span
+                    className={`ml-1.5 text-[10px] font-black ${
+                      isCatActive ? 'text-white/80' : 'text-slate-400'
+                    }`}
+                  >
+                    {allServices.filter((s) => s.category === cat).length}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </section>
 
-      {/* Grid */}
+      {/* Services Grid (Minimal, Uncommon, Pure Blue & White) */}
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
           <AnimatePresence mode="popLayout">
             {filtered.map((service, i) => {
               const Icon = service.icon;
               return (
-                <motion.div key={service.id} layout
-                  initial={{ opacity: 0, y: 20, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.35, delay: i * 0.04 }}
-                  onClick={() => setActiveService(service)}
-                  className="group relative rounded-2xl bg-white border border-slate-200/70 shadow-[0_4px_24px_rgba(15,23,42,0.06)] hover:shadow-[0_8px_40px_rgba(15,23,42,0.12)] transition-all duration-300 cursor-pointer overflow-hidden">
-                  <div className={`h-1 w-full bg-gradient-to-r ${service.gradient}`} />
-                  <div className="p-6 sm:p-7">
-                    <div className="flex items-start justify-between mb-5">
-                      <span className="text-[11px] font-black text-slate-300 tracking-widest">{service.number}</span>
-                      <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${service.gradient} ${service.shadow} flex items-center justify-center text-white`}>
-                        <Icon size={22} className="stroke-[2]" />
+                <motion.div
+                  key={service.id}
+                  id={`service-card-${service.id}`}
+                  layout
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.35, delay: i * 0.03 }}
+                  onClick={() => onNavigateServiceDetail ? onNavigateServiceDetail(service.id) : undefined}
+                  className={`group relative rounded-[26px] bg-white border border-slate-200/80 hover:border-blue-300 shadow-[0_4px_24px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_48px_-12px_rgba(37,99,235,0.14)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between`}
+                >
+                  {/* Subtle Top Active Blue Accent Line on Hover */}
+                  <div className="h-[3px] w-0 group-hover:w-full bg-gradient-to-r from-[#2563EB] to-[#60A5FA] transition-all duration-300" />
+
+                  <div className="p-7 sm:p-8 flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Top Header: Monogram Number & Category Badge */}
+                      <div className="flex items-center justify-between gap-3 mb-6">
+                        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200/70 text-[11px] font-mono font-extrabold text-slate-400 group-hover:text-[#2563EB] group-hover:border-blue-200 group-hover:bg-blue-50/60 transition-colors">
+                          <span className="h-1.5 w-1.5 rounded-full bg-slate-300 group-hover:bg-[#2563EB] transition-colors" />
+                          <span>{service.number}</span>
+                        </div>
+
+                        <span className="px-3 py-1 rounded-full text-[10.5px] font-bold tracking-wider uppercase text-slate-500 group-hover:text-[#2563EB] bg-slate-100 group-hover:bg-blue-50 border border-transparent group-hover:border-blue-100 transition-colors">
+                          {service.category}
+                        </span>
+                      </div>
+
+                      {/* Unique Frosted Blue Icon Orb */}
+                      <div className="h-13 w-13 rounded-2xl bg-blue-50/80 border border-blue-100/90 group-hover:bg-[#2563EB] text-[#2563EB] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-xs group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.3)] group-hover:scale-105 mb-4">
+                        <Icon size={24} className="stroke-[2.2]" />
+                      </div>
+
+                      {/* Service Title */}
+                      <h3 className="text-xl font-black text-slate-900 group-hover:text-[#2563EB] transition-colors tracking-tight leading-snug">
+                        {service.title}
+                      </h3>
+
+                      {/* Service Short Description */}
+                      <p className="text-[13px] text-slate-500 leading-relaxed font-normal mt-2 line-clamp-2">
+                        {service.shortDesc}
+                      </p>
+
+                      {/* Minimalist Deliverables List */}
+                      <ul className="space-y-2 mt-5">
+                        {service.deliverables.slice(0, 2).map((d) => (
+                          <li key={d} className="flex items-start gap-2.5 text-xs text-slate-600 leading-snug">
+                            <CheckCircle2 size={14} className="text-[#2563EB] mt-0.5 shrink-0" />
+                            <span>{d}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Metric Outcome Badge */}
+                    <div className="mt-6">
+                      <div className="p-3 rounded-xl bg-slate-50/80 group-hover:bg-blue-50/60 border border-slate-100 group-hover:border-blue-100 transition-colors flex items-center gap-2.5">
+                        <TrendingUp size={14} className="text-[#2563EB] shrink-0" />
+                        <span className="text-[11.5px] font-bold text-slate-700 group-hover:text-[#2563EB] leading-tight truncate">
+                          {service.metrics}
+                        </span>
+                      </div>
+
+                      {/* Card Footer Action */}
+                      <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500 group-hover:text-[#2563EB] transition-colors">
+                        <span>View Blueprint</span>
+                        <span className="inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                          <span>Explore Details</span>
+                          <ArrowRight size={13} strokeWidth={2.4} />
+                        </span>
                       </div>
                     </div>
-                    <h3 className="text-lg font-black text-[#0F172A] leading-tight mb-2 group-hover:opacity-80 transition-opacity">{service.title}</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed mb-5 line-clamp-2">{service.shortDesc}</p>
-                    <ul className="space-y-1.5 mb-5">
-                      {service.deliverables.slice(0, 2).map((d) => (
-                        <li key={d} className="flex items-start gap-2 text-xs text-slate-500">
-                          <CheckCircle2 size={13} className={`mt-0.5 shrink-0 ${service.textColor}`} />
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                      <span className={`text-xs font-bold ${service.bgLight} ${service.textColor} px-2.5 py-1 rounded-full`}>{service.category}</span>
-                      <span className={`flex items-center gap-1 text-xs font-bold ${service.textColor} group-hover:gap-2 transition-all`}>
-                        Details <ChevronRight size={13} />
-                      </span>
-                    </div>
+
                   </div>
                 </motion.div>
               );
@@ -373,87 +441,44 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
         </motion.div>
       </section>
 
-      {/* Bottom CTA */}
+      {/* Bottom Conversion Section */}
       <section className="max-w-4xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28 text-center">
-        <div className="rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] p-10 sm:p-14 shadow-[0_20px_60px_rgba(15,23,42,0.3)]">
-          <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-4">Ready to Scale?</p>
+        <div className="rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] p-10 sm:p-14 shadow-[0_20px_60px_rgba(15,23,42,0.3)] text-white">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-4">
+            <Sparkles size={12} />
+            <span>Scale With Confidence</span>
+          </div>
+
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
-            Let us Build Something<br />
-            <span className="bg-gradient-to-r from-[#60A5FA] to-[#A78BFA] bg-clip-text text-transparent">Extraordinary Together</span>
+            Ready to Build Something <br />
+            <span className="text-[#60A5FA]">Extraordinary Together?</span>
           </h2>
-          <p className="text-slate-400 text-base mb-8 max-w-xl mx-auto">Pick your services, share your goals, and we will craft a growth plan built specifically for your business.</p>
+          <p className="text-slate-400 text-sm sm:text-base mb-8 max-w-xl mx-auto leading-relaxed">
+            Pick your services, share your goals, and we will formulate a tailor-made digital blueprint built specifically for your revenue growth.
+          </p>
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button onClick={() => onNavigateContact?.()}
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-sm tracking-wide shadow-[0_10px_24px_rgba(37,99,235,0.4)] transition-all cursor-pointer">
-              Start Your Project <ArrowRight size={16} />
+            <button
+              type="button"
+              onClick={() => onNavigateContact?.()}
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-sm tracking-wide shadow-[0_10px_24px_rgba(37,99,235,0.4)] transition-all cursor-pointer"
+            >
+              <span>Start Your Project</span>
+              <ArrowRight size={16} />
             </button>
-            <button onClick={() => onNavigateHome?.()}
-              className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm font-semibold transition-colors cursor-pointer">
-              Back to Home <ArrowUpRight size={14} />
+            <button
+              type="button"
+              onClick={() => onNavigateHome?.()}
+              className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm font-semibold transition-colors cursor-pointer"
+            >
+              <span>Back to Home</span>
+              <ArrowUpRight size={14} />
             </button>
           </div>
         </div>
       </section>
 
       <Footer onGetStartedClick={onOpenGetStarted} onNavigate={(route, section) => handleNavigate(route, section)} />
-
-      {/* Service Modal */}
-      <AnimatePresence>
-        {activeService && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-            onClick={() => setActiveService(null)}>
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.25 }}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl"
-              onClick={(e) => e.stopPropagation()}>
-              <div className={`h-2 w-full bg-gradient-to-r ${activeService.gradient} rounded-t-3xl`} />
-              <div className="p-7 sm:p-9">
-                <button onClick={() => setActiveService(null)}
-                  className="absolute top-5 right-5 h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition cursor-pointer">
-                  <X size={15} />
-                </button>
-                <div className="flex items-center gap-4 mb-5">
-                  <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${activeService.gradient} ${activeService.shadow} flex items-center justify-center text-white shrink-0`}>
-                    {React.createElement(activeService.icon, { size: 26, className: 'stroke-[2]' })}
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-black text-slate-300 tracking-widest block">{activeService.number}</span>
-                    <h3 className="text-2xl font-black text-[#0F172A] leading-tight">{activeService.title}</h3>
-                  </div>
-                </div>
-                <p className="text-slate-600 text-sm leading-relaxed mb-6">{activeService.longDesc}</p>
-                <div className="mb-6">
-                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">What You Get</h4>
-                  <ul className="space-y-2.5">
-                    {activeService.deliverables.map((d) => (
-                      <li key={d} className="flex items-start gap-2.5 text-sm text-slate-600">
-                        <CheckCircle2 size={15} className={`mt-0.5 shrink-0 ${activeService.textColor}`} />{d}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className={`rounded-xl ${activeService.bgLight} border ${activeService.borderColor} px-5 py-3.5 mb-6`}>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Proven Result</p>
-                  <p className={`text-sm font-black ${activeService.textColor}`}>{activeService.metrics}</p>
-                </div>
-                <div className="mb-7">
-                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Tools & Platforms</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {activeService.tools.map((tool) => (
-                      <span key={tool} className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">{tool}</span>
-                    ))}
-                  </div>
-                </div>
-                <button onClick={() => { setActiveService(null); onNavigateContact?.(); }}
-                  className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeService.gradient} text-white font-bold text-sm flex items-center justify-center gap-2 ${activeService.shadow} hover:opacity-90 transition cursor-pointer`}>
-                  Get Started with {activeService.title} <ArrowRight size={15} />
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

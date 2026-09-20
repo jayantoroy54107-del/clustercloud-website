@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown, ArrowRight, Menu, X } from 'lucide-react';
+import { Search, ChevronDown, ArrowRight, ArrowUpRight, Menu, X, Sparkles } from 'lucide-react';
 import { lenis } from '../lib/lenis';
 
-export type NavRoute = 'home' | 'contact' | 'blog' | 'allblogs' | 'services';
+export type NavRoute =
+  | 'home'
+  | 'contact'
+  | 'blog'
+  | 'allblogs'
+  | 'services'
+  | 'brand-ai-with-faisal'
+  | 'brand-swift-outlet';
 
 export interface HeaderProps {
   onSearchClick?: () => void;
   onGetStartedClick?: () => void;
   currentRoute?: NavRoute;
   onNavigate?: (route: NavRoute, targetSection?: string) => void;
+}
+
+export interface BrandItem {
+  id: 'ai-with-faisal' | 'swift-outlet';
+  name: string;
+  tagline: string;
+  url: string;
+  badge: string;
+  route: NavRoute;
+  avatarLetter: string;
+  avatarColor: string;
 }
 
 export const Header: React.FC<HeaderProps> = React.memo(({
@@ -24,6 +42,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       ? 'Insights'
       : currentRoute === 'services'
       ? 'Services'
+      : currentRoute === 'brand-ai-with-faisal' || currentRoute === 'brand-swift-outlet'
+      ? 'Our Brands'
       : 'Home'
   );
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,6 +56,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       setActiveItem('Insights');
     } else if (currentRoute === 'services') {
       setActiveItem('Services');
+    } else if (currentRoute === 'brand-ai-with-faisal' || currentRoute === 'brand-swift-outlet') {
+      setActiveItem('Our Brands');
     } else {
       setActiveItem('Home');
     }
@@ -43,14 +65,16 @@ export const Header: React.FC<HeaderProps> = React.memo(({
 
   // Separate dropdown states for floating and sticky headers
   const [floatServicesOpen, setFloatServicesOpen] = useState(false);
-  const [floatIndustriesOpen, setFloatIndustriesOpen] = useState(false);
+  const [floatBrandsOpen, setFloatBrandsOpen] = useState(false);
 
   const [stickyServicesOpen, setStickyServicesOpen] = useState(false);
-  const [stickyIndustriesOpen, setStickyIndustriesOpen] = useState(false);
+  const [stickyBrandsOpen, setStickyBrandsOpen] = useState(false);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileServicesExpanded, setMobileServicesExpanded] = useState(false);
+  const [mobileBrandsExpanded, setMobileBrandsExpanded] = useState(false);
 
-  // Scroll listener to toggle sticky header ONLY on actual boolean transition (0 redundant re-renders)
+  // Scroll listener to toggle sticky header ONLY on actual boolean transition
   useEffect(() => {
     let lastState = window.scrollY > 90;
     setIsScrolled(lastState);
@@ -74,9 +98,9 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setFloatServicesOpen(false);
-        setFloatIndustriesOpen(false);
+        setFloatBrandsOpen(false);
         setStickyServicesOpen(false);
-        setStickyIndustriesOpen(false);
+        setStickyBrandsOpen(false);
         setMobileMenuOpen(false);
       }
     };
@@ -97,20 +121,33 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     'Video Editing',
   ];
 
-  const industriesList = [
-    'Real Estate',
-    'E-Commerce',
-    'Healthcare',
-    'SaaS & Technology',
-    'Construction',
-    'Professional Services',
-    'Hospitality',
+  const brandsList: BrandItem[] = [
+    {
+      id: 'ai-with-faisal',
+      name: 'AI with Faisal',
+      tagline: 'Custom AI Chatbots, Workflows & Automations',
+      url: 'https://aiwithfaisal.com/',
+      badge: 'AI Studio',
+      route: 'brand-ai-with-faisal',
+      avatarLetter: 'F',
+      avatarColor: 'from-[#6d5efc] to-[#06b6d4]',
+    },
+    {
+      id: 'swift-outlet',
+      name: 'Swift Outlet',
+      tagline: 'Next-Gen Mobile Apps, Games & Cloud SaaS',
+      url: 'https://www.swiftoutlet.com/',
+      badge: 'Apps & SaaS',
+      route: 'brand-swift-outlet',
+      avatarLetter: 'S',
+      avatarColor: 'from-[#2563EB] to-[#7C3AED]',
+    },
   ];
 
   const navItems = [
     { name: 'Home', type: 'link' },
-    { name: 'Services', type: 'dropdown', items: servicesList },
-    { name: 'Industries', type: 'dropdown', items: industriesList },
+    { name: 'Services', type: 'dropdown', dropdownType: 'services', items: servicesList },
+    { name: 'Our Brands', type: 'dropdown', dropdownType: 'brands', brands: brandsList },
     { name: 'Work', type: 'link' },
     { name: 'About', type: 'link' },
     { name: 'Insights', type: 'link' },
@@ -130,13 +167,26 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     }
   };
 
+  const handleBrandClick = (route: NavRoute, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    setActiveItem('Our Brands');
+    setFloatBrandsOpen(false);
+    setStickyBrandsOpen(false);
+    setMobileMenuOpen(false);
+    if (onNavigate) {
+      onNavigate(route);
+    } else {
+      window.location.href = route === 'brand-ai-with-faisal' ? '/brands/ai-with-faisal' : '/brands/swift-outlet';
+    }
+  };
+
   const handleNavClick = (name: string, e?: React.MouseEvent) => {
     e?.preventDefault();
     setActiveItem(name);
     setFloatServicesOpen(false);
-    setFloatIndustriesOpen(false);
+    setFloatBrandsOpen(false);
     setStickyServicesOpen(false);
-    setStickyIndustriesOpen(false);
+    setStickyBrandsOpen(false);
     setMobileMenuOpen(false);
 
     if (name === 'Contact') {
@@ -153,19 +203,32 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     }
 
     if (name === 'Services') {
-      if (currentRoute === 'services') {
-        lenis.scrollTo(0, { duration: 0.8 });
-      } else if (currentRoute === 'home') {
+      if (currentRoute === 'home') {
         const section = document.getElementById('services');
         if (section) {
           lenis.scrollTo(section, { offset: -80, duration: 1.2 });
+        } else {
+          if (onNavigate) {
+            onNavigate('services');
+          } else {
+            window.location.href = '/services';
+          }
         }
       } else {
         if (onNavigate) {
-          onNavigate('home', 'services');
+          onNavigate('services');
         } else {
-          window.location.href = '/#services';
+          window.location.href = '/services';
         }
+      }
+      return;
+    }
+
+    if (name === 'Our Brands') {
+      if (onNavigate) {
+        onNavigate('brand-ai-with-faisal');
+      } else {
+        window.location.href = '/brands/ai-with-faisal';
       }
       return;
     }
@@ -188,6 +251,123 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       }
     }
   };
+
+  const renderBrandsDropdown = (setOpen: (val: boolean) => void) => (
+    <div className="rounded-2xl bg-white p-3 shadow-[0_22px_44px_-8px_rgba(15,23,42,0.18)] border border-slate-100 ring-1 ring-black/5 w-80 sm:w-88">
+      <div className="px-2.5 py-1.5 border-b border-slate-100 mb-2 flex items-center justify-between">
+        <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+          Cluster Cloud Brands
+        </span>
+        <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-[#2563EB] bg-blue-50/80 px-2 py-0.5 rounded-full">
+          <Sparkles size={10} />
+          <span>2 Ecosystem Brands</span>
+        </span>
+      </div>
+
+      <div className="space-y-1">
+        {brandsList.map((brand) => (
+          <div
+            key={brand.id}
+            onClick={(e) => {
+              setOpen(false);
+              handleBrandClick(brand.route, e);
+            }}
+            className="group/brand p-2.5 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-200/70 transition-all duration-150 flex items-start gap-3 cursor-pointer text-left"
+          >
+            <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${brand.avatarColor} text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs group-hover/brand:scale-105 transition-transform`}>
+              {brand.avatarLetter}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <span className="font-bold text-[14px] text-slate-800 group-hover/brand:text-[#2563EB] transition-colors truncate">
+                  {brand.name}
+                </span>
+                <span className="text-[9.5px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 shrink-0">
+                  {brand.badge}
+                </span>
+              </div>
+              <p className="text-[11.5px] text-slate-500 leading-snug mt-0.5 line-clamp-1">
+                {brand.tagline}
+              </p>
+              <div className="mt-2 flex items-center gap-2.5">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2563EB] group-hover/brand:underline">
+                  <span>Showcase Page</span>
+                  <ArrowRight size={11} className="transition-transform group-hover/brand:translate-x-0.5" />
+                </span>
+                <span className="text-slate-300 text-xs">•</span>
+                <a
+                  href={brand.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+                  title={`Open ${brand.url} in new tab`}
+                >
+                  <span>Live Website</span>
+                  <ArrowUpRight size={11} strokeWidth={2.4} />
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between px-2 text-[11px] text-slate-400 font-medium">
+        <span>Curated digital ecosystem</span>
+        <span className="text-emerald-600 font-bold flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          Active Live
+        </span>
+      </div>
+    </div>
+  );
+
+  const renderServicesDropdown = (list: string[], setOpen: (val: boolean) => void) => (
+    <div className="rounded-2xl bg-white p-2.5 shadow-[0_22px_44px_-8px_rgba(15,23,42,0.14)] border border-slate-100 ring-1 ring-black/5 w-76">
+      <div className="px-3 py-1.5 border-b border-slate-100 mb-1.5 flex items-center justify-between">
+        <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+          Core Services
+        </span>
+        <span className="text-[10.5px] font-bold text-[#2563EB] bg-blue-50 px-2 py-0.5 rounded-full">
+          10 Services
+        </span>
+      </div>
+
+      <div className="space-y-0.5">
+        {list.map((sub) => (
+          <a
+            key={sub}
+            href={`/services?service=${encodeURIComponent(sub)}`}
+            onClick={(e) => {
+              setOpen(false);
+              handleServiceClick(sub, e);
+            }}
+            className="flex items-center justify-between px-3 py-2 rounded-xl text-[13.5px] font-semibold text-slate-700 hover:bg-blue-50 hover:text-[#2563EB] transition-all duration-150 group/sub"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2563EB] group-hover/sub:scale-125 transition-transform" />
+              <span>{sub}</span>
+            </div>
+            <ArrowRight size={12} className="opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-0.5 transition-all text-[#2563EB]" />
+          </a>
+        ))}
+      </div>
+
+      <div className="pt-2 mt-1.5 border-t border-slate-100">
+        <button
+          type="button"
+          onClick={(e) => {
+            setOpen(false);
+            handleServiceClick(undefined, e);
+          }}
+          className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12.5px] font-bold text-white bg-[#2563EB] hover:bg-[#1D4ED8] shadow-sm shadow-blue-500/20 transition-all cursor-pointer"
+        >
+          <span>Explore All 10 Services</span>
+          <ArrowRight size={13} strokeWidth={2.4} />
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -232,80 +412,60 @@ export const Header: React.FC<HeaderProps> = React.memo(({
 
               if (item.type === 'dropdown') {
                 const isServices = item.name === 'Services';
-                const isOpen = isServices ? floatServicesOpen : floatIndustriesOpen;
-                const setOpen = isServices ? setFloatServicesOpen : setFloatIndustriesOpen;
+                const isBrands = item.name === 'Our Brands';
+                const isOpen = isServices ? floatServicesOpen : floatBrandsOpen;
+                const setOpen = isServices ? setFloatServicesOpen : setFloatBrandsOpen;
                 const list = item.items || [];
 
                 return (
                   <div
                     key={item.name}
-                    className="relative group py-2"
+                    className="relative group py-2 flex items-center"
                     onMouseEnter={() => setOpen(true)}
                     onMouseLeave={() => setOpen(false)}
                   >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActiveItem(item.name);
-                        setOpen(!isOpen);
-                      }}
-                      className={`inline-flex items-center gap-1.5 text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${
-                        isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
-                      }`}
-                    >
-                      <span>{item.name}</span>
-                      <ChevronDown
-                        size={14}
-                        strokeWidth={2.4}
-                        className={`text-[#64748B] transition-transform duration-200 ${
-                          isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
+                    <div className="inline-flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          if (isServices) {
+                            handleNavClick('Services', e);
+                          } else if (isBrands) {
+                            handleBrandClick('brand-ai-with-faisal', e);
+                          } else {
+                            setOpen(!isOpen);
+                          }
+                        }}
+                        className={`text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${
+                          isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
                         }`}
-                      />
-                    </button>
+                      >
+                        {item.name}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpen(!isOpen);
+                        }}
+                        className="p-0.5 text-[#64748B] hover:text-[#2563EB] transition-colors cursor-pointer"
+                        aria-label={`Toggle ${item.name} dropdown`}
+                      >
+                        <ChevronDown
+                          size={14}
+                          strokeWidth={2.4}
+                          className={`transition-transform duration-200 ${
+                            isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
+                          }`}
+                        />
+                      </button>
+                    </div>
 
                     {isOpen && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-72 z-50 animate-in fade-in zoom-in-95 duration-150">
-                        <div className="rounded-2xl bg-white p-2.5 shadow-[0_20px_40px_-8px_rgba(15,23,42,0.14)] border border-slate-100 ring-1 ring-black/5">
-                          {list.map((sub) => (
-                            <a
-                              key={sub}
-                              href="#"
-                              onClick={(e) => {
-                                if (isServices) {
-                                  handleServiceClick(sub, e);
-                                } else {
-                                  e.preventDefault();
-                                  setActiveItem(item.name);
-                                  setOpen(false);
-                                  if (currentRoute !== 'home') {
-                                    onNavigate ? onNavigate('home', item.name.toLowerCase()) : (window.location.href = `/#${item.name.toLowerCase()}`);
-                                  } else {
-                                    const section = document.getElementById(item.name.toLowerCase());
-                                    if (section) {
-                                      lenis.scrollTo(section, { offset: -80, duration: 1.2 });
-                                    }
-                                  }
-                                }
-                              }}
-                              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13.5px] font-semibold text-slate-700 hover:bg-blue-50 hover:text-[#2563EB] transition-all duration-150"
-                            >
-                              <span className="h-1.5 w-1.5 rounded-full bg-[#2563EB]" />
-                              <span>{sub}</span>
-                            </a>
-                          ))}
-                          {isServices && (
-                            <div className="pt-2 mt-1 border-t border-slate-100">
-                              <button
-                                type="button"
-                                onClick={(e) => handleServiceClick(undefined, e)}
-                                className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-[12.5px] font-bold text-[#2563EB] bg-blue-50/70 hover:bg-blue-100/70 transition-colors cursor-pointer"
-                              >
-                                <span>Explore All 10 Services</span>
-                                <ArrowRight size={13} />
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50 animate-in fade-in zoom-in-95 duration-150">
+                        {isBrands
+                          ? renderBrandsDropdown(setOpen)
+                          : renderServicesDropdown(list, setOpen)}
                       </div>
                     )}
                   </div>
@@ -420,80 +580,60 @@ export const Header: React.FC<HeaderProps> = React.memo(({
 
               if (item.type === 'dropdown') {
                 const isServices = item.name === 'Services';
-                const isOpen = isServices ? stickyServicesOpen : stickyIndustriesOpen;
-                const setOpen = isServices ? setStickyServicesOpen : setStickyIndustriesOpen;
+                const isBrands = item.name === 'Our Brands';
+                const isOpen = isServices ? stickyServicesOpen : stickyBrandsOpen;
+                const setOpen = isServices ? setStickyServicesOpen : setStickyBrandsOpen;
                 const list = item.items || [];
 
                 return (
                   <div
                     key={item.name}
-                    className="relative group py-2"
+                    className="relative group py-2 flex items-center"
                     onMouseEnter={() => setOpen(true)}
                     onMouseLeave={() => setOpen(false)}
                   >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActiveItem(item.name);
-                        setOpen(!isOpen);
-                      }}
-                      className={`inline-flex items-center gap-1.5 text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${
-                        isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
-                      }`}
-                    >
-                      <span>{item.name}</span>
-                      <ChevronDown
-                        size={14}
-                        strokeWidth={2.4}
-                        className={`text-[#64748B] transition-transform duration-200 ${
-                          isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
+                    <div className="inline-flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          if (isServices) {
+                            handleNavClick('Services', e);
+                          } else if (isBrands) {
+                            handleBrandClick('brand-ai-with-faisal', e);
+                          } else {
+                            setOpen(!isOpen);
+                          }
+                        }}
+                        className={`text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${
+                          isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
                         }`}
-                      />
-                    </button>
+                      >
+                        {item.name}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpen(!isOpen);
+                        }}
+                        className="p-0.5 text-[#64748B] hover:text-[#2563EB] transition-colors cursor-pointer"
+                        aria-label={`Toggle ${item.name} dropdown`}
+                      >
+                        <ChevronDown
+                          size={14}
+                          strokeWidth={2.4}
+                          className={`transition-transform duration-200 ${
+                            isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
+                          }`}
+                        />
+                      </button>
+                    </div>
 
                     {isOpen && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-72 z-50 animate-in fade-in zoom-in-95 duration-150">
-                        <div className="rounded-2xl bg-white p-2.5 shadow-[0_20px_40px_-8px_rgba(15,23,42,0.12)] border border-slate-100 ring-1 ring-black/5">
-                          {list.map((sub) => (
-                            <a
-                              key={sub}
-                              href="#"
-                              onClick={(e) => {
-                                if (isServices) {
-                                  handleServiceClick(sub, e);
-                                } else {
-                                  e.preventDefault();
-                                  setActiveItem(item.name);
-                                  setOpen(false);
-                                  if (currentRoute !== 'home') {
-                                    onNavigate ? onNavigate('home', item.name.toLowerCase()) : (window.location.href = `/#${item.name.toLowerCase()}`);
-                                  } else {
-                                    const section = document.getElementById(item.name.toLowerCase());
-                                    if (section) {
-                                      lenis.scrollTo(section, { offset: -80, duration: 1.2 });
-                                    }
-                                  }
-                                }
-                              }}
-                              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13.5px] font-semibold text-slate-700 hover:bg-blue-50 hover:text-[#2563EB] transition-all duration-150"
-                            >
-                              <span className="h-1.5 w-1.5 rounded-full bg-[#2563EB]" />
-                              <span>{sub}</span>
-                            </a>
-                          ))}
-                          {isServices && (
-                            <div className="pt-2 mt-1 border-t border-slate-100">
-                              <button
-                                type="button"
-                                onClick={(e) => handleServiceClick(undefined, e)}
-                                className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-[12.5px] font-bold text-[#2563EB] bg-blue-50/70 hover:bg-blue-100/70 transition-colors cursor-pointer"
-                              >
-                                <span>Explore All 10 Services</span>
-                                <ArrowRight size={13} />
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                        {isBrands
+                          ? renderBrandsDropdown(setOpen)
+                          : renderServicesDropdown(list, setOpen)}
                       </div>
                     )}
                   </div>
@@ -581,19 +721,121 @@ export const Header: React.FC<HeaderProps> = React.memo(({
             </button>
           </div>
 
-          <div className="flex flex-col gap-4 py-6">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={`#${item.name.toLowerCase()}`}
-                onClick={(e) => handleNavClick(item.name, e)}
-                className={`text-lg font-bold py-1.5 transition-colors ${
-                  activeItem === item.name ? 'text-[#2563EB]' : 'text-slate-800'
-                }`}
-              >
-                {item.name}
-              </a>
-            ))}
+          <div className="flex flex-col gap-2 py-4">
+            {navItems.map((item) => {
+              if (item.name === 'Services') {
+                return (
+                  <div key={item.name} className="py-1">
+                    <div className="flex items-center justify-between py-1.5">
+                      <button
+                        type="button"
+                        onClick={(e) => handleNavClick('Services', e)}
+                        className={`text-lg font-bold transition-colors ${
+                          activeItem === 'Services' ? 'text-[#2563EB]' : 'text-slate-800'
+                        }`}
+                      >
+                        Services
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMobileServicesExpanded(!mobileServicesExpanded)}
+                        className="p-1 text-slate-500 hover:text-[#2563EB]"
+                      >
+                        <ChevronDown
+                          size={18}
+                          className={`transition-transform duration-200 ${
+                            mobileServicesExpanded ? 'rotate-180 text-[#2563EB]' : 'text-slate-400'
+                          }`}
+                        />
+                      </button>
+                    </div>
+
+                    {mobileServicesExpanded && (
+                      <div className="mt-2 ml-3 pl-3 border-l-2 border-blue-100 space-y-2 py-1 animate-in fade-in">
+                        <button
+                          type="button"
+                          onClick={(e) => handleServiceClick(undefined, e)}
+                          className="w-full text-left font-bold text-xs text-[#2563EB] bg-blue-50/80 px-3 py-2 rounded-lg"
+                        >
+                          Explore All 10 Services →
+                        </button>
+                        {servicesList.map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={(e) => handleServiceClick(s, e)}
+                            className="block w-full text-left font-semibold text-sm text-slate-700 hover:text-[#2563EB] py-1"
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              if (item.name === 'Our Brands') {
+                return (
+                  <div key={item.name} className="py-1">
+                    <button
+                      type="button"
+                      onClick={() => setMobileBrandsExpanded(!mobileBrandsExpanded)}
+                      className={`w-full flex items-center justify-between text-lg font-bold py-1.5 transition-colors ${
+                        activeItem === 'Our Brands' ? 'text-[#2563EB]' : 'text-slate-800'
+                      }`}
+                    >
+                      <span>Our Brands</span>
+                      <ChevronDown
+                        size={18}
+                        className={`transition-transform duration-200 ${
+                          mobileBrandsExpanded ? 'rotate-180 text-[#2563EB]' : 'text-slate-400'
+                        }`}
+                      />
+                    </button>
+
+                    {mobileBrandsExpanded && (
+                      <div className="mt-2 ml-3 pl-3 border-l-2 border-blue-100 space-y-3 py-1 animate-in fade-in">
+                        {brandsList.map((b) => (
+                          <div key={b.id} className="flex flex-col gap-1">
+                            <button
+                              type="button"
+                              onClick={(e) => handleBrandClick(b.route, e)}
+                              className="text-left font-bold text-[15px] text-slate-800 hover:text-[#2563EB] flex items-center gap-2"
+                            >
+                              <span className={`h-2 w-2 rounded-full bg-gradient-to-r ${b.avatarColor}`} />
+                              <span>{b.name}</span>
+                            </button>
+                            <a
+                              href={b.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-slate-500 hover:text-[#2563EB] inline-flex items-center gap-1 pl-4"
+                            >
+                              <span>Visit {b.url.replace('https://', '').replace('/', '')}</span>
+                              <ArrowUpRight size={12} />
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <a
+                  key={item.name}
+                  href={`#${item.name.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(item.name, e)}
+                  className={`text-lg font-bold py-1.5 transition-colors ${
+                    activeItem === item.name ? 'text-[#2563EB]' : 'text-slate-800'
+                  }`}
+                >
+                  {item.name}
+                </a>
+              );
+            })}
           </div>
 
           <div className="pt-4 border-t border-slate-100">

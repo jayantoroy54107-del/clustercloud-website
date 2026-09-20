@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   Bot,
   Globe,
@@ -9,9 +9,6 @@ import {
   BarChart2,
   ArrowRight,
   TrendingUp,
-  X,
-  CheckCircle2,
-  Sparkles,
   Play,
 } from 'lucide-react';
 
@@ -19,6 +16,7 @@ export interface ServicesSectionProps {
   onStartProjectClick?: () => void;
   onWatchStoryClick?: () => void;
   onExploreAllServices?: () => void;
+  onViewServiceDetail?: (serviceId: string) => void;
 }
 
 export interface ServiceItem {
@@ -280,11 +278,11 @@ const servicesData: ServiceItem[] = [
 ];
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({
-  onStartProjectClick,
+  onStartProjectClick: _onStartProjectClick,
   onWatchStoryClick,
   onExploreAllServices,
+  onViewServiceDetail,
 }) => {
-  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -731,7 +729,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               <DesktopOrbitalCard
                 key={service.id}
                 service={service}
-                onClick={() => setSelectedService(service)}
+                onClick={() => onViewServiceDetail ? onViewServiceDetail(service.id) : onExploreAllServices?.()}
                 customDelay={0.08 + idx * 0.04}
               />
             ))}
@@ -743,7 +741,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               <MobileServiceCard
                 key={service.id}
                 service={service}
-                onClick={() => setSelectedService(service)}
+                onClick={() => onViewServiceDetail ? onViewServiceDetail(service.id) : onExploreAllServices?.()}
                 customDelay={0.08 + idx * 0.04}
               />
             ))}
@@ -782,7 +780,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => onExploreAllServices ? onExploreAllServices() : setSelectedService(servicesData[0])}
+                  onClick={() => onExploreAllServices?.()}
                   className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm tracking-wide shadow-[0_10px_24px_rgba(29,104,247,0.35)] transition-all cursor-pointer"
                 >
                   <span>Explore All Services</span>
@@ -860,7 +858,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           {/* Primary & Secondary Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
             <button
-              onClick={() => onExploreAllServices ? onExploreAllServices() : setSelectedService(servicesData[0])}
+              onClick={() => onExploreAllServices?.()}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm tracking-wide shadow-md transition-all cursor-pointer"
             >
               <span>Explore All Services</span>
@@ -886,126 +884,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         </div>
 
       </div>
-
-      {/* ======================================================================= */}
-      {/* 6. Interactive Service Detail Modal                                     */}
-      {/* ======================================================================= */}
-      <AnimatePresence>
-        {selectedService && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-200"
-            onClick={() => setSelectedService(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-100 overflow-hidden"
-            >
-              {/* Modal Top Header */}
-              <div className="flex items-start justify-between mb-6 pb-5 border-b border-slate-100">
-                <div className="flex items-center gap-4">
-                  <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${selectedService.accent.iconGradient} text-white flex items-center justify-center shadow-lg`}>
-                    <selectedService.icon size={28} />
-                  </div>
-                  <div>
-                    <span className="text-xs font-black uppercase tracking-wider text-slate-400">
-                      SERVICE {selectedService.number}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-[#0F172A]">
-                      {selectedService.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setSelectedService(null)}
-                  className="h-9 w-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              {/* Short Description */}
-              <p className="text-sm sm:text-base text-slate-600 mb-6 leading-relaxed">
-                {selectedService.shortDesc}
-              </p>
-
-              {/* Projected Growth Metric Banner */}
-              <div className="rounded-2xl bg-blue-50/70 border border-blue-100 p-4 mb-6 flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-[#1D68F7] text-white flex items-center justify-center shrink-0">
-                  <Sparkles size={16} />
-                </div>
-                <div>
-                  <span className="text-[11px] font-bold text-blue-900 uppercase tracking-wide block">
-                    Verified Performance Benchmark
-                  </span>
-                  <span className="text-xs sm:text-sm font-bold text-blue-700">
-                    {selectedService.metrics}
-                  </span>
-                </div>
-              </div>
-
-              {/* Key Deliverables */}
-              <div className="mb-6">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
-                  What We Deliver:
-                </h4>
-                <div className="grid grid-cols-1 gap-2.5">
-                  {selectedService.deliverables.map((del) => (
-                    <div key={del} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
-                      <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{del}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Tools & Tech Stack */}
-              <div className="mb-8">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
-                  Core Toolstack:
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedService.tools.map((tool) => (
-                    <span
-                      key={tool}
-                      className="px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedService(null);
-                    onStartProjectClick?.();
-                  }}
-                  className={`w-full sm:w-auto flex-1 py-3.5 px-6 rounded-xl bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm shadow-md transition-all text-center cursor-pointer`}
-                >
-                  Start Project with {selectedService.title} →
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedService(null)}
-                  className="w-full sm:w-auto py-3.5 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-colors text-center cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </section>
   );

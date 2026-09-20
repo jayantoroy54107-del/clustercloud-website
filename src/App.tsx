@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { BrandSection } from './components/BrandSection';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { lenis } from './lib/lenis';
 
 // Lazy-load all below-fold section components & Pages
@@ -15,15 +16,38 @@ const ContactPage = lazy(() => import('./components/ContactPage').then(m => ({ d
 const SingleBlogPage = lazy(() => import('./components/SingleBlogPage').then(m => ({ default: m.SingleBlogPage })));
 const AllBlogsPage = lazy(() => import('./components/AllBlogsPage').then(m => ({ default: m.AllBlogsPage })));
 const AllServicesPage = lazy(() => import('./components/AllServicesPage').then(m => ({ default: m.AllServicesPage })));
+const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
+const BrandAiWithFaisalPage = lazy(() => import('./components/BrandAiWithFaisalPage').then(m => ({ default: m.BrandAiWithFaisalPage })));
+const BrandSwiftOutletPage = lazy(() => import('./components/BrandSwiftOutletPage').then(m => ({ default: m.BrandSwiftOutletPage })));
 
 // Lazy-loaded interactive modal dialogs
 const SearchModal = lazy(() => import('./components/SearchModal'));
 const GetStartedModal = lazy(() => import('./components/GetStartedModal'));
 
-export type AppRoute = 'home' | 'contact' | 'blog' | 'allblogs' | 'services';
+export type AppRoute =
+  | 'home'
+  | 'contact'
+  | 'blog'
+  | 'allblogs'
+  | 'services'
+  | 'service-detail'
+  | 'brand-ai-with-faisal'
+  | 'brand-swift-outlet';
 
 export const App: React.FC = () => {
-  const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
+  const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/services/')) {
+        const id = path.replace('/services/', '').replace(/\/$/, '');
+        if (id) return id;
+      }
+      const searchParams = new URLSearchParams(window.location.search);
+      const serviceParam = searchParams.get('service');
+      if (serviceParam) return serviceParam;
+    }
+    return undefined;
+  });
   // Determine initial slug if deep linked
   const [selectedArticleSlug, setSelectedArticleSlug] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -44,8 +68,21 @@ export const App: React.FC = () => {
       if (path === '/contact' || path.startsWith('/contact/') || hash === '#contact') {
         return 'contact';
       }
-      if (path === '/services' || path.startsWith('/services/') || hash === '#services-page') {
+      if (path.startsWith('/services/') && path.replace('/services/', '').replace(/\/$/, '')) {
+        return 'service-detail';
+      }
+      if (path === '/services' || hash === '#services-page') {
+        const searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.get('service')) {
+          return 'service-detail';
+        }
         return 'services';
+      }
+      if (path === '/brands/ai-with-faisal' || path.startsWith('/brands/ai-with-faisal') || hash === '#brand-ai-with-faisal') {
+        return 'brand-ai-with-faisal';
+      }
+      if (path === '/brands/swift-outlet' || path.startsWith('/brands/swift-outlet') || hash === '#brand-swift-outlet') {
+        return 'brand-swift-outlet';
       }
       if (path === '/blogs' || hash === '#blogs') {
         return 'allblogs';
@@ -72,12 +109,18 @@ export const App: React.FC = () => {
       document.title = "Contact Us | Cluster Cloud - Let's Turn Ideas Into Impact";
     } else if (route === 'services') {
       document.title = "Our Services | Cluster Cloud - AI, Design, Development & Growth";
+    } else if (route === 'service-detail') {
+      document.title = `${selectedServiceId ? selectedServiceId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Service'} | Cluster Cloud`;
+    } else if (route === 'brand-ai-with-faisal') {
+      document.title = "AI with Faisal | AI Chatbots, Automation & Solutions - Cluster Cloud";
+    } else if (route === 'brand-swift-outlet') {
+      document.title = "Swift Outlet | Next-Gen Digital Products & SaaS Studio - Cluster Cloud";
     } else if (route === 'blog') {
       document.title = "Insights & Strategy | Cluster Cloud Growth Blog";
     } else {
       document.title = "Cluster Cloud | Strategy, Digital & Growth Studio";
     }
-  }, [route]);
+  }, [route, selectedServiceId]);
 
   // Listen for browser Back and Forward button events
   useEffect(() => {
@@ -87,8 +130,26 @@ export const App: React.FC = () => {
       if (path === '/contact' || path.startsWith('/contact/') || hash === '#contact') {
         setRoute('contact');
         window.scrollTo(0, 0);
-      } else if (path === '/services' || path.startsWith('/services/') || hash === '#services-page') {
-        setRoute('services');
+      } else if (path.startsWith('/services/') && path.replace('/services/', '').replace(/\/$/, '')) {
+        const id = path.replace('/services/', '').replace(/\/$/, '');
+        setSelectedServiceId(id);
+        setRoute('service-detail');
+        window.scrollTo(0, 0);
+      } else if (path === '/services' || hash === '#services-page') {
+        const searchParams = new URLSearchParams(window.location.search);
+        const serviceParam = searchParams.get('service');
+        if (serviceParam) {
+          setSelectedServiceId(serviceParam);
+          setRoute('service-detail');
+        } else {
+          setRoute('services');
+        }
+        window.scrollTo(0, 0);
+      } else if (path === '/brands/ai-with-faisal' || path.startsWith('/brands/ai-with-faisal') || hash === '#brand-ai-with-faisal') {
+        setRoute('brand-ai-with-faisal');
+        window.scrollTo(0, 0);
+      } else if (path === '/brands/swift-outlet' || path.startsWith('/brands/swift-outlet') || hash === '#brand-swift-outlet') {
+        setRoute('brand-swift-outlet');
         window.scrollTo(0, 0);
       } else if (path === '/blogs' || hash === '#blogs') {
         setRoute('allblogs');
@@ -139,6 +200,15 @@ export const App: React.FC = () => {
     lenis.scrollTo(0, { duration: 0.6, immediate: true });
   }, []);
 
+  // Navigate to dedicated service detail page
+  const handleNavigateServiceDetail = useCallback((serviceId: string) => {
+    setSelectedServiceId(serviceId);
+    setRoute('service-detail');
+    window.history.pushState(null, '', `/services/${serviceId}`);
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, { duration: 0.6, immediate: true });
+  }, []);
+
   // Central Navigation Handler
   const handleNavigate = useCallback((targetRoute: AppRoute, targetSection?: string) => {
     if (targetRoute === 'contact') {
@@ -146,10 +216,29 @@ export const App: React.FC = () => {
       setRoute('contact');
       window.scrollTo(0, 0);
       lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'service-detail') {
+      if (targetSection) {
+        setSelectedServiceId(targetSection);
+        window.history.pushState(null, '', `/services/${targetSection}`);
+        setRoute('service-detail');
+        window.scrollTo(0, 0);
+        lenis.scrollTo(0, { duration: 0.6, immediate: true });
+      }
     } else if (targetRoute === 'services') {
       setSelectedServiceId(targetSection);
-      window.history.pushState(null, '', '/services');
+      const url = targetSection ? `/services?service=${encodeURIComponent(targetSection)}` : '/services';
+      window.history.pushState(null, '', url);
       setRoute('services');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'brand-ai-with-faisal') {
+      window.history.pushState(null, '', '/brands/ai-with-faisal');
+      setRoute('brand-ai-with-faisal');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'brand-swift-outlet') {
+      window.history.pushState(null, '', '/brands/swift-outlet');
+      setRoute('brand-swift-outlet');
       window.scrollTo(0, 0);
       lenis.scrollTo(0, { duration: 0.6, immediate: true });
     } else if (targetRoute === 'allblogs') {
@@ -184,17 +273,49 @@ export const App: React.FC = () => {
     }
   }, [selectedArticleSlug]);
 
-  // Dedicated All Services page
-  if (route === 'services') {
+  // Dedicated Service Detail Page
+  if (route === 'service-detail') {
+    return (
+      <ErrorBoundary>
+        <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+            <ServiceDetailPage
+              serviceId={selectedServiceId || 'ai-automation'}
+              onNavigateHome={(section) => handleNavigate('home', section)}
+              onNavigateContact={() => handleNavigate('contact')}
+              onNavigateServices={() => handleNavigate('services')}
+              onOpenSearch={handleOpenSearch}
+              onOpenGetStarted={handleOpenGetStarted}
+            />
+          </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+        </div>
+      </ErrorBoundary>
+    );
+  }
+
+  // Dedicated AI with Faisal Brand Page
+  if (route === 'brand-ai-with-faisal') {
     return (
       <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
-          <AllServicesPage
-            initialServiceId={selectedServiceId}
+          <BrandAiWithFaisalPage
             onNavigateHome={(section) => handleNavigate('home', section)}
             onNavigateContact={() => handleNavigate('contact')}
             onOpenSearch={handleOpenSearch}
             onOpenGetStarted={handleOpenGetStarted}
+            onNavigateBrand={(brandId) => handleNavigate(brandId === 'ai-with-faisal' ? 'brand-ai-with-faisal' : 'brand-swift-outlet')}
           />
         </Suspense>
 
@@ -210,6 +331,67 @@ export const App: React.FC = () => {
           )}
         </Suspense>
       </div>
+    );
+  }
+
+  // Dedicated Swift Outlet Brand Page
+  if (route === 'brand-swift-outlet') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <BrandSwiftOutletPage
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+            onNavigateBrand={(brandId) => handleNavigate(brandId === 'ai-with-faisal' ? 'brand-ai-with-faisal' : 'brand-swift-outlet')}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Dedicated All Services page
+  if (route === 'services') {
+    return (
+      <ErrorBoundary>
+        <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+            <AllServicesPage
+              initialServiceId={selectedServiceId}
+              onNavigateHome={(section) => handleNavigate('home', section)}
+              onNavigateContact={() => handleNavigate('contact')}
+              onOpenSearch={handleOpenSearch}
+              onOpenGetStarted={handleOpenGetStarted}
+              onNavigateServiceDetail={handleNavigateServiceDetail}
+            />
+          </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+        </div>
+      </ErrorBoundary>
     );
   }
 
@@ -334,6 +516,7 @@ export const App: React.FC = () => {
         <ServicesSection
           onStartProjectClick={handleOpenGetStarted}
           onExploreAllServices={() => handleExploreAllServices()}
+          onViewServiceDetail={handleNavigateServiceDetail}
         />
       </Suspense>
 
