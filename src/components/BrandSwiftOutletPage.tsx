@@ -18,6 +18,7 @@ import { Footer } from './Footer';
 import { lenis } from '../lib/lenis';
 
 export interface BrandSwiftOutletPageProps {
+  onNavigate?: (route: any, targetSection?: string) => void;
   onNavigateHome?: (section?: string) => void;
   onNavigateContact?: () => void;
   onOpenSearch?: () => void;
@@ -26,6 +27,7 @@ export interface BrandSwiftOutletPageProps {
 }
 
 export const BrandSwiftOutletPage: React.FC<BrandSwiftOutletPageProps> = ({
+  onNavigate,
   onNavigateHome,
   onNavigateContact,
   onOpenSearch,
@@ -142,6 +144,10 @@ export const BrandSwiftOutletPage: React.FC<BrandSwiftOutletPageProps> = ({
         onGetStartedClick={onOpenGetStarted}
         currentRoute="brand-swift-outlet"
         onNavigate={(route, target) => {
+          if (onNavigate) {
+            onNavigate(route, target);
+            return;
+          }
           if (route === 'brand-swift-outlet') {
             window.scrollTo(0, 0);
           } else if (route === 'brand-ai-with-faisal') {
@@ -509,6 +515,10 @@ export const BrandSwiftOutletPage: React.FC<BrandSwiftOutletPageProps> = ({
       <Footer
         onGetStartedClick={onOpenGetStarted}
         onNavigate={(route, target) => {
+          if (onNavigate) {
+            onNavigate(route, target);
+            return;
+          }
           if (route === 'contact') {
             onNavigateContact?.();
           } else {

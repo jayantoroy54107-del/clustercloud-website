@@ -19,8 +19,10 @@ import {
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { serviceNameToSlug } from '../lib/slugs';
 
 export interface AllServicesPageProps {
+  onNavigate?: (route: any, section?: string) => void;
   onNavigateHome?: (section?: string) => void;
   onNavigateContact?: () => void;
   onOpenSearch?: () => void;
@@ -218,6 +220,7 @@ const allServices: ServiceDef[] = [
 const CATEGORIES = ['All', 'Technology', 'Design', 'Marketing', 'Advertising', 'Content'];
 
 export const AllServicesPage: React.FC<AllServicesPageProps> = ({
+  onNavigate,
   onNavigateHome,
   onNavigateContact,
   onOpenSearch,
@@ -229,7 +232,7 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
 
   useEffect(() => {
     if (initialServiceId && onNavigateServiceDetail) {
-      onNavigateServiceDetail(initialServiceId);
+      onNavigateServiceDetail(serviceNameToSlug(initialServiceId));
     }
   }, [initialServiceId, onNavigateServiceDetail]);
 
@@ -239,6 +242,10 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
       : allServices.filter((s) => s.category === activeCategory);
 
   const handleNavigate = (route: string, section?: string) => {
+    if (onNavigate) {
+      onNavigate(route, section);
+      return;
+    }
     if (route === 'contact') {
       onNavigateContact?.();
     } else {

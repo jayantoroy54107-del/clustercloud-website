@@ -22,6 +22,7 @@ import { Footer } from './Footer';
 import { lenis } from '../lib/lenis';
 
 export interface BrandAiWithFaisalPageProps {
+  onNavigate?: (route: any, targetSection?: string) => void;
   onNavigateHome?: (section?: string) => void;
   onNavigateContact?: () => void;
   onOpenSearch?: () => void;
@@ -30,6 +31,7 @@ export interface BrandAiWithFaisalPageProps {
 }
 
 export const BrandAiWithFaisalPage: React.FC<BrandAiWithFaisalPageProps> = ({
+  onNavigate,
   onNavigateHome,
   onNavigateContact,
   onOpenSearch,
@@ -127,6 +129,10 @@ export const BrandAiWithFaisalPage: React.FC<BrandAiWithFaisalPageProps> = ({
         onGetStartedClick={onOpenGetStarted}
         currentRoute="brand-ai-with-faisal"
         onNavigate={(route, target) => {
+          if (onNavigate) {
+            onNavigate(route, target);
+            return;
+          }
           if (route === 'brand-ai-with-faisal') {
             window.scrollTo(0, 0);
           } else if (route === 'brand-swift-outlet') {
@@ -486,6 +492,10 @@ export const BrandAiWithFaisalPage: React.FC<BrandAiWithFaisalPageProps> = ({
       <Footer
         onGetStartedClick={onOpenGetStarted}
         onNavigate={(route, target) => {
+          if (onNavigate) {
+            onNavigate(route, target);
+            return;
+          }
           if (route === 'contact') {
             onNavigateContact?.();
           } else {

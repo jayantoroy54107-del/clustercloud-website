@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { BrandSection } from './components/BrandSection';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { serviceNameToSlug } from './lib/slugs';
 import { lenis } from './lib/lenis';
 
 // Lazy-load all below-fold section components & Pages
@@ -40,11 +41,11 @@ export const App: React.FC = () => {
       const path = window.location.pathname.toLowerCase();
       if (path.startsWith('/services/')) {
         const id = path.replace('/services/', '').replace(/\/$/, '');
-        if (id) return id;
+        if (id) return serviceNameToSlug(id);
       }
       const searchParams = new URLSearchParams(window.location.search);
       const serviceParam = searchParams.get('service');
-      if (serviceParam) return serviceParam;
+      if (serviceParam) return serviceNameToSlug(serviceParam);
     }
     return undefined;
   });
@@ -132,16 +133,17 @@ export const App: React.FC = () => {
         window.scrollTo(0, 0);
       } else if (path.startsWith('/services/') && path.replace('/services/', '').replace(/\/$/, '')) {
         const id = path.replace('/services/', '').replace(/\/$/, '');
-        setSelectedServiceId(id);
+        setSelectedServiceId(serviceNameToSlug(id));
         setRoute('service-detail');
         window.scrollTo(0, 0);
       } else if (path === '/services' || hash === '#services-page') {
         const searchParams = new URLSearchParams(window.location.search);
         const serviceParam = searchParams.get('service');
         if (serviceParam) {
-          setSelectedServiceId(serviceParam);
+          setSelectedServiceId(serviceNameToSlug(serviceParam));
           setRoute('service-detail');
         } else {
+          setSelectedServiceId(undefined);
           setRoute('services');
         }
         window.scrollTo(0, 0);
@@ -217,20 +219,27 @@ export const App: React.FC = () => {
       window.scrollTo(0, 0);
       lenis.scrollTo(0, { duration: 0.6, immediate: true });
     } else if (targetRoute === 'service-detail') {
+      const slug = serviceNameToSlug(targetSection) || 'ai-automation';
+      setSelectedServiceId(slug);
+      window.history.pushState(null, '', `/services/${slug}`);
+      setRoute('service-detail');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'services') {
       if (targetSection) {
-        setSelectedServiceId(targetSection);
-        window.history.pushState(null, '', `/services/${targetSection}`);
+        const slug = serviceNameToSlug(targetSection);
+        setSelectedServiceId(slug);
+        window.history.pushState(null, '', `/services/${slug}`);
         setRoute('service-detail');
         window.scrollTo(0, 0);
         lenis.scrollTo(0, { duration: 0.6, immediate: true });
+      } else {
+        setSelectedServiceId(undefined);
+        window.history.pushState(null, '', '/services');
+        setRoute('services');
+        window.scrollTo(0, 0);
+        lenis.scrollTo(0, { duration: 0.6, immediate: true });
       }
-    } else if (targetRoute === 'services') {
-      setSelectedServiceId(targetSection);
-      const url = targetSection ? `/services?service=${encodeURIComponent(targetSection)}` : '/services';
-      window.history.pushState(null, '', url);
-      setRoute('services');
-      window.scrollTo(0, 0);
-      lenis.scrollTo(0, { duration: 0.6, immediate: true });
     } else if (targetRoute === 'brand-ai-with-faisal') {
       window.history.pushState(null, '', '/brands/ai-with-faisal');
       setRoute('brand-ai-with-faisal');
@@ -281,6 +290,7 @@ export const App: React.FC = () => {
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
             <ServiceDetailPage
               serviceId={selectedServiceId || 'ai-automation'}
+              onNavigate={handleNavigate}
               onNavigateHome={(section) => handleNavigate('home', section)}
               onNavigateContact={() => handleNavigate('contact')}
               onNavigateServices={() => handleNavigate('services')}
@@ -311,6 +321,7 @@ export const App: React.FC = () => {
       <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
           <BrandAiWithFaisalPage
+            onNavigate={handleNavigate}
             onNavigateHome={(section) => handleNavigate('home', section)}
             onNavigateContact={() => handleNavigate('contact')}
             onOpenSearch={handleOpenSearch}
@@ -340,6 +351,7 @@ export const App: React.FC = () => {
       <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
           <BrandSwiftOutletPage
+            onNavigate={handleNavigate}
             onNavigateHome={(section) => handleNavigate('home', section)}
             onNavigateContact={() => handleNavigate('contact')}
             onOpenSearch={handleOpenSearch}
@@ -371,6 +383,7 @@ export const App: React.FC = () => {
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
             <AllServicesPage
               initialServiceId={selectedServiceId}
+              onNavigate={handleNavigate}
               onNavigateHome={(section) => handleNavigate('home', section)}
               onNavigateContact={() => handleNavigate('contact')}
               onOpenSearch={handleOpenSearch}
@@ -401,6 +414,7 @@ export const App: React.FC = () => {
       <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
           <AllBlogsPage
+            onNavigate={handleNavigate}
             onNavigateHome={(section) => handleNavigate('home', section)}
             onNavigateContact={() => handleNavigate('contact')}
             onSelectArticle={handleSelectArticle}
@@ -431,6 +445,7 @@ export const App: React.FC = () => {
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
           <SingleBlogPage
             articleSlug={selectedArticleSlug}
+            onNavigate={handleNavigate}
             onNavigateHome={(section) => handleNavigate('home', section)}
             onNavigateContact={() => handleNavigate('contact')}
             onSelectArticle={handleSelectArticle}
@@ -461,6 +476,7 @@ export const App: React.FC = () => {
       <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
           <ContactPage
+            onNavigate={handleNavigate}
             onNavigateHome={(section) => handleNavigate('home', section)}
             onOpenSearch={handleOpenSearch}
             onOpenGetStarted={handleOpenGetStarted}

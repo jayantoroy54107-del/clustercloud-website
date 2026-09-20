@@ -18,12 +18,14 @@ import { Footer } from './Footer';
 import { lenis } from '../lib/lenis';
 
 export interface ContactPageProps {
+  onNavigate?: (route: any, targetSection?: string) => void;
   onNavigateHome: (targetSection?: string) => void;
   onOpenSearch?: () => void;
   onOpenGetStarted?: () => void;
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({
+  onNavigate,
   onNavigateHome,
   onOpenSearch,
   onOpenGetStarted,
@@ -98,6 +100,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         onGetStartedClick={onOpenGetStarted}
         currentRoute="contact"
         onNavigate={(route, section) => {
+          if (onNavigate) {
+            onNavigate(route, section);
+            return;
+          }
           if (route === 'home') {
             onNavigateHome(section);
           } else {
@@ -588,6 +594,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       <Footer
         onGetStartedClick={onOpenGetStarted}
         onNavigate={(route, section) => {
+          if (onNavigate) {
+            onNavigate(route, section);
+            return;
+          }
           if (route === 'home') {
             onNavigateHome(section);
           } else {

@@ -17,6 +17,7 @@ import { blogArticles } from '../data/blogArticles';
 import { lenis } from '../lib/lenis';
 
 export interface AllBlogsPageProps {
+  onNavigate?: (route: any, targetSection?: string) => void;
   onNavigateHome: (targetSection?: string) => void;
   onNavigateContact: () => void;
   onSelectArticle: (slug: string) => void;
@@ -25,6 +26,7 @@ export interface AllBlogsPageProps {
 }
 
 export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
+  onNavigate,
   onNavigateHome,
   onNavigateContact,
   onSelectArticle,
@@ -105,6 +107,10 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
         onGetStartedClick={onOpenGetStarted}
         currentRoute="blog"
         onNavigate={(route, section) => {
+          if (onNavigate) {
+            onNavigate(route, section);
+            return;
+          }
           if (route === 'contact') {
             onNavigateContact();
           } else {
@@ -444,6 +450,10 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
       <Footer
         onGetStartedClick={onOpenGetStarted}
         onNavigate={(route, section) => {
+          if (onNavigate) {
+            onNavigate(route, section);
+            return;
+          }
           if (route === 'contact') {
             onNavigateContact();
           } else {

@@ -23,9 +23,11 @@ import {
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { serviceNameToSlug } from '../lib/slugs';
 
 export interface ServiceDetailPageProps {
   serviceId: string;
+  onNavigate?: (route: any, section?: string) => void;
   onNavigateHome?: (section?: string) => void;
   onNavigateContact?: () => void;
   onNavigateServices?: () => void;
@@ -344,13 +346,14 @@ const servicesData: ServiceFullDef[] = [
 
 export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
   serviceId,
+  onNavigate,
   onNavigateHome,
   onNavigateContact,
   onNavigateServices,
   onOpenSearch,
   onOpenGetStarted,
 }) => {
-  const normalisedId = (serviceId || '').toLowerCase().trim().replace(/[\s_]+/g, '-');
+  const normalisedId = serviceNameToSlug(serviceId);
   const service =
     servicesData.find(
       (s) =>
@@ -366,8 +369,14 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
   }, [serviceId]);
 
   const handleNavigate = (route: string, section?: string) => {
+    if (onNavigate) {
+      onNavigate(route, section);
+      return;
+    }
     if (route === 'contact') {
       onNavigateContact?.();
+    } else if (route === 'services') {
+      onNavigateServices?.();
     } else {
       onNavigateHome?.(section);
     }

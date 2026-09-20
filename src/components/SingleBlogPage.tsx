@@ -30,6 +30,7 @@ const XTwitterIcon = ({ size = 14, className = '' }: { size?: number; className?
 
 export interface SingleBlogPageProps {
   articleSlug?: string;
+  onNavigate?: (route: any, targetSection?: string) => void;
   onNavigateHome: (targetSection?: string) => void;
   onNavigateContact: () => void;
   onSelectArticle: (slug: string) => void;
@@ -39,6 +40,7 @@ export interface SingleBlogPageProps {
 
 export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
   articleSlug = 'how-ai-search-is-changing-seo-forever',
+  onNavigate,
   onNavigateHome,
   onNavigateContact,
   onSelectArticle,
@@ -136,6 +138,10 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
         onGetStartedClick={onOpenGetStarted}
         currentRoute="blog"
         onNavigate={(route, section) => {
+          if (onNavigate) {
+            onNavigate(route, section);
+            return;
+          }
           if (route === 'contact') {
             onNavigateContact();
           } else {
@@ -695,6 +701,10 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
       <Footer
         onGetStartedClick={onOpenGetStarted}
         onNavigate={(route, section) => {
+          if (onNavigate) {
+            onNavigate(route, section);
+            return;
+          }
           if (route === 'contact') {
             onNavigateContact();
           } else {

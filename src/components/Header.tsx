@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown, ArrowRight, ArrowUpRight, Menu, X, Sparkles } from 'lucide-react';
 import { lenis } from '../lib/lenis';
+import { serviceNameToSlug } from '../lib/slugs';
 
 export type NavRoute =
   | 'home'
@@ -8,6 +9,7 @@ export type NavRoute =
   | 'blog'
   | 'allblogs'
   | 'services'
+  | 'service-detail'
   | 'brand-ai-with-faisal'
   | 'brand-swift-outlet';
 
@@ -40,7 +42,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       ? 'Contact'
       : currentRoute === 'blog' || currentRoute === 'allblogs'
       ? 'Insights'
-      : currentRoute === 'services'
+      : currentRoute === 'services' || currentRoute === 'service-detail'
       ? 'Services'
       : currentRoute === 'brand-ai-with-faisal' || currentRoute === 'brand-swift-outlet'
       ? 'Our Brands'
@@ -54,7 +56,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       setActiveItem('Contact');
     } else if (currentRoute === 'blog' || currentRoute === 'allblogs') {
       setActiveItem('Insights');
-    } else if (currentRoute === 'services') {
+    } else if (currentRoute === 'services' || currentRoute === 'service-detail') {
       setActiveItem('Services');
     } else if (currentRoute === 'brand-ai-with-faisal' || currentRoute === 'brand-swift-outlet') {
       setActiveItem('Our Brands');
@@ -161,9 +163,14 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     setStickyServicesOpen(false);
     setMobileMenuOpen(false);
     if (onNavigate) {
-      onNavigate('services', serviceName);
+      if (serviceName) {
+        onNavigate('service-detail', serviceName);
+      } else {
+        onNavigate('services');
+      }
     } else {
-      window.location.href = serviceName ? `/services?service=${encodeURIComponent(serviceName)}` : '/services';
+      const slug = serviceName ? serviceNameToSlug(serviceName) : '';
+      window.location.href = slug ? `/services/${slug}` : '/services';
     }
   };
 
@@ -337,7 +344,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
         {list.map((sub) => (
           <a
             key={sub}
-            href={`/services?service=${encodeURIComponent(sub)}`}
+            href={`/services/${serviceNameToSlug(sub)}`}
             onClick={(e) => {
               setOpen(false);
               handleServiceClick(sub, e);
