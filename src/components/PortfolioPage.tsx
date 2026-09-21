@@ -131,8 +131,8 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                                     type="button"
                                     onClick={() => setActiveFilter(f)}
                                     className={`shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-[13px] font-extrabold tracking-wide uppercase transition-all duration-200 cursor-pointer select-none ${isActive
-                                            ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
-                                            : 'bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50'
+                                        ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
+                                        : 'bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50'
                                         }`}
                                 >
                                     <span>{f}</span>
@@ -157,11 +157,12 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                                 key={study.id}
                                 className="group relative flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
                             >
-                                <div className="relative w-full h-52 overflow-hidden bg-slate-900">
+                                <div className="relative w-full h-52 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
                                     <img
                                         src={study.image}
                                         alt={study.client}
                                         loading="lazy"
+                                        onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
                                         className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                                     />
                                     <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">

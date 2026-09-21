@@ -34,7 +34,7 @@ export const caseStudiesData: CaseStudyItem[] = [
     metric: '7.07%',
     metricLabel: 'Click-Through Rate',
     metricIconType: 'arrow-up-right',
-    image: '/work/window_cleaning.jpg',
+    image: '/work/window_cleaning.png',
     link: 'https://hellotomarketing.com/case-studies/window-cleaning-google-ads-7-percent-ctr',
     challenge:
       'A UK window cleaning business needed a predictable flow of qualified local leads without wasting budget on broad, low-intent search terms.',
@@ -57,7 +57,7 @@ export const caseStudiesData: CaseStudyItem[] = [
     metric: '€32K+',
     metricLabel: 'Tracked Revenue',
     metricIconType: 'bar-chart',
-    image: '/work/jewelry_shopping.jpg',
+    image: '/work/jewelry_shopping.png',
     link: 'https://hellotomarketing.com/case-studies/jewelry-ecommerce-google-shopping-32k-revenue',
     challenge:
       'A jewelry e-commerce brand needed its Google Shopping spend to convert into reliable, measurable revenue instead of scattered sales.',
@@ -80,7 +80,7 @@ export const caseStudiesData: CaseStudyItem[] = [
     metric: '286',
     metricLabel: 'Conversions at €7.18 CPA',
     metricIconType: 'arrow-down',
-    image: '/work/saas_ads.jpg',
+    image: '/work/saas_ads.png',
     link: 'https://hellotomarketing.com/case-studies/saas-google-ads-286-conversions',
     challenge:
       'A Dutch rental and reservation SaaS brand needed qualified demo and trial conversions without an inflated cost per acquisition.',
@@ -238,7 +238,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) =
 
                       {/* Clipped Container: Any rectangular photo automatically takes this organic silhouette */}
                       <div
-                        className="relative w-full h-full overflow-hidden bg-slate-100"
+                        className="relative w-full h-full overflow-hidden bg-gradient-to-br from-slate-200 via-blue-50 to-blue-100"
                         style={{ clipPath: 'url(#workOrganicClip)' }}
                       >
                         <img
@@ -246,6 +246,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) =
                           alt={study.client}
                           loading="lazy"
                           decoding="async"
+                          onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
                           className="w-full h-full object-cover select-none"
                         />
 
