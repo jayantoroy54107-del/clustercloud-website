@@ -100,7 +100,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
-      
+
       {/* 1. Universal Top Header */}
       <Header
         onSearchClick={onOpenSearch}
@@ -121,7 +121,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
 
       {/* 2. Main Page Content */}
       <main className="relative z-10 w-full max-w-[1520px] mx-auto px-5 sm:px-8 lg:px-14 xl:px-20 pt-8 sm:pt-12 pb-24">
-        
+
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-[13px] font-semibold text-slate-500 mb-8 select-none">
           <button
@@ -141,7 +141,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
         {/* Page Hero: Title + Search & Category Filters                          */}
         {/* ===================================================================== */}
         <div className="relative pb-12 sm:pb-16 border-b border-slate-200/80">
-          
+
           <div className="max-w-3xl text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-extrabold uppercase tracking-widest mb-4">
               <Sparkles size={14} />
@@ -159,7 +159,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
 
           {/* Search Bar & Stats Bar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-6">
-            
+
             {/* Search Input Box */}
             <div className="relative w-full md:max-w-md">
               <Search
@@ -204,17 +204,15 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
                   key={cat.name}
                   type="button"
                   onClick={() => setSelectedCategory(cat.name)}
-                  className={`shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-[13px] font-extrabold tracking-wide uppercase transition-all duration-200 cursor-pointer select-none ${
-                    isActive
+                  className={`shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-[13px] font-extrabold tracking-wide uppercase transition-all duration-200 cursor-pointer select-none ${isActive
                       ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
                       : 'bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <span>{cat.name}</span>
                   <span
-                    className={`text-[11px] font-bold px-1.5 py-0.2 rounded-full ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
-                    }`}
+                    className={`text-[11px] font-bold px-1.5 py-0.2 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+                      }`}
                   >
                     {cat.count}
                   </span>
@@ -408,7 +406,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
         {/* ===================================================================== */}
         <div className="mt-20 sm:mt-28 rounded-3xl sm:rounded-[36px] bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] p-8 sm:p-14 text-center text-white border border-slate-800 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-          
+
           <span className="inline-block px-3.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-[11px] font-extrabold uppercase tracking-widest mb-3">
             WEEKLY GROWTH BLUEPRINT
           </span>
@@ -429,7 +427,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
               <input
                 type="email"
                 required
-                placeholder="Enter your work email"
+                placeholder="Enter your email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 className="w-full sm:flex-1 rounded-full bg-white/10 border border-white/20 px-5 py-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]"

@@ -68,7 +68,7 @@ export const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClos
               </p>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Your Name</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Name</label>
                   <input
                     type="text"
                     placeholder="e.g. Faisal Ahmed"
@@ -76,11 +76,19 @@ export const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClos
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Work Email</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Email</label>
                   <input
                     type="email"
                     placeholder="name@company.com"
                     className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Message</label>
+                  <textarea
+                    rows={3}
+                    placeholder="Tell us a bit about your project, goals, and timeline..."
+                    className="w-full resize-none rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none"
                   />
                 </div>
               </div>

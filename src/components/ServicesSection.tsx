@@ -9,12 +9,11 @@ import {
   BarChart2,
   ArrowRight,
   TrendingUp,
-  Play,
+  Headphones,
 } from 'lucide-react';
 
 export interface ServicesSectionProps {
   onStartProjectClick?: () => void;
-  onWatchStoryClick?: () => void;
   onExploreAllServices?: () => void;
   onViewServiceDetail?: (serviceId: string) => void;
 }
@@ -90,11 +89,11 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'right',
     arrowPosition: 'under-icon',
   },
-  // 02: Website Design (Top-Right)
+  // 02: Web Design and Development (Top-Right)
   {
-    id: 'website-design',
+    id: 'web-design-and-development',
     number: '02',
-    title: 'Website Design',
+    title: 'Web Design and Development',
     shortDesc: 'High-converting websites engineered for growth & brand impact.',
     icon: Globe,
     accent: {
@@ -201,11 +200,11 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'left',
     arrowPosition: 'bottom-right',
   },
-  // 05: Social Media (Bottom-Left)
+  // 05: Social Media Management (Bottom-Left)
   {
-    id: 'social-media',
+    id: 'social-media-management',
     number: '05',
-    title: 'Social Media',
+    title: 'Social Media Management',
     shortDesc: 'Turn followers into loyal, high-value customers.',
     icon: Share2,
     accent: {
@@ -238,11 +237,11 @@ const servicesData: ServiceItem[] = [
     iconPosition: 'right',
     arrowPosition: 'under-icon',
   },
-  // 06: Google Ads (Mid-Left)
+  // 06: Google Advertising (Mid-Left)
   {
-    id: 'google-ads',
+    id: 'google-advertising',
     number: '06',
-    title: 'Google Ads',
+    title: 'Google Advertising',
     shortDesc: 'Target the right searches. Scale with real, measurable ROI.',
     icon: BarChart2,
     accent: {
@@ -279,7 +278,6 @@ const servicesData: ServiceItem[] = [
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({
   onStartProjectClick: _onStartProjectClick,
-  onWatchStoryClick,
   onExploreAllServices,
   onViewServiceDetail,
 }) => {
@@ -394,10 +392,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       {/* 3. Main Stage Container                                                 */}
       {/* ======================================================================= */}
       <div className="relative w-full max-w-[1380px] mx-auto px-4 sm:px-8 lg:px-12">
-        
+
         {/* Top Header Area */}
         <div className="relative text-center max-w-4xl mx-auto mb-8 sm:mb-12 lg:mb-14">
-          
+
           {/* Small Pill Badge: OUR SERVICES */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -618,15 +616,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               />
               <circle cx="760" cy="330" r="4.5" fill="#8B5CF6" />
 
-              {/* Line to Card 03 (Social - Mid Right) */}
+              {/* Line to Card 03 (App Development - Mid Right) */}
               <path
-                d="M 870 410 C 915 410 950 415 985 415"
+                d="M 742 392 C 792 366 826 342 852 318"
                 stroke="#F97316"
-                strokeWidth="1.5"
+                strokeWidth="1.6"
                 strokeDasharray="4 4"
-                opacity="0.65"
+                opacity="0.75"
               />
-              <circle cx="870" cy="410" r="4.5" fill="#F97316" />
+              <circle cx="742" cy="392" r="4.5" fill="#F97316" />
 
               {/* Line to Card 04 (Web Dev - Bottom Right) */}
               <path
@@ -648,15 +646,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               />
               <circle cx="440" cy="495" r="4.5" fill="#EF4444" />
 
-              {/* Line to Card 06 (Automation - Mid Left) */}
+              {/* Line to Card 06 (Google Advertising - Mid Left) */}
               <path
-                d="M 330 410 C 285 410 250 415 215 415"
+                d="M 458 392 C 408 366 374 342 348 318"
                 stroke="#6366F1"
-                strokeWidth="1.5"
+                strokeWidth="1.6"
                 strokeDasharray="4 4"
-                opacity="0.65"
+                opacity="0.75"
               />
-              <circle cx="330" cy="410" r="4.5" fill="#6366F1" />
+              <circle cx="458" cy="392" r="4.5" fill="#6366F1" />
 
               {/* Arc Text on Lower Orbit: BRANDS • LEADS • REVENUE • LONG-TERM GROWTH */}
               <text className="text-[10px] font-extrabold uppercase tracking-[0.28em] fill-slate-400">
@@ -671,7 +669,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           {/* B. Centerpiece: 3D Isometric Cluster Cloud Logo Cube               */}
           {/* ----------------------------------------------------------------- */}
           <div className="relative lg:absolute lg:left-1/2 lg:top-[48%] lg:-translate-x-1/2 lg:-translate-y-1/2 z-20 flex flex-col items-center justify-center pointer-events-none mb-10 lg:mb-0">
-            
+
             {/* Handwritten callout above logo: "Your Digital Growth Partner" */}
             <motion.div
               initial={{ opacity: 0, y: -8 }}
@@ -696,8 +694,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 shouldReduceMotion
                   ? undefined
                   : {
-                      y: [-4, 4, -4],
-                    }
+                    y: [-4, 4, -4],
+                  }
               }
               transition={{
                 duration: 5,
@@ -752,7 +750,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           {/* ----------------------------------------------------------------- */}
           <div className="hidden lg:block absolute -bottom-6 xl:-bottom-8 inset-x-0 z-20 pointer-events-auto">
             <div className="relative w-full h-16 flex items-center justify-between">
-              
+
               {/* Bottom-Left: Businesses Scaled 3K+ (Moved to Far Left Red Box) */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -774,8 +772,66 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 </div>
               </motion.div>
 
-              {/* Bottom-Center: Dual CTA Buttons (Moved DOWN into Center Red Box) */}
-              <div className="absolute left-1/2 -translate-x-1/2 translate-y-6 flex items-center gap-5 xl:gap-6 whitespace-nowrap">
+              {/* Bottom-Center: Customer Support Card + Primary CTA (stacked) */}
+              <div className="absolute left-1/2 -translate-x-1/2 -bottom-16 flex flex-col items-center gap-4">
+                {/* Vertical connector line from the cube down to the support card (dashed + node dot) */}
+                <svg width="26" height="100" viewBox="0 0 26 100" fill="none" className="-mb-1" aria-hidden="true">
+                  <circle cx="13" cy="7" r="6" fill="#0070F3" />
+                  <path d="M 13 16 L 13 94" stroke="#0070F3" strokeWidth="3" strokeDasharray="8 7" opacity="0.75" />
+                </svg>
+
+                {/* Customer Support Card — styled like the other service cards */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.15 }}
+                  whileHover={{ scale: 1.04 }}
+                  style={{ perspective: '1200px' }}
+                  className="group w-[300px] xl:w-[330px] select-none cursor-default"
+                >
+                  <div
+                    className="relative rounded-[32px] xl:rounded-[36px] bg-gradient-to-br from-white/98 via-white/95 to-slate-50/92 backdrop-blur-2xl p-5 xl:p-6 border-t-2 border-l-2 border-white border-b-2 border-r-2 border-slate-200/60 shadow-[-16px_22px_45px_-8px_rgba(15,23,42,0.12),_0_0_25px_rgba(0,112,243,0.12)] group-hover:shadow-[0_20px_40px_-8px_rgba(15,23,42,0.10)] transition-all duration-300 flex items-center justify-between gap-4"
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      boxShadow: 'inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1), inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.04)',
+                    }}
+                  >
+                    {/* Directional 3D Glass Specular Reflection Highlight */}
+                    <div className="absolute inset-0 rounded-[32px] xl:rounded-[36px] bg-gradient-to-tr from-transparent via-white/20 to-white/70 pointer-events-none opacity-80" />
+
+                    {/* Left 3D Floating Icon Orb */}
+                    <div
+                      className="relative shrink-0 flex flex-col items-center gap-2.5 z-10"
+                      style={{ transform: 'translateZ(34px)' }}
+                    >
+                      <div className="p-1.5 rounded-full bg-blue-100/70 shadow-xs group-hover:scale-110 transition-transform duration-300">
+                        <div className="relative h-13 w-13 xl:h-14 xl:w-14 rounded-full bg-gradient-to-br from-[#38BDF8] via-[#0070F3] to-[#0A3D91] text-white flex items-center justify-center shadow-[inset_0_4px_6px_rgba(255,255,255,0.8),inset_0_-4px_6px_rgba(0,0,0,0.32)] shadow-[0_12px_28px_rgba(0,112,243,0.45)]">
+                          <div className="absolute top-1.5 left-2.5 w-4 h-2 rounded-full bg-white/45 blur-[0.6px] pointer-events-none" />
+                          <Headphones size={24} className="stroke-[2.4] drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Text Content with 3D Spatial Depth */}
+                    <div className="flex-1 min-w-0 text-left z-10" style={{ transform: 'translateZ(20px)' }}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-100/90 border border-white text-[10px] font-black text-slate-400 tracking-wider shadow-2xs group-hover:text-slate-700 transition-colors">
+                          24/7
+                        </span>
+                        <div className="h-1.5 w-1.5 rounded-full bg-[#1D68F7] opacity-60 group-hover:opacity-100 transition-opacity" />
+                      </div>
+
+                      <h3 className="text-[16px] xl:text-[17.5px] font-black text-[#0F172A] tracking-tight group-hover:text-[#1D68F7] transition-colors leading-snug">
+                        Customer Support
+                      </h3>
+                      <p className="text-[12px] text-slate-500 leading-snug mt-0.5">
+                        Real humans, real answers — anytime you need us.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
                 {/* Primary Action Button: Explore All Services */}
                 <motion.button
                   whileHover={{ scale: 1.03 }}
@@ -785,26 +841,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 >
                   <span>Explore All Services</span>
                   <ArrowRight size={16} />
-                </motion.button>
-
-                {/* Secondary Action: Watch How We Work in 60 Seconds */}
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onWatchStoryClick}
-                  className="inline-flex items-center gap-3 transition-all text-left cursor-pointer group"
-                >
-                  <div className="h-11 w-11 rounded-full bg-blue-100/80 group-hover:bg-[#1D68F7] text-[#1D68F7] group-hover:text-white flex items-center justify-center transition-colors shadow-xs">
-                    <Play size={15} className="fill-current ml-0.5" />
-                  </div>
-                  <div>
-                    <span className="block text-[13px] font-bold text-slate-800 leading-tight">
-                      Watch How We Work
-                    </span>
-                    <span className="text-[11px] font-medium text-slate-400 leading-tight">
-                      In 60 Seconds
-                    </span>
-                  </div>
                 </motion.button>
               </div>
 
@@ -863,22 +899,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             >
               <span>Explore All Services</span>
               <ArrowRight size={16} />
-            </button>
-            <button
-              onClick={onWatchStoryClick}
-              className="inline-flex items-center gap-3 text-left cursor-pointer group py-1"
-            >
-              <div className="h-10 w-10 rounded-full bg-blue-100/80 text-[#1D68F7] flex items-center justify-center shadow-xs">
-                <Play size={15} className="fill-current ml-0.5" />
-              </div>
-              <div>
-                <span className="block text-xs font-bold text-slate-800 leading-tight">
-                  Watch How We Work
-                </span>
-                <span className="text-[10px] font-medium text-slate-400 leading-tight">
-                  In 60 Seconds
-                </span>
-              </div>
             </button>
           </div>
         </div>

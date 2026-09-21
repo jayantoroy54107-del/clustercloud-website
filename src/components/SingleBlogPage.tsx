@@ -125,7 +125,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
-      
+
       {/* 0. Top Reading Progress Indicator Bar */}
       <div
         className="fixed top-0 left-0 h-[3.5px] bg-gradient-to-r from-[#2563EB] via-[#38BDF8] to-[#1D4ED8] z-70 transition-all duration-150 ease-out shadow-xs"
@@ -152,7 +152,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
 
       {/* 2. Main Article Container */}
       <main className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 pt-8 sm:pt-12 pb-24">
-        
+
         {/* Breadcrumbs Trail */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-[13px] font-semibold text-slate-500 mb-6 sm:mb-8 select-none">
           <button
@@ -190,7 +190,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
         {/* Article Header & Metadata                                             */}
         {/* ===================================================================== */}
         <header className="max-w-4xl text-left mb-10 sm:mb-14">
-          
+
           {/* Category Tag Pill */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200/70 text-[#2563EB] text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.18em] mb-4 shadow-2xs">
             <Sparkles size={13} />
@@ -210,7 +210,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
 
           {/* Author & Meta Bar */}
           <div className="pt-6 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-6">
-            
+
             {/* Author Profile */}
             <div className="flex items-center gap-3.5">
               <img
@@ -304,12 +304,12 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
         {/* 2-Column Editorial Grid: Left Sticky TOC + Right Article Content       */}
         {/* ===================================================================== */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start text-left">
-          
+
           {/* ------------------------------------------------------------------- */}
           {/* Left Column: Sticky TOC, Author Widget, Quick CTA                   */}
           {/* ------------------------------------------------------------------- */}
           <aside className="lg:col-span-4 xl:col-span-4 lg:sticky lg:top-28 space-y-8 order-2 lg:order-1">
-            
+
             {/* Table of Contents Card */}
             <div className="rounded-3xl bg-white border border-slate-200/80 p-6 sm:p-7 shadow-sm">
               <div className="flex items-center gap-2 pb-3 mb-4 border-b border-slate-100">
@@ -327,11 +327,10 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
                       key={toc.id}
                       href={`#${toc.id}`}
                       onClick={(e) => handleTocClick(toc.id, e)}
-                      className={`block text-[13.5px] py-1 transition-all duration-150 leading-snug cursor-pointer ${
-                        isActive
+                      className={`block text-[13.5px] py-1 transition-all duration-150 leading-snug cursor-pointer ${isActive
                           ? 'font-bold text-[#2563EB] translate-x-1.5'
                           : 'font-medium text-slate-600 hover:text-[#2563EB]'
-                      }`}
+                        }`}
                     >
                       {toc.title}
                     </a>
@@ -397,7 +396,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
           {/* Right Column: Main Editorial Content                                */}
           {/* ------------------------------------------------------------------- */}
           <article className="lg:col-span-8 xl:col-span-8 order-1 lg:order-2">
-            
+
             {/* Key Strategic Takeaways Highlight Box */}
             <div className="rounded-3xl bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-blue-50/30 border-l-4 border-[#2563EB] p-6 sm:p-8 shadow-xs mb-10 sm:mb-12">
               <div className="flex items-center gap-2 mb-3">
@@ -429,7 +428,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
             <div className="space-y-12 sm:space-y-16">
               {article.content.sections.map((section) => (
                 <section key={section.id} id={section.id} className="scroll-mt-28">
-                  
+
                   {/* Section Title */}
                   <h2 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight leading-snug mb-5 pb-2 border-b border-slate-100">
                     {section.title}
@@ -596,7 +595,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
         {/* Related Articles Section                                              */}
         {/* ===================================================================== */}
         <div className="mt-20 sm:mt-28 pt-12 border-t border-slate-200 text-left">
-          
+
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
               <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#2563EB] block mb-1.5">
@@ -680,7 +679,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
               <input
                 type="email"
                 required
-                placeholder="Enter your work email"
+                placeholder="Enter your email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 className="w-full sm:flex-1 rounded-full bg-white/10 border border-white/20 px-5 py-3 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]"

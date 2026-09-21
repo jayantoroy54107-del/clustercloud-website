@@ -2,218 +2,127 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { fadeUpVariants } from '../lib/animations';
 
+type BrandShape = 'rounded' | 'square' | 'circle' | 'hex' | 'diamond' | 'shield';
+type WordStyle = 'title' | 'lower' | 'upper' | 'wide';
+
 interface BrandItem {
   name: string;
-  glowColor: string;
-  logo: React.ReactNode;
+  /** Accent color used for the logo mark. */
+  color: string;
+  /** Shape of the logo mark badge. */
+  shape?: BrandShape;
+  /** Wordmark typography variant. */
+  wordStyle?: WordStyle;
+  /** Optional path/URL to a real logo image (takes precedence over the generated mark). */
+  logo?: string;
 }
+
+// Monogram: first letters of up to two significant words (skips stopwords).
+const STOPWORDS = new Set(['&', 'and', 'the', 'of']);
+const monogram = (name: string): string =>
+  name
+    .split(' ')
+    .filter((w) => !STOPWORDS.has(w.toLowerCase()))
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+
+// Distinct badge silhouettes so each brand reads as its own little logo.
+const SHAPES: Record<BrandShape, string> = {
+  rounded: 'inset(0px round 9px)',
+  square: 'inset(0px round 3px)',
+  circle: 'circle(50% at 50% 50%)',
+  hex: 'polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0% 50%)',
+  diamond: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+  shield: 'polygon(50% 0%, 100% 16%, 100% 55%, 50% 100%, 0% 55%, 0% 16%)',
+};
+
+// Wordmark typography variants for visual variety.
+const WORD_STYLES: Record<WordStyle, string> = {
+  title: 'tracking-tight',
+  lower: 'tracking-tight lowercase',
+  upper: 'tracking-[0.12em] uppercase',
+  wide: 'tracking-[0.2em] uppercase',
+};
 
 export const BrandSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
-  // Line 1 Brands: Official logos from SVGL (svgl.app) + manual SVGs for brands not in SVGL
+  // Line 1 Brands — distinct logo marks (shape + wordmark) per brand.
   const line1Brands: BrandItem[] = [
-    {
-      name: 'Google',
-      glowColor: 'rgba(66, 133, 244, 0.3)',
-      logo: (
-        <img
-          src="/brands/google-wordmark.svg"
-          alt="Google"
-          loading="lazy"
-          decoding="async"
-          className="h-7 sm:h-8 w-auto object-contain"
-        />
-      ),
-    },
-    {
-      name: 'Meta',
-      glowColor: 'rgba(6, 104, 225, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <img
-            src="/brands/meta.svg"
-            alt="Meta"
-            loading="lazy"
-            decoding="async"
-            className="h-7 sm:h-8 w-auto object-contain"
-          />
-          <span className="font-extrabold text-[#0668E1] text-[22px] sm:text-[24px] tracking-tight leading-none">Meta</span>
-        </div>
-      ),
-    },
-    {
-      name: 'Shopify',
-      glowColor: 'rgba(150, 191, 72, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <img
-            src="/brands/shopify.svg"
-            alt="Shopify"
-            loading="lazy"
-            decoding="async"
-            className="h-7 sm:h-8 w-auto object-contain"
-          />
-          <span className="font-extrabold text-[#212326] text-[22px] sm:text-[24px] tracking-tight lowercase">shopify</span>
-        </div>
-      ),
-    },
-    {
-      name: 'HubSpot',
-      glowColor: 'rgba(255, 122, 89, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <svg fill="#FF7A59" viewBox="0 0 24 24" className="h-7 w-7" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18.164 7.93V5.084a2.198 2.198 0 001.267-1.978v-.067A2.2 2.2 0 0017.238.845h-.067a2.2 2.2 0 00-2.193 2.193v.067a2.196 2.196 0 001.252 1.973l.013.006v2.852a6.22 6.22 0 00-2.969 1.31l.012-.01-7.828-6.095A2.497 2.497 0 104.3 4.656l-.012.006 7.697 5.991a6.176 6.176 0 00-1.038 3.446c0 1.343.425 2.588 1.147 3.607l-.013-.02-2.342 2.343a1.968 1.968 0 00-.58-.095h-.002a2.033 2.033 0 102.033 2.033 1.978 1.978 0 00-.1-.595l.005.014 2.317-2.317a6.247 6.247 0 104.782-11.134l-.036-.005zm-.964 9.378a3.206 3.206 0 113.215-3.207v.002a3.206 3.206 0 01-3.207 3.207z"/>
-          </svg>
-          <span className="font-extrabold text-[#33475B] text-[21px] sm:text-[23px] tracking-tight">HubSpot</span>
-        </div>
-      ),
-    },
-    {
-      name: 'WordPress',
-      glowColor: 'rgba(33, 117, 155, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <svg fill="#21759B" viewBox="0 0 24 24" className="h-7 w-7" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.026-.78-.07-1.11m-7.981.105c.647-.03 1.232-.105 1.232-.105.582-.075.514-.93-.067-.899 0 0-1.755.135-2.88.135-1.064 0-2.85-.15-2.85-.15-.585-.03-.661.855-.075.885 0 0 .54.061 1.125.09l1.68 4.605-2.37 7.08L5.354 6.9c.649-.03 1.234-.1 1.234-.1.585-.075.516-.93-.065-.896 0 0-1.746.138-2.874.138-.2 0-.438-.008-.69-.015C4.911 3.15 8.235 1.215 12 1.215c2.809 0 5.365 1.072 7.286 2.833-.046-.003-.091-.009-.141-.009-1.06 0-1.812.923-1.812 1.914 0 .89.513 1.643 1.06 2.531.411.72.89 1.643.89 2.977 0 .915-.354 1.994-.821 3.479l-1.075 3.585-3.9-11.61.001.014zM12 22.784c-1.059 0-2.081-.153-3.048-.437l3.237-9.406 3.315 9.087c.024.053.05.101.078.149-1.12.393-2.325.609-3.582.609M1.211 12c0-1.564.336-3.05.935-4.39L7.29 21.709C3.694 19.96 1.212 16.271 1.211 12M12 0C5.385 0 0 5.385 0 12s5.385 12 12 12 12-5.385 12-12S18.615 0 12 0"/>
-          </svg>
-          <span className="font-extrabold text-[#21759B] text-[18px] sm:text-[20px] tracking-wider">WordPress</span>
-        </div>
-      ),
-    },
-    {
-      name: 'Semrush',
-      glowColor: 'rgba(255, 100, 45, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <svg fill="#FF642D" viewBox="0 0 24 24" className="h-7 w-7" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20.698 11.911c0 .444-.226.516-.79.516-.596 0-.706-.1-.77-.554-.118-1.152-.896-2.13-2.201-2.24-.418-.034-.518-.19-.518-.706 0-.48.074-.708.446-.708 2.265.01 3.833 1.832 3.833 3.69v.002zm3.3 0c0-3.456-2.338-7.11-7.74-7.11H5.52c-.218 0-.354.11-.354.31 0 .109.082.209.156.26.388.31.97.654 1.73 1.036.743.372 1.323.616 1.903.852.246.1.336.208.336.344 0 .19-.136.308-.4.308H.372c-.254 0-.372.164-.372.326 0 .136.044.254.162.372.69.726 1.796 1.596 3.4 2.604 1.466.91 2.98 1.74 4.533 2.492.236.11.308.236.308.372-.008.154-.126.28-.4.28H4.1c-.216 0-.344.12-.344.3 0 .1.08.226.19.326.888.808 2.311 1.688 4.207 2.494 2.53 1.08 5.094 1.721 7.98 1.721 5.465 0 7.867-4.087 7.867-7.289l-.002.002zm-7.133 5.104c-2.794 0-5.132-2.276-5.132-5.114 0-2.794 2.33-5.04 5.132-5.04 2.863 0 5.111 2.24 5.111 5.04a5.086 5.086 0 0 1-5.111 5.114z"/>
-          </svg>
-          <span className="font-black text-[#1F1F24] text-[20px] sm:text-[22px] tracking-tight">Semrush</span>
-        </div>
-      ),
-    },
-    {
-      name: 'Ahrefs',
-      glowColor: 'rgba(255, 90, 0, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <img
-            src="/brands/ahrefs.svg"
-            alt="Ahrefs"
-            loading="lazy"
-            decoding="async"
-            className="h-7 sm:h-8 w-auto object-contain"
-          />
-          <span className="font-black text-[#111625] text-[22px] sm:text-[24px] tracking-tight">ahrefs</span>
-        </div>
-      ),
-    },
+    { name: 'NovaPeak Studio', color: '#4F46E5', shape: 'hex', wordStyle: 'title' },
+    { name: 'BrightNest Digital', color: '#F59E0B', shape: 'circle', wordStyle: 'title' },
+    { name: 'Elevora Labs', color: '#7C3AED', shape: 'diamond', wordStyle: 'title' },
+    { name: 'PixelCraft Media', color: '#EC4899', shape: 'square', wordStyle: 'lower' },
+    { name: 'GrowthHive Co.', color: '#16A34A', shape: 'rounded', wordStyle: 'title' },
+    { name: 'UrbanLeaf Living', color: '#059669', shape: 'hex', wordStyle: 'title' },
+    { name: 'CloudNest Solutions', color: '#0EA5E9', shape: 'circle', wordStyle: 'title' },
+    { name: 'MarketFlow Hub', color: '#2563EB', shape: 'rounded', wordStyle: 'title' },
+    { name: 'ApexCore Digital', color: '#DC2626', shape: 'shield', wordStyle: 'upper' },
+    { name: 'BlueOrbit Creative', color: '#1D4ED8', shape: 'circle', wordStyle: 'title' },
+    { name: 'ThriveNest', color: '#65A30D', shape: 'hex', wordStyle: 'title' },
+    { name: 'VertexWave', color: '#0891B2', shape: 'diamond', wordStyle: 'upper' },
+    { name: 'GreenOak Interiors', color: '#15803D', shape: 'shield', wordStyle: 'title' },
+    { name: 'Craftora Studio', color: '#9333EA', shape: 'square', wordStyle: 'title' },
+    { name: 'ScaleBridge', color: '#EA580C', shape: 'rounded', wordStyle: 'title' },
+    { name: 'Pure Pour Concreat', color: '#475569', shape: 'square', wordStyle: 'title' },
+    { name: 'Deco Scape', color: '#0F766E', shape: 'hex', wordStyle: 'title' },
+    { name: 'Cava Granite', color: '#6B7280', shape: 'diamond', wordStyle: 'title' },
   ];
 
-  // Line 2 Brands: Official logos from SVGL (svgl.app) + manual SVGs for brands not in SVGL
+  // Line 2 Brands — distinct logo marks (shape + wordmark) per brand.
   const line2Brands: BrandItem[] = [
-    {
-      name: 'Stripe',
-      glowColor: 'rgba(99, 91, 255, 0.3)',
-      logo: (
-        <img
-          src="/brands/stripe-wordmark.svg"
-          alt="Stripe"
-          loading="lazy"
-          decoding="async"
-          className="h-6 sm:h-7 w-auto object-contain"
-        />
-      ),
-    },
-    {
-      name: 'Webflow',
-      glowColor: 'rgba(20, 110, 245, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <svg viewBox="0 0 28 22" className="h-6 sm:h-7 w-auto" fill="#146EF5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24.5 0c-.7 0-1.3.3-1.7.8L17.4 10 14.5 2.5c-.5-.5-1.1-.8-1.8-.8s-1.3.3-1.8.8L5.5 10 2.6 3C2.2 2.3 1.4 2.2.7 2.6S0 3.9.4 4.5l4.5 11.3c.4 1.1 1.5 1.8 2.7 1.8s2.2-.7 2.7-1.8l3.8-9.8 3.8 9.8c.4 1.1 1.5 1.8 2.7 1.8s2.2-.7 2.7-1.8L28 4.5c.4-.6.3-1.3-.3-1.7-.3-.3-.6-.5-.8-.5-.2-.3-.2-.3-.4-.3z" />
-          </svg>
-          <span className="font-extrabold text-[#146EF5] text-[21px] sm:text-[23px] tracking-tight">webflow</span>
-        </div>
-      ),
-    },
-    {
-      name: 'Figma',
-      glowColor: 'rgba(242, 78, 30, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <img
-            src="/brands/figma.svg"
-            alt="Figma"
-            loading="lazy"
-            decoding="async"
-            className="h-7 sm:h-8 w-auto object-contain"
-          />
-          <span className="font-extrabold text-[#2C2C2C] text-[22px] sm:text-[24px] tracking-tight">Figma</span>
-        </div>
-      ),
-    },
-    {
-      name: 'Slack',
-      glowColor: 'rgba(74, 21, 75, 0.3)',
-      logo: (
-        <img
-          src="/brands/slack-wordmark.svg"
-          alt="Slack"
-          loading="lazy"
-          decoding="async"
-          className="h-7 sm:h-8 w-auto object-contain"
-        />
-      ),
-    },
-    {
-      name: 'Notion',
-      glowColor: 'rgba(0, 0, 0, 0.25)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <img
-            src="/brands/notion.svg"
-            alt="Notion"
-            loading="lazy"
-            decoding="async"
-            className="h-7 sm:h-8 w-auto object-contain"
-          />
-          <span className="font-extrabold text-[#000000] text-[22px] sm:text-[24px] tracking-tight">Notion</span>
-        </div>
-      ),
-    },
-    {
-      name: 'LinkedIn',
-      glowColor: 'rgba(10, 102, 194, 0.3)',
-      logo: (
-        <div className="flex items-center gap-2">
-          <img
-            src="/brands/linkedin.svg"
-            alt="LinkedIn"
-            loading="lazy"
-            decoding="async"
-            className="h-7 sm:h-7 w-auto object-contain"
-          />
-          <span className="font-extrabold text-[#0A66C2] text-[21px] sm:text-[23px] tracking-tight">LinkedIn</span>
-        </div>
-      ),
-    },
-    {
-      name: 'Amazon',
-      glowColor: 'rgba(255, 153, 0, 0.3)',
-      logo: (
-        <div className="flex flex-col items-center">
-          <span className="font-black text-[#131921] text-[22px] sm:text-[24px] tracking-tighter leading-none">amazon</span>
-          <svg viewBox="0 0 50 12" className="h-3 w-auto mt-0.5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 4C15 9 30 9 46 2" stroke="#FF9900" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M43 1.5L47 3.5L45 7" fill="none" stroke="#FF9900" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-      ),
-    },
+    { name: 'LumiCore Labs', color: '#D946EF', shape: 'circle', wordStyle: 'title' },
+    { name: 'PrimeVista Group', color: '#1E40AF', shape: 'shield', wordStyle: 'title' },
+    { name: 'NorthPeak Media', color: '#334155', shape: 'hex', wordStyle: 'upper' },
+    { name: 'EverNova Solutions', color: '#0D9488', shape: 'rounded', wordStyle: 'title' },
+    { name: 'BrightPath Academy', color: '#CA8A04', shape: 'circle', wordStyle: 'title' },
+    { name: 'Oakline Renovations', color: '#92400E', shape: 'square', wordStyle: 'title' },
+    { name: 'PureVista Cleaning', color: '#38BDF8', shape: 'circle', wordStyle: 'title' },
+    { name: 'EverStone Outdoor', color: '#57534E', shape: 'hex', wordStyle: 'title' },
+    { name: 'MapleCraft Design', color: '#B91C1C', shape: 'diamond', wordStyle: 'title' },
+    { name: 'Horizon Dental Care', color: '#06B6D4', shape: 'rounded', wordStyle: 'title' },
+    { name: 'RiverStone Realty', color: '#4338CA', shape: 'shield', wordStyle: 'title' },
+    { name: 'UrbanEdge Fitness', color: '#111827', shape: 'hex', wordStyle: 'upper' },
+    { name: 'ClearView Plumbing', color: '#0284C7', shape: 'circle', wordStyle: 'title' },
+    { name: 'WestPeak Construction', color: '#B45309', shape: 'square', wordStyle: 'title' },
+    { name: 'Bloom & Co.', color: '#DB2777', shape: 'circle', wordStyle: 'wide' },
+    { name: 'Ever Struct', color: '#0369A1', shape: 'shield', wordStyle: 'upper' },
+    { name: 'Al Haddaf Car Wash', color: '#1E3A8A', logo: '/brands/al-haddaf-car-wash.svg' },
+    { name: 'Red And White Cleaning Service', color: '#DC2626', shape: 'rounded', wordStyle: 'title' },
   ];
+
+  const renderBrand = (brand: BrandItem) => {
+    if (brand.logo) {
+      return (
+        <div className="group/item flex items-center shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300" title={brand.name}>
+          <img
+            src={brand.logo}
+            alt={brand.name}
+            loading="lazy"
+            decoding="async"
+            className="h-8 sm:h-9 w-auto object-contain"
+          />
+        </div>
+      );
+    }
+    return (
+      <div className="group/item flex items-center gap-2.5 shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300" title={brand.name}>
+        <span
+          className="flex h-8 w-8 items-center justify-center text-white text-[13px] font-black leading-none shrink-0"
+          style={{ backgroundColor: brand.color, clipPath: SHAPES[brand.shape ?? 'rounded'] }}
+        >
+          {monogram(brand.name)}
+        </span>
+        <span
+          className={`font-extrabold text-[#0F172A] text-[19px] sm:text-[21px] whitespace-nowrap ${WORD_STYLES[brand.wordStyle ?? 'title']}`}
+        >
+          {brand.name}
+        </span>
+      </div>
+    );
+  };
 
   // Duplicate lists for seamless infinite loop with CSS marquee
   const duplicatedLine1 = [...line1Brands, ...line1Brands];
@@ -221,7 +130,7 @@ export const BrandSection: React.FC = () => {
 
   return (
     <section className="relative w-full overflow-hidden bg-white select-none">
-      
+
       {/* ========================================================================= */}
       {/* 1. TOP DYNAMIC FLUID ROYAL BLUE WAVE BANNER (Exact Match to Screenshot 2) */}
       {/* ========================================================================= */}
@@ -383,13 +292,9 @@ export const BrandSection: React.FC = () => {
         <div className="flex w-full mb-5 sm:mb-7 overflow-hidden">
           <div className="animate-marquee flex items-center gap-12 sm:gap-16 lg:gap-20 shrink-0 pr-12 sm:pr-16">
             {duplicatedLine1.map((brand, idx) => (
-              <div
-                key={`${brand.name}-line1-${idx}`}
-                className="group/item flex items-center justify-center shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300"
-                title={brand.name}
-              >
-                {brand.logo}
-              </div>
+              <React.Fragment key={`${brand.name}-line1-${idx}`}>
+                {renderBrand(brand)}
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -398,13 +303,9 @@ export const BrandSection: React.FC = () => {
         <div className="flex w-full overflow-hidden">
           <div className="animate-marquee-reverse flex items-center gap-12 sm:gap-16 lg:gap-20 shrink-0 pr-12 sm:pr-16">
             {duplicatedLine2.map((brand, idx) => (
-              <div
-                key={`${brand.name}-line2-${idx}`}
-                className="group/item flex items-center justify-center shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300"
-                title={brand.name}
-              >
-                {brand.logo}
-              </div>
+              <React.Fragment key={`${brand.name}-line2-${idx}`}>
+                {renderBrand(brand)}
+              </React.Fragment>
             ))}
           </div>
         </div>

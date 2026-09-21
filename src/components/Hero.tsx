@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Play, Users, Rocket, BarChart3, X } from 'lucide-react';
+import { ArrowRight, Users, Rocket, BarChart3 } from 'lucide-react';
 
 export interface HeroProps {
   onStartProjectClick?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#F8FAFC] via-[#FFFFFF] to-[#F1F5F9]/50 pt-6 sm:pt-10 pb-6 sm:pb-8 lg:pb-10">
-      
+
       {/* ========================================================================= */}
       {/* 1. Background Atmosphere & Ambient Radiant Lighting                       */}
       {/* ========================================================================= */}
@@ -41,7 +40,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
       />
 
       <div className="relative w-full max-w-[1520px] mx-auto px-5 sm:px-8 lg:px-14 xl:px-20">
-        
+
         {/* ========================================================================= */}
         {/* 2. Top Badge with Hand-Drawn Arrow                                        */}
         {/* ========================================================================= */}
@@ -119,7 +118,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
 
           {/* 2. 3D Glowing Hexagon Brand Cube with Orbital Rings */}
           <div className="hidden md:block absolute left-4 lg:left-10 xl:left-16 top-[42%] -translate-y-1/2 z-10 select-none pointer-events-none">
-            
+
             {/* Small Floating Sphere Top-Left of Cube */}
             <motion.div
               animate={shouldReduceMotion ? undefined : { y: [-5, 6, -5], x: [-3, 3, -3] }}
@@ -225,7 +224,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           {/* B. CENTER HERO COPY & ACTIONS                                           */}
           {/* ----------------------------------------------------------------------- */}
           <div className="relative z-20 max-w-4xl mx-auto flex flex-col items-center px-4">
-            
+
             {/* Main Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -249,7 +248,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
               All in one growth partner.
             </motion.p>
 
-            {/* Action CTAs: Start a Project & Watch Our Story with Micro-interactions */}
+            {/* Action CTAs: Start a Project with Micro-interactions */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -270,27 +269,6 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                   strokeWidth={2.4}
                   className="transition-transform duration-200 group-hover:translate-x-1"
                 />
-              </motion.button>
-
-              {/* Video Story Button */}
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setIsVideoModalOpen(true)}
-                className="group inline-flex items-center gap-3.5 py-2 px-3 rounded-full hover:bg-slate-100/70 transition-colors duration-200 cursor-pointer select-none text-left"
-              >
-                <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] shadow-xs group-hover:bg-[#2563EB] group-hover:text-white group-hover:scale-105 transition-all duration-200">
-                  <Play size={16} className="fill-current ml-0.5" />
-                </div>
-                <div>
-                  <span className="block text-sm font-bold text-[#0F172A] leading-tight group-hover:text-[#2563EB] transition-colors">
-                    Watch Our Story
-                  </span>
-                  <span className="block text-xs font-semibold text-slate-400 leading-tight mt-0.5">
-                    In 60 Seconds
-                  </span>
-                </div>
               </motion.button>
             </motion.div>
 
@@ -473,7 +451,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
         >
           <div className="relative w-full overflow-x-auto sm:overflow-visible pb-4 sm:pb-0 scrollbar-none">
             <div className="relative w-full min-w-[560px] sm:min-w-0 h-[175px] sm:h-[195px] lg:h-[210px]">
-              
+
               {/* Sinuous Wave SVG Line stretching across stats width */}
               <svg
                 viewBox="0 0 1000 170"
@@ -579,52 +557,6 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
         </motion.div>
 
       </div>
-
-      {/* ========================================================================= */}
-      {/* 5. Interactive Video Modal (Watch Our Story in 60 Seconds)                */}
-      {/* ========================================================================= */}
-      {isVideoModalOpen && (
-        <div
-          className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4 animate-in fade-in duration-200"
-          onClick={() => setIsVideoModalOpen(false)}
-        >
-          <div
-            className="relative w-full max-w-3xl rounded-3xl bg-slate-950 overflow-hidden shadow-2xl border border-slate-800 animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-800/80">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-blue-600/20 text-[#2563EB] flex items-center justify-center">
-                  <Play size={16} className="fill-current" />
-                </div>
-                <div>
-                  <h3 className="text-white text-base font-bold">The Cluster Cloud Story</h3>
-                  <p className="text-slate-400 text-xs">How We Engineer Digital Authority in 60 Seconds</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsVideoModalOpen(false)}
-                className="rounded-xl p-2 text-slate-400 hover:bg-slate-800 hover:text-white transition cursor-pointer"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Video Container / Agency Story Reel */}
-            <div className="relative aspect-video w-full bg-slate-900 flex items-center justify-center">
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"
-                title="Cluster Cloud Agency Story"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
     </section>
   );

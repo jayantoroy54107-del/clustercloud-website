@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
-import { Header } from './components/Header';
+import { Header, brandIdToRoute, brandRouteToPath } from './components/Header';
 import { Hero } from './components/Hero';
 import { BrandSection } from './components/BrandSection';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -20,6 +20,9 @@ const AllServicesPage = lazy(() => import('./components/AllServicesPage').then(m
 const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
 const BrandAiWithFaisalPage = lazy(() => import('./components/BrandAiWithFaisalPage').then(m => ({ default: m.BrandAiWithFaisalPage })));
 const BrandSwiftOutletPage = lazy(() => import('./components/BrandSwiftOutletPage').then(m => ({ default: m.BrandSwiftOutletPage })));
+const BrandHelloToMarketingPage = lazy(() => import('./components/BrandHelloToMarketingPage').then(m => ({ default: m.BrandHelloToMarketingPage })));
+const BrandClippingFlyPage = lazy(() => import('./components/BrandClippingFlyPage').then(m => ({ default: m.BrandClippingFlyPage })));
+const BrandEcomWithFaisalPage = lazy(() => import('./components/BrandEcomWithFaisalPage').then(m => ({ default: m.BrandEcomWithFaisalPage })));
 
 // Lazy-loaded interactive modal dialogs
 const SearchModal = lazy(() => import('./components/SearchModal'));
@@ -33,7 +36,10 @@ export type AppRoute =
   | 'services'
   | 'service-detail'
   | 'brand-ai-with-faisal'
-  | 'brand-swift-outlet';
+  | 'brand-swift-outlet'
+  | 'brand-hello-to-marketing'
+  | 'brand-clipping-fly'
+  | 'brand-ecom-with-faisal';
 
 export const App: React.FC = () => {
   const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(() => {
@@ -79,11 +85,12 @@ export const App: React.FC = () => {
         }
         return 'services';
       }
-      if (path === '/brands/ai-with-faisal' || path.startsWith('/brands/ai-with-faisal') || hash === '#brand-ai-with-faisal') {
-        return 'brand-ai-with-faisal';
+      if (path.startsWith('/brands/')) {
+        const brand = path.replace('/brands/', '').split('/')[0];
+        if (brand) return `brand-${brand}` as AppRoute;
       }
-      if (path === '/brands/swift-outlet' || path.startsWith('/brands/swift-outlet') || hash === '#brand-swift-outlet') {
-        return 'brand-swift-outlet';
+      if (hash.startsWith('#brand-')) {
+        return hash.slice(1) as AppRoute;
       }
       if (path === '/blogs' || hash === '#blogs') {
         return 'allblogs';
@@ -116,6 +123,12 @@ export const App: React.FC = () => {
       document.title = "AI with Faisal | AI Chatbots, Automation & Solutions - Cluster Cloud";
     } else if (route === 'brand-swift-outlet') {
       document.title = "Swift Outlet | Next-Gen Digital Products & SaaS Studio - Cluster Cloud";
+    } else if (route === 'brand-hello-to-marketing') {
+      document.title = "Hello to Marketing | Digital Marketing & Growth Agency - Cluster Cloud";
+    } else if (route === 'brand-clipping-fly') {
+      document.title = "Clipping Fly | Video Editing & Content Repurposing - Cluster Cloud";
+    } else if (route === 'brand-ecom-with-faisal') {
+      document.title = "Ecom with Faisal | E-commerce Growth & Store Scaling - Cluster Cloud";
     } else if (route === 'blog') {
       document.title = "Insights & Strategy | Cluster Cloud Growth Blog";
     } else {
@@ -147,11 +160,12 @@ export const App: React.FC = () => {
           setRoute('services');
         }
         window.scrollTo(0, 0);
-      } else if (path === '/brands/ai-with-faisal' || path.startsWith('/brands/ai-with-faisal') || hash === '#brand-ai-with-faisal') {
-        setRoute('brand-ai-with-faisal');
+      } else if (path.startsWith('/brands/')) {
+        const brand = path.replace('/brands/', '').split('/')[0];
+        if (brand) setRoute(`brand-${brand}` as AppRoute);
         window.scrollTo(0, 0);
-      } else if (path === '/brands/swift-outlet' || path.startsWith('/brands/swift-outlet') || hash === '#brand-swift-outlet') {
-        setRoute('brand-swift-outlet');
+      } else if (hash.startsWith('#brand-')) {
+        setRoute(hash.slice(1) as AppRoute);
         window.scrollTo(0, 0);
       } else if (path === '/blogs' || hash === '#blogs') {
         setRoute('allblogs');
@@ -240,14 +254,9 @@ export const App: React.FC = () => {
         window.scrollTo(0, 0);
         lenis.scrollTo(0, { duration: 0.6, immediate: true });
       }
-    } else if (targetRoute === 'brand-ai-with-faisal') {
-      window.history.pushState(null, '', '/brands/ai-with-faisal');
-      setRoute('brand-ai-with-faisal');
-      window.scrollTo(0, 0);
-      lenis.scrollTo(0, { duration: 0.6, immediate: true });
-    } else if (targetRoute === 'brand-swift-outlet') {
-      window.history.pushState(null, '', '/brands/swift-outlet');
-      setRoute('brand-swift-outlet');
+    } else if (typeof targetRoute === 'string' && targetRoute.startsWith('brand-')) {
+      window.history.pushState(null, '', brandRouteToPath(targetRoute));
+      setRoute(targetRoute);
       window.scrollTo(0, 0);
       lenis.scrollTo(0, { duration: 0.6, immediate: true });
     } else if (targetRoute === 'allblogs') {
@@ -264,7 +273,7 @@ export const App: React.FC = () => {
       const newUrl = targetSection ? `/#${targetSection}` : '/';
       window.history.pushState(null, '', newUrl);
       setRoute('home');
-      
+
       if (targetSection) {
         // Wait for Home layout to render before scrolling to target section
         setTimeout(() => {
@@ -299,17 +308,17 @@ export const App: React.FC = () => {
             />
           </Suspense>
 
-        <Suspense fallback={null}>
-          {isSearchOpen && (
-            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
-          )}
-        </Suspense>
+          <Suspense fallback={null}>
+            {isSearchOpen && (
+              <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+            )}
+          </Suspense>
 
-        <Suspense fallback={null}>
-          {isGetStartedOpen && (
-            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
-          )}
-        </Suspense>
+          <Suspense fallback={null}>
+            {isGetStartedOpen && (
+              <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+            )}
+          </Suspense>
         </div>
       </ErrorBoundary>
     );
@@ -326,7 +335,7 @@ export const App: React.FC = () => {
             onNavigateContact={() => handleNavigate('contact')}
             onOpenSearch={handleOpenSearch}
             onOpenGetStarted={handleOpenGetStarted}
-            onNavigateBrand={(brandId) => handleNavigate(brandId === 'ai-with-faisal' ? 'brand-ai-with-faisal' : 'brand-swift-outlet')}
+            onNavigateBrand={(brandId) => handleNavigate(brandIdToRoute(brandId))}
           />
         </Suspense>
 
@@ -356,7 +365,97 @@ export const App: React.FC = () => {
             onNavigateContact={() => handleNavigate('contact')}
             onOpenSearch={handleOpenSearch}
             onOpenGetStarted={handleOpenGetStarted}
-            onNavigateBrand={(brandId) => handleNavigate(brandId === 'ai-with-faisal' ? 'brand-ai-with-faisal' : 'brand-swift-outlet')}
+            onNavigateBrand={(brandId) => handleNavigate(brandIdToRoute(brandId))}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Dedicated Hello to Marketing Brand Page
+  if (route === 'brand-hello-to-marketing') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <BrandHelloToMarketingPage
+            onNavigate={handleNavigate}
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+            onNavigateBrand={(brandId) => handleNavigate(brandIdToRoute(brandId))}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Dedicated Clipping Fly Brand Page
+  if (route === 'brand-clipping-fly') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <BrandClippingFlyPage
+            onNavigate={handleNavigate}
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+            onNavigateBrand={(brandId) => handleNavigate(brandIdToRoute(brandId))}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isSearchOpen && (
+            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+          )}
+        </Suspense>
+
+        <Suspense fallback={null}>
+          {isGetStartedOpen && (
+            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+          )}
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Dedicated Ecom with Faisal Brand Page
+  if (route === 'brand-ecom-with-faisal') {
+    return (
+      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+          <BrandEcomWithFaisalPage
+            onNavigate={handleNavigate}
+            onNavigateHome={(section) => handleNavigate('home', section)}
+            onNavigateContact={() => handleNavigate('contact')}
+            onOpenSearch={handleOpenSearch}
+            onOpenGetStarted={handleOpenGetStarted}
+            onNavigateBrand={(brandId) => handleNavigate(brandIdToRoute(brandId))}
           />
         </Suspense>
 
@@ -392,17 +491,17 @@ export const App: React.FC = () => {
             />
           </Suspense>
 
-        <Suspense fallback={null}>
-          {isSearchOpen && (
-            <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
-          )}
-        </Suspense>
+          <Suspense fallback={null}>
+            {isSearchOpen && (
+              <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+            )}
+          </Suspense>
 
-        <Suspense fallback={null}>
-          {isGetStartedOpen && (
-            <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
-          )}
-        </Suspense>
+          <Suspense fallback={null}>
+            {isGetStartedOpen && (
+              <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+            )}
+          </Suspense>
         </div>
       </ErrorBoundary>
     );
@@ -502,7 +601,7 @@ export const App: React.FC = () => {
   // Otherwise, render full Home Page
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
-      
+
       {/* ========================================================================= */}
       {/* 01. Dual Header System (Floating Pill at Top + Full-Width Sticky on Scroll) */}
       {/* ========================================================================= */}
@@ -542,7 +641,6 @@ export const App: React.FC = () => {
       <Suspense fallback={<div className="min-h-[400px]" />}>
         <IndustriesSection
           onStartProjectClick={handleOpenGetStarted}
-          onWatchImpactClick={handleOpenGetStarted}
         />
       </Suspense>
 

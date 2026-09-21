@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   ArrowRight,
-  Play,
-  X,
   Target,
   BarChart3,
   Users,
   Lightbulb,
   Cpu,
   ArrowUpRight,
-  CheckCircle2,
-  Sparkles,
 } from 'lucide-react';
 
 interface AboutSectionProps {
@@ -37,7 +33,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   calloutLine3 = 'Impact',
   calloutLine4 = 'tomorrow.',
 }) => {
-  const [isStoryOpen, setIsStoryOpen] = useState(false);
 
   return (
     <section
@@ -57,10 +52,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       </svg>
 
       <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16">
-        
+
         {/* Main 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-14 items-center">
-          
+
           {/* ================================================================= */}
           {/* Left Column: Typography, Stats, CTAs & 4 Core Pillars              */}
           {/* ================================================================= */}
@@ -71,7 +66,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col text-left"
           >
-            
+
             {/* Top Badge: — ABOUT CLUSTER CLOUD */}
             <div className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.25em] text-[#2563EB] mb-3.5">
               <span className="w-5 h-[2px] bg-[#2563EB]" />
@@ -108,7 +103,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
               </div>
             </div>
 
-            {/* CTA Row: Get to Know Us + Watch Our Story */}
+            {/* CTA Row: Get to Know Us */}
             <div className="flex flex-wrap items-center gap-5 sm:gap-6 mb-12 sm:mb-14">
               {/* Primary Pill Button */}
               <motion.button
@@ -120,27 +115,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
               >
                 <span>Get to Know Us</span>
                 <ArrowRight size={14} className="stroke-[2.5]" />
-              </motion.button>
-
-              {/* Secondary Play Button */}
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setIsStoryOpen(true)}
-                className="inline-flex items-center gap-3.5 group cursor-pointer text-left"
-              >
-                <div className="h-11 w-11 rounded-full bg-[#EAF0FE] group-hover:bg-[#DBEAFE] text-[#2563EB] flex items-center justify-center transition-all duration-200 shadow-2xs group-hover:scale-105">
-                  <Play size={15} className="fill-[#2563EB] ml-0.5" />
-                </div>
-                <div>
-                  <span className="block text-xs sm:text-sm font-bold text-[#0F172A] group-hover:text-[#2563EB] transition-colors leading-tight">
-                    Watch Our Story
-                  </span>
-                  <span className="block text-[11px] font-medium text-slate-400 mt-0.5">
-                    1 min
-                  </span>
-                </div>
               </motion.button>
             </div>
 
@@ -189,10 +163,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
           {/* Right Column: Visual Showcase Stage with Organic Image Container    */}
           {/* ================================================================= */}
           <div className="relative w-full flex flex-col items-center justify-center">
-            
+
             {/* Visual Showcase Stage */}
             <div className="relative w-full max-w-[460px] sm:max-w-[490px] h-[460px] sm:h-[510px] flex items-center justify-center">
-              
+
               {/* 1. Background Circular Orbit Ring & Glowing Blue Dot */}
               <div className="absolute w-[430px] h-[430px] sm:w-[470px] sm:h-[470px] rounded-full border border-blue-200/55 pointer-events-none -z-10">
                 {/* Glowing Blue Dot at 1:30 o'clock */}
@@ -354,101 +328,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
         </div>
 
       </div>
-
-      {/* ======================================================================= */}
-      {/* Interactive Video / Story Modal                                         */}
-      {/* ======================================================================= */}
-      <AnimatePresence>
-        {isStoryOpen && (
-          <div
-            className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-200"
-            onClick={() => setIsStoryOpen(false)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-100 overflow-hidden text-left"
-            >
-              {/* Modal Header */}
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <Sparkles size={18} className="text-[#2563EB]" />
-                  <h3 className="text-lg font-black text-[#0F172A]">Our Story — Cluster Cloud</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsStoryOpen(false)}
-                  className="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition cursor-pointer"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-
-              {/* Story Video / Visual Preview */}
-              <div className="relative h-56 rounded-2xl overflow-hidden mb-6 bg-slate-900 flex items-center justify-center group">
-                <img
-                  src={heroImage}
-                  alt="Cluster Cloud Story"
-                  className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-                <div className="relative z-10 text-center text-white px-6">
-                  <div className="h-14 w-14 rounded-full bg-[#2563EB] text-white flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-500/30">
-                    <Play size={22} className="fill-white ml-0.5" />
-                  </div>
-                  <h4 className="text-xl font-bold mb-1">Architecting Future Brands</h4>
-                  <p className="text-xs text-blue-100 font-medium">1-Minute Executive Overview</p>
-                </div>
-              </div>
-
-              {/* Key Pillars */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-100/80 flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2563EB] shrink-0 mt-0.5" />
-                  <span className="text-xs font-semibold text-slate-700">Algorithmic Search Intelligence</span>
-                </div>
-                <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-100/80 flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2563EB] shrink-0 mt-0.5" />
-                  <span className="text-xs font-semibold text-slate-700">Full-Funnel Revenue Attribution</span>
-                </div>
-                <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-100/80 flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2563EB] shrink-0 mt-0.5" />
-                  <span className="text-xs font-semibold text-slate-700">AI-Powered Conversion Architecture</span>
-                </div>
-                <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-100/80 flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2563EB] shrink-0 mt-0.5" />
-                  <span className="text-xs font-semibold text-slate-700">99.4% Verified Client Retention</span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsStoryOpen(false);
-                    onStartProjectClick?.();
-                  }}
-                  className="flex-1 py-3 px-6 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-md transition text-center cursor-pointer"
-                >
-                  Partner With Us →
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsStoryOpen(false)}
-                  className="py-3 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition text-center cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </section>
   );

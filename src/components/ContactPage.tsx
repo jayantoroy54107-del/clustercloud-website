@@ -36,8 +36,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     email: '',
     company: '',
     phone: '',
-    service: 'SEO & AI Search Optimization',
-    budget: '$5K - $15K',
+    service: 'AI Automation',
     message: '',
   });
 
@@ -64,20 +63,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     }, 900);
   };
 
-  const budgetOptions = ['< $5K', '$5K - $15K', '$15K - $50K', '$50K+'];
-
   const servicesList = [
-    'SEO & AI Search Optimization',
-    'Paid Advertising (Google & Meta Ads)',
-    'High-Converting Web Design & Development',
-    'Social Media & Content Engine',
-    'Marketing Automation & CRM',
-    'Full-Funnel Growth Partner',
+    'AI Automation',
+    'Web Design and Development',
+    'App Development',
+    'SEO & AEO',
+    'Social Media Management',
+    'Google Advertising',
+    'Meta Advertising',
+    'Call & Email Handling',
+    'Image Design',
+    'Video Editing',
   ];
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
-      
+
       {/* Background Ambient Radiance */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-100/60 via-indigo-50/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-80 left-[3%] w-[450px] h-[450px] bg-blue-200/25 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -116,7 +117,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       {/* 2. Main Contact Section Container                                         */}
       {/* ========================================================================= */}
       <main className="relative z-10 w-full max-w-[1520px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 pt-8 sm:pt-12 pb-20 sm:pb-28">
-        
+
         {/* Top Breadcrumb Tag */}
         <div className="flex items-center gap-3 mb-6 sm:mb-8">
           <span className="h-[2px] w-8 sm:w-10 bg-[#2563EB]" />
@@ -127,7 +128,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
         {/* 3-Column Asymmetric Layout (Left Info + Center Visual Pill + Right Form) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-10 items-stretch">
-          
+
           {/* --------------------------------------------------------------------- */}
           {/* COLUMN 1 (Left, col-span-12 lg:col-span-4): Contact Info & Channels    */}
           {/* --------------------------------------------------------------------- */}
@@ -147,7 +148,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
               {/* Contact Channels List */}
               <div className="space-y-4 sm:space-y-5">
-                
+
                 {/* 1. Email Channel */}
                 <div className="group relative flex items-start gap-4 p-3.5 sm:p-4 rounded-2xl bg-white/80 hover:bg-white border border-slate-200/70 hover:border-blue-200 shadow-xs hover:shadow-md transition-all duration-200">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-200">
@@ -180,35 +181,45 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   )}
                 </div>
 
-                {/* 2. Phone Channel */}
+                {/* 2. WhatsApp & Phone Channel */}
                 <div className="group flex items-start gap-4 p-3.5 sm:p-4 rounded-2xl bg-white/80 hover:bg-white border border-slate-200/70 hover:border-blue-200 shadow-xs hover:shadow-md transition-all duration-200">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-200">
                     <Phone size={22} strokeWidth={2.2} />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 space-y-1">
                     <span className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                      Call
+                      WhatsApp & Phone
                     </span>
                     <a
-                      href="tel:+14375550123"
-                      className="block text-[15px] sm:text-base font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors"
+                      href="https://wa.me/8801717161485"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-[14px] sm:text-[15px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors"
                     >
-                      +1 (437) 555-0123
+                      WhatsApp: +880 1717-161485
+                    </a>
+                    <a
+                      href="tel:+8801717161485"
+                      className="block text-[14px] sm:text-[15px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors"
+                    >
+                      Phone: +880 1717-161485
                     </a>
                   </div>
                 </div>
 
-                {/* 3. Visit / Headquarters */}
+                {/* 3. Visit / Bangladesh Office */}
                 <div className="group flex items-start gap-4 p-3.5 sm:p-4 rounded-2xl bg-white/80 hover:bg-white border border-slate-200/70 hover:border-blue-200 shadow-xs hover:shadow-md transition-all duration-200">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-200">
                     <MapPin size={22} strokeWidth={2.2} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                      Visit
+                      Bangladesh Office
                     </span>
-                    <span className="block text-[15px] sm:text-base font-bold text-[#0F172A]">
-                      Toronto, ON, Canada
+                    <span className="block text-[14px] sm:text-[15px] font-bold text-[#0F172A] leading-relaxed">
+                      #207/3, Padma Residential Area<br />
+                      East Side of Road No: 03<br />
+                      Rajshahi, 6207
                     </span>
                   </div>
                 </div>
@@ -250,11 +261,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           {/* --------------------------------------------------------------------- */}
           <div className="lg:col-span-4 flex flex-col">
             <div className="relative w-full h-[460px] sm:h-[540px] lg:h-full min-h-[480px] rounded-[36px] sm:rounded-[42px] overflow-hidden border border-slate-200/80 shadow-[0_20px_50px_rgba(15,23,42,0.12)] group flex flex-col justify-between p-6 sm:p-8">
-              
+
               {/* Architectural Skyline Photo Background */}
               <img
                 src="/work/health_glass.jpg"
-                alt="Toronto Architecture Headquarters"
+                alt="Rajshahi Office Headquarters"
                 loading="eager"
                 decoding="async"
                 className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -271,10 +282,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   <span>01 STRATEGY MEETS EXECUTION</span>
                 </div>
 
-                {/* TORONTO CANADA */}
+                {/* RAJSHAHI BANGLADESH */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-[10.5px] sm:text-[11px] font-extrabold uppercase tracking-[0.16em] shadow-xs select-none">
-                  <span className="text-red-400 font-bold text-xs">🍁</span>
-                  <span>TORONTO</span>
+                  <span className="text-emerald-400 font-bold text-xs">🇧🇩</span>
+                  <span>RAJSHAHI</span>
                 </div>
               </div>
 
@@ -283,14 +294,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div className="inline-block mb-3 px-3 py-1 rounded-lg bg-blue-600/70 backdrop-blur-sm text-white text-[11px] font-extrabold uppercase tracking-[0.2em]">
                   GROWTH STUDIO
                 </div>
-                
+
                 <h2 className="text-2xl sm:text-3xl xl:text-[34px] font-black text-white leading-[1.12] tracking-tight mb-4 drop-shadow-md">
                   BETTER IDEAS.<br />
                   <span className="text-blue-300">BRIGHTER</span> TOMORROW.
                 </h2>
 
                 <p className="text-slate-300 text-xs sm:text-[13px] leading-relaxed max-w-xs font-normal">
-                  Delivering end-to-end digital mastery for ambitious brands worldwide from our Toronto studio.
+                  Delivering end-to-end digital mastery for ambitious brands worldwide from our Rajshahi studio.
                 </p>
 
                 {/* Status Guarantee Chip */}
@@ -308,7 +319,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           {/* --------------------------------------------------------------------- */}
           <div className="lg:col-span-4 flex flex-col justify-center">
             <div className="relative w-full rounded-[32px] sm:rounded-[36px] bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.08)] p-6 sm:p-8 xl:p-9 text-left">
-              
+
               {/* Form Header */}
               <div className="mb-6">
                 <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-[#2563EB] mb-1.5">
@@ -412,7 +423,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         </label>
                         <input
                           type="tel"
-                          placeholder="+1 (555) 000-0000"
+                          placeholder="+880 1717-000000"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           className="w-full rounded-xl border border-slate-200/90 bg-slate-50/50 hover:bg-white focus:bg-white px-3.5 py-2.5 text-[13.5px] text-slate-900 placeholder:text-slate-400 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/15 focus:outline-none transition-all"
@@ -436,32 +447,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                           </option>
                         ))}
                       </select>
-                    </div>
-
-                    {/* Estimated Budget Selector Pills */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                        Estimated Budget
-                      </label>
-                      <div className="grid grid-cols-4 gap-2">
-                        {budgetOptions.map((b) => {
-                          const isSelected = formData.budget === b;
-                          return (
-                            <button
-                              key={b}
-                              type="button"
-                              onClick={() => setFormData({ ...formData, budget: b })}
-                              className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all duration-150 cursor-pointer text-center select-none ${
-                                isSelected
-                                  ? 'bg-[#2563EB] text-white shadow-xs border border-[#2563EB]'
-                                  : 'bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 border border-slate-200/60'
-                              }`}
-                            >
-                              {b}
-                            </button>
-                          );
-                        })}
-                      </div>
                     </div>
 
                     {/* Message Textarea */}
@@ -547,7 +532,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         {/* 3. Reassurance & Guarantees Trust Banner                              */}
         {/* ===================================================================== */}
         <div className="mt-16 sm:mt-20 pt-10 border-t border-slate-200/80 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-          
+
           <div className="flex items-start gap-3.5 p-5 rounded-2xl bg-white/70 border border-slate-200/60 shadow-2xs">
             <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center shrink-0">
               <Clock size={20} strokeWidth={2.2} />
@@ -579,7 +564,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             <div>
               <h4 className="text-sm font-bold text-slate-900">Global & Hybrid Reach</h4>
               <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                Headquartered in Toronto, serving category leaders across North America and Europe.
+                Headquartered in Rajshahi, serving category leaders across South Asia and worldwide.
               </p>
             </div>
           </div>

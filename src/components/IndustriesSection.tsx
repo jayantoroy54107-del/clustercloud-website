@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
   ArrowRight,
-  Play,
   X,
   CheckCircle2,
   Sparkles,
@@ -161,7 +160,6 @@ const industriesData: IndustryItem[] = [
 
 interface IndustriesSectionProps {
   onStartProjectClick?: () => void;
-  onWatchImpactClick?: () => void;
 }
 
 // 7 Fixed 3D Slot Configurations (Amphitheater Perspective)
@@ -170,7 +168,7 @@ const slotConfigs = [
   { slot: 0, rotateY: 48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.72 },
   { slot: 1, rotateY: 36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.82 },
   { slot: 2, rotateY: 22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.92 },
-  { slot: 3, rotateY: 0,  scale: 1.06, zIndex: 30, isHero: true,  opacity: 1.00 }, // CENTER HERO
+  { slot: 3, rotateY: 0, scale: 1.06, zIndex: 30, isHero: true, opacity: 1.00 }, // CENTER HERO
   { slot: 4, rotateY: -22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.92 },
   { slot: 5, rotateY: -36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.82 },
   { slot: 6, rotateY: -48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.72 },
@@ -192,7 +190,6 @@ const contentFade = {
 
 export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
   onStartProjectClick,
-  onWatchImpactClick,
 }) => {
   const [centerIndex, setCenterIndex] = useState<number>(3);
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryItem | null>(null);
@@ -232,7 +229,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
       {/* 1. Header Area                                                          */}
       {/* ======================================================================= */}
       <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 text-center mb-10 sm:mb-14">
-        
+
         {/* Top Pill Badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -312,7 +309,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
       {/* ======================================================================= */}
       {/* Outer wrapper: Full width with spacious gutters so arrows sit OUTSIDE the cards */}
       <div className="relative w-full max-w-[1520px] 2xl:max-w-[1580px] mx-auto px-4 sm:px-8 xl:px-14 my-4">
-        
+
         {/* Navigation Button: Previous (Left) */}
         <motion.button
           whileHover={{ scale: 1.1 }}
@@ -376,11 +373,10 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                       : '0 16px 36px -10px rgba(15,23,42,0.18)',
                   }}
                   transition={cardSpring}
-                  className={`relative rounded-[22px] xl:rounded-[26px] overflow-hidden border border-white/90 ${
-                    isHero
+                  className={`relative rounded-[22px] xl:rounded-[26px] overflow-hidden border border-white/90 ${isHero
                       ? 'w-[165px] xl:w-[195px] 2xl:w-[210px] h-[310px] xl:h-[350px] 2xl:h-[375px] ring-2 ring-[#1D68F7]/50'
                       : 'w-[130px] sm:w-[140px] xl:w-[155px] 2xl:w-[168px] h-[265px] sm:h-[285px] xl:h-[310px] 2xl:h-[330px]'
-                  }`}
+                    }`}
                   style={{ transformStyle: 'preserve-3d' }}
                 >
                   {/* Pure opacity crossfade — no scale/translate to prevent flicker in overflow:hidden */}
@@ -439,15 +435,13 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                       className="absolute inset-0 flex flex-col items-center justify-start pt-0"
                     >
                       <div className="mb-0.5">
-                        <span className={`inline-block text-xs font-black tracking-wider ${
-                          isHero ? 'text-[#1D68F7]' : 'text-slate-400 group-hover:text-slate-600'
-                        }`}>
+                        <span className={`inline-block text-xs font-black tracking-wider ${isHero ? 'text-[#1D68F7]' : 'text-slate-400 group-hover:text-slate-600'
+                          }`}>
                           {item.number}
                         </span>
                       </div>
-                      <h4 className={`text-sm xl:text-[15px] font-black tracking-tight leading-snug mb-0.5 ${
-                        isHero ? 'text-[#0F172A]' : 'text-slate-800 group-hover:text-[#1D68F7]'
-                      }`}>
+                      <h4 className={`text-sm xl:text-[15px] font-black tracking-tight leading-snug mb-0.5 ${isHero ? 'text-[#0F172A]' : 'text-slate-800 group-hover:text-[#1D68F7]'
+                        }`}>
                         {item.title}
                       </h4>
                       <p className="text-[10.5px] xl:text-[11px] text-slate-500 font-medium leading-relaxed">
@@ -528,11 +522,10 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
               <button
                 key={idx}
                 onClick={() => navigate(idx > centerIndex ? 1 : -1)}
-                className={`h-2 rounded-full transition-all cursor-pointer ${
-                  idx === centerIndex
+                className={`h-2 rounded-full transition-all cursor-pointer ${idx === centerIndex
                     ? 'w-6 bg-[#1D68F7]'
                     : 'w-2 bg-slate-300 hover:bg-slate-400'
-                }`}
+                  }`}
                 aria-label={`Go to industry ${idx + 1}`}
               />
             ))}
@@ -546,7 +539,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
       {/* ======================================================================= */}
       <div className="w-full max-w-[1380px] mx-auto px-6 sm:px-10 lg:px-16 mt-14 sm:mt-18">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-          
+
           {/* Left Gutter: INDUSTRIES THAT MOVE THE WORLD + Divider Line */}
           <div className="hidden lg:flex items-center gap-6 flex-1">
             <div className="text-left select-none shrink-0">
@@ -578,25 +571,6 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
               <ArrowRight size={16} className="stroke-[2.5]" />
             </motion.button>
 
-            {/* Secondary Action: See How We Create Impact / Watch 60 Seconds */}
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => onWatchImpactClick?.()}
-              className="inline-flex items-center gap-3 text-left cursor-pointer group py-1 select-none"
-            >
-              <div className="h-10 w-10 rounded-full bg-blue-100/80 text-[#1D68F7] flex items-center justify-center shadow-2xs group-hover:scale-110 transition-transform">
-                <Play size={15} className="fill-current ml-0.5" />
-              </div>
-              <div>
-                <span className="block text-xs font-bold text-slate-800 leading-tight group-hover:text-[#1D68F7] transition-colors">
-                  See How We Create Impact
-                </span>
-                <span className="text-[10.5px] font-medium text-slate-400 leading-tight">
-                  Watch 60 Seconds
-                </span>
-              </div>
-            </motion.button>
           </div>
 
           {/* Right Gutter: Divider Line + DIFFERENT BUSINESSES. A BRIGHTER TOMORROW. */}
@@ -638,7 +612,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
-                
+
                 {/* Close Button */}
                 <button
                   type="button"

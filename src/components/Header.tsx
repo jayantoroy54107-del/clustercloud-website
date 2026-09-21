@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown, ArrowRight, ArrowUpRight, Menu, X, Sparkles } from 'lucide-react';
+import { Search, ChevronDown, ArrowRight, ArrowUpRight, Menu, X, Sparkles, Globe } from 'lucide-react';
 import { lenis } from '../lib/lenis';
 import { serviceNameToSlug } from '../lib/slugs';
 
@@ -11,7 +11,23 @@ export type NavRoute =
   | 'services'
   | 'service-detail'
   | 'brand-ai-with-faisal'
-  | 'brand-swift-outlet';
+  | 'brand-swift-outlet'
+  | 'brand-hello-to-marketing'
+  | 'brand-clipping-fly'
+  | 'brand-ecom-with-faisal';
+
+export type BrandId =
+  | 'ai-with-faisal'
+  | 'swift-outlet'
+  | 'hello-to-marketing'
+  | 'clipping-fly'
+  | 'ecom-with-faisal';
+
+// Brand ecosystem routes follow the `brand-<id>` convention.
+export const brandIdToRoute = (brandId: BrandId): NavRoute => `brand-${brandId}` as NavRoute;
+
+export const brandRouteToPath = (route: NavRoute): string =>
+  typeof route === 'string' && route.startsWith('brand-') ? `/brands/${route.slice('brand-'.length)}` : '/';
 
 export interface HeaderProps {
   onSearchClick?: () => void;
@@ -21,14 +37,13 @@ export interface HeaderProps {
 }
 
 export interface BrandItem {
-  id: 'ai-with-faisal' | 'swift-outlet';
+  id: BrandId;
   name: string;
   tagline: string;
   url: string;
   badge: string;
-  route: NavRoute;
-  avatarLetter: string;
-  avatarColor: string;
+  // Only brands with an internal showcase page define a route.
+  route?: NavRoute;
 }
 
 export const Header: React.FC<HeaderProps> = React.memo(({
@@ -41,12 +56,12 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     currentRoute === 'contact'
       ? 'Contact'
       : currentRoute === 'blog' || currentRoute === 'allblogs'
-      ? 'Insights'
-      : currentRoute === 'services' || currentRoute === 'service-detail'
-      ? 'Services'
-      : currentRoute === 'brand-ai-with-faisal' || currentRoute === 'brand-swift-outlet'
-      ? 'Our Brands'
-      : 'Home'
+        ? 'Insights'
+        : currentRoute === 'services' || currentRoute === 'service-detail'
+          ? 'Services'
+          : currentRoute.startsWith('brand-')
+            ? 'Our Brands'
+            : 'Home'
   );
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -58,7 +73,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       setActiveItem('Insights');
     } else if (currentRoute === 'services' || currentRoute === 'service-detail') {
       setActiveItem('Services');
-    } else if (currentRoute === 'brand-ai-with-faisal' || currentRoute === 'brand-swift-outlet') {
+    } else if (currentRoute.startsWith('brand-')) {
       setActiveItem('Our Brands');
     } else {
       setActiveItem('Home');
@@ -112,12 +127,12 @@ export const Header: React.FC<HeaderProps> = React.memo(({
 
   const servicesList = [
     'AI Automation',
-    'Website Design',
+    'Web Design and Development',
     'App Development',
     'SEO & AEO',
-    'Social Media',
-    'Google Ads',
-    'Meta Ads',
+    'Social Media Management',
+    'Google Advertising',
+    'Meta Advertising',
     'Call & Email Handling',
     'Image Design',
     'Video Editing',
@@ -131,8 +146,6 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       url: 'https://aiwithfaisal.com/',
       badge: 'AI Studio',
       route: 'brand-ai-with-faisal',
-      avatarLetter: 'F',
-      avatarColor: 'from-[#6d5efc] to-[#06b6d4]',
     },
     {
       id: 'swift-outlet',
@@ -141,8 +154,30 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       url: 'https://www.swiftoutlet.com/',
       badge: 'Apps & SaaS',
       route: 'brand-swift-outlet',
-      avatarLetter: 'S',
-      avatarColor: 'from-[#2563EB] to-[#7C3AED]',
+    },
+    {
+      id: 'hello-to-marketing',
+      name: 'Hello to Marketing',
+      tagline: 'Full-Service Digital Marketing & Growth Agency',
+      url: 'https://hellotomarketing.com/',
+      badge: 'Marketing',
+      route: 'brand-hello-to-marketing',
+    },
+    {
+      id: 'clipping-fly',
+      name: 'Clipping Fly',
+      tagline: 'Professional Video Editing, Clipping & Repurposing',
+      url: 'https://new.clippingfly.com/',
+      badge: 'Video Editing',
+      route: 'brand-clipping-fly',
+    },
+    {
+      id: 'ecom-with-faisal',
+      name: 'Ecom with Faisal',
+      tagline: 'E-commerce Growth, Store Scaling & Fulfilment',
+      url: 'https://ecomwithfaisal.com/',
+      badge: 'E-commerce',
+      route: 'brand-ecom-with-faisal',
     },
   ];
 
@@ -183,7 +218,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     if (onNavigate) {
       onNavigate(route);
     } else {
-      window.location.href = route === 'brand-ai-with-faisal' ? '/brands/ai-with-faisal' : '/brands/swift-outlet';
+      window.location.href = brandRouteToPath(route);
     }
   };
 
@@ -267,7 +302,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
         </span>
         <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-[#2563EB] bg-blue-50/80 px-2 py-0.5 rounded-full">
           <Sparkles size={10} />
-          <span>2 Ecosystem Brands</span>
+          <span>{brandsList.length} Ecosystem Brands</span>
         </span>
       </div>
 
@@ -277,12 +312,13 @@ export const Header: React.FC<HeaderProps> = React.memo(({
             key={brand.id}
             onClick={(e) => {
               setOpen(false);
-              handleBrandClick(brand.route, e);
+              if (brand.route) handleBrandClick(brand.route, e);
+              else window.open(brand.url, '_blank', 'noopener,noreferrer');
             }}
             className="group/brand p-2.5 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-200/70 transition-all duration-150 flex items-start gap-3 cursor-pointer text-left"
           >
-            <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${brand.avatarColor} text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs group-hover/brand:scale-105 transition-transform`}>
-              {brand.avatarLetter}
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-slate-900 via-[#1E3A8A] to-[#0EA5E9] text-white flex items-center justify-center shrink-0 shadow-sm ring-1 ring-white/10 group-hover/brand:scale-105 transition-transform">
+              <Globe size={20} strokeWidth={1.9} />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-1">
@@ -297,11 +333,15 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                 {brand.tagline}
               </p>
               <div className="mt-2 flex items-center gap-2.5">
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2563EB] group-hover/brand:underline">
-                  <span>Showcase Page</span>
-                  <ArrowRight size={11} className="transition-transform group-hover/brand:translate-x-0.5" />
-                </span>
-                <span className="text-slate-300 text-xs">•</span>
+                {brand.route && (
+                  <>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2563EB] group-hover/brand:underline">
+                      <span>Showcase Page</span>
+                      <ArrowRight size={11} className="transition-transform group-hover/brand:translate-x-0.5" />
+                    </span>
+                    <span className="text-slate-300 text-xs">•</span>
+                  </>
+                )}
                 <a
                   href={brand.url}
                   target="_blank"
@@ -443,9 +483,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                             setOpen(!isOpen);
                           }
                         }}
-                        className={`text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${
-                          isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
-                        }`}
+                        className={`text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
+                          }`}
                       >
                         {item.name}
                       </button>
@@ -461,9 +500,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                         <ChevronDown
                           size={14}
                           strokeWidth={2.4}
-                          className={`transition-transform duration-200 ${
-                            isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
-                          }`}
+                          className={`transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
+                            }`}
                         />
                       </button>
                     </div>
@@ -484,9 +522,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                   key={item.name}
                   href={`#${item.name.toLowerCase()}`}
                   onClick={(e) => handleNavClick(item.name, e)}
-                  className={`relative inline-flex items-center justify-center py-2 text-[15px] font-semibold transition-colors duration-200 group select-none ${
-                    isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
-                  }`}
+                  className={`relative inline-flex items-center justify-center py-2 text-[15px] font-semibold transition-colors duration-200 group select-none ${isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
+                    }`}
                 >
                   <span>{item.name}</span>
                   {isActive && (
@@ -543,11 +580,10 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       {/* PART 2: FULL-WIDTH STICKY HEADER (Appears on Page Scroll)                  */}
       {/* ========================================================================= */}
       <header
-        className={`fixed top-0 inset-x-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] transition-all duration-300 ease-in-out ${
-          isScrolled
-            ? 'translate-y-0 opacity-100 pointer-events-auto'
-            : '-translate-y-full opacity-0 pointer-events-none'
-        }`}
+        className={`fixed top-0 inset-x-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] transition-all duration-300 ease-in-out ${isScrolled
+          ? 'translate-y-0 opacity-100 pointer-events-auto'
+          : '-translate-y-full opacity-0 pointer-events-none'
+          }`}
         style={{ width: '100%', boxSizing: 'border-box' }}
       >
         <div
@@ -611,9 +647,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                             setOpen(!isOpen);
                           }
                         }}
-                        className={`text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${
-                          isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
-                        }`}
+                        className={`text-[15px] font-semibold transition-colors duration-200 cursor-pointer select-none ${isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
+                          }`}
                       >
                         {item.name}
                       </button>
@@ -629,9 +664,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                         <ChevronDown
                           size={14}
                           strokeWidth={2.4}
-                          className={`transition-transform duration-200 ${
-                            isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
-                          }`}
+                          className={`transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#2563EB]' : 'group-hover:text-[#2563EB]'
+                            }`}
                         />
                       </button>
                     </div>
@@ -652,9 +686,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                   key={item.name}
                   href={`#${item.name.toLowerCase()}`}
                   onClick={(e) => handleNavClick(item.name, e)}
-                  className={`relative inline-flex items-center justify-center py-2 text-[15px] font-semibold transition-colors duration-200 group select-none ${
-                    isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
-                  }`}
+                  className={`relative inline-flex items-center justify-center py-2 text-[15px] font-semibold transition-colors duration-200 group select-none ${isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
+                    }`}
                 >
                   <span>{item.name}</span>
                   {isActive && (
@@ -737,9 +770,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                       <button
                         type="button"
                         onClick={(e) => handleNavClick('Services', e)}
-                        className={`text-lg font-bold transition-colors ${
-                          activeItem === 'Services' ? 'text-[#2563EB]' : 'text-slate-800'
-                        }`}
+                        className={`text-lg font-bold transition-colors ${activeItem === 'Services' ? 'text-[#2563EB]' : 'text-slate-800'
+                          }`}
                       >
                         Services
                       </button>
@@ -750,9 +782,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                       >
                         <ChevronDown
                           size={18}
-                          className={`transition-transform duration-200 ${
-                            mobileServicesExpanded ? 'rotate-180 text-[#2563EB]' : 'text-slate-400'
-                          }`}
+                          className={`transition-transform duration-200 ${mobileServicesExpanded ? 'rotate-180 text-[#2563EB]' : 'text-slate-400'
+                            }`}
                         />
                       </button>
                     </div>
@@ -788,16 +819,14 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                     <button
                       type="button"
                       onClick={() => setMobileBrandsExpanded(!mobileBrandsExpanded)}
-                      className={`w-full flex items-center justify-between text-lg font-bold py-1.5 transition-colors ${
-                        activeItem === 'Our Brands' ? 'text-[#2563EB]' : 'text-slate-800'
-                      }`}
+                      className={`w-full flex items-center justify-between text-lg font-bold py-1.5 transition-colors ${activeItem === 'Our Brands' ? 'text-[#2563EB]' : 'text-slate-800'
+                        }`}
                     >
                       <span>Our Brands</span>
                       <ChevronDown
                         size={18}
-                        className={`transition-transform duration-200 ${
-                          mobileBrandsExpanded ? 'rotate-180 text-[#2563EB]' : 'text-slate-400'
-                        }`}
+                        className={`transition-transform duration-200 ${mobileBrandsExpanded ? 'rotate-180 text-[#2563EB]' : 'text-slate-400'
+                          }`}
                       />
                     </button>
 
@@ -807,10 +836,10 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                           <div key={b.id} className="flex flex-col gap-1">
                             <button
                               type="button"
-                              onClick={(e) => handleBrandClick(b.route, e)}
+                              onClick={(e) => (b.route ? handleBrandClick(b.route, e) : window.open(b.url, '_blank', 'noopener,noreferrer'))}
                               className="text-left font-bold text-[15px] text-slate-800 hover:text-[#2563EB] flex items-center gap-2"
                             >
-                              <span className={`h-2 w-2 rounded-full bg-gradient-to-r ${b.avatarColor}`} />
+                              <Globe size={16} strokeWidth={2} className="text-[#2563EB] shrink-0" />
                               <span>{b.name}</span>
                             </button>
                             <a
@@ -835,9 +864,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
                   key={item.name}
                   href={`#${item.name.toLowerCase()}`}
                   onClick={(e) => handleNavClick(item.name, e)}
-                  className={`text-lg font-bold py-1.5 transition-colors ${
-                    activeItem === item.name ? 'text-[#2563EB]' : 'text-slate-800'
-                  }`}
+                  className={`text-lg font-bold py-1.5 transition-colors ${activeItem === item.name ? 'text-[#2563EB]' : 'text-slate-800'
+                    }`}
                 >
                   {item.name}
                 </a>

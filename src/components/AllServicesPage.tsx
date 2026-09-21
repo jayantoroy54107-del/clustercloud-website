@@ -63,9 +63,9 @@ const allServices: ServiceDef[] = [
     category: 'Technology',
   },
   {
-    id: 'website-design',
+    id: 'web-design-and-development',
     number: '02',
-    title: 'Website Design',
+    title: 'Web Design and Development',
     shortDesc: 'High-converting websites engineered for maximum engagement and brand impact.',
     longDesc: 'Every pixel is intentional. We craft bespoke, performance-first websites that do not just look stunning — they convert visitors into loyal clients using proven UX principles and cutting-edge animation.',
     icon: Globe,
@@ -114,9 +114,9 @@ const allServices: ServiceDef[] = [
     category: 'Marketing',
   },
   {
-    id: 'social-media',
+    id: 'social-media-management',
     number: '05',
-    title: 'Social Media',
+    title: 'Social Media Management',
     shortDesc: 'Turn passive followers into loyal, high-value clients and brand champions.',
     longDesc: 'We manage your full social media presence — content, community, DM funnels, and distribution strategy — turning your platforms into always-on lead generation machines.',
     icon: Share2,
@@ -131,9 +131,9 @@ const allServices: ServiceDef[] = [
     category: 'Marketing',
   },
   {
-    id: 'google-ads',
+    id: 'google-advertising',
     number: '06',
-    title: 'Google Ads',
+    title: 'Google Advertising',
     shortDesc: 'Target high-intent searches and scale aggressively with verified, real ROI.',
     longDesc: 'We build and manage high-intent Google Ads campaigns that cut wasted spend and amplify results — from Search and Performance Max to Shopping, Display, and YouTube pre-rolls.',
     icon: BarChart2,
@@ -148,9 +148,9 @@ const allServices: ServiceDef[] = [
     category: 'Advertising',
   },
   {
-    id: 'meta-ads',
+    id: 'meta-advertising',
     number: '07',
-    title: 'Meta Ads',
+    title: 'Meta Advertising',
     shortDesc: 'Facebook & Instagram ads engineered to stop scrollers and drive sales.',
     longDesc: 'We craft high-converting Meta ad campaigns using precision audience targeting, dynamic creatives, and data-driven funnel strategy — stopping scrollers and converting them.',
     icon: Target,
@@ -338,18 +338,16 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
                 key={cat}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`shrink-0 px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer select-none ${
-                  isCatActive
-                    ? 'bg-[#2563EB] text-white shadow-md shadow-blue-500/25'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-200 hover:text-[#2563EB]'
-                }`}
+                className={`shrink-0 px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer select-none ${isCatActive
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-blue-500/25'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-200 hover:text-[#2563EB]'
+                  }`}
               >
                 <span>{cat}</span>
                 {cat !== 'All' && (
                   <span
-                    className={`ml-1.5 text-[10px] font-black ${
-                      isCatActive ? 'text-white/80' : 'text-slate-400'
-                    }`}
+                    className={`ml-1.5 text-[10px] font-black ${isCatActive ? 'text-white/80' : 'text-slate-400'
+                      }`}
                   >
                     {allServices.filter((s) => s.category === cat).length}
                   </span>
@@ -362,7 +360,7 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
 
       {/* Services Grid (Minimal, Uncommon, Pure Blue & White) */}
       <section className="max-w-7xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-7">
           <AnimatePresence mode="popLayout">
             {filtered.map((service, i) => {
               const Icon = service.icon;
@@ -376,7 +374,7 @@ export const AllServicesPage: React.FC<AllServicesPageProps> = ({
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.35, delay: i * 0.03 }}
                   onClick={() => onNavigateServiceDetail ? onNavigateServiceDetail(service.id) : undefined}
-                  className={`group relative rounded-[26px] bg-white border border-slate-200/80 hover:border-blue-300 shadow-[0_4px_24px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_48px_-12px_rgba(37,99,235,0.14)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between`}
+                  className={`group relative rounded-[26px] bg-white border border-slate-200/80 hover:border-blue-300 shadow-[0_4px_24px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_48px_-12px_rgba(37,99,235,0.14)] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between lg:col-span-2${filtered.length % 3 === 1 && i === filtered.length - 1 ? ' lg:col-start-3' : ''}${filtered.length % 3 === 2 && i === filtered.length - 2 ? ' lg:col-start-2' : ''}`}
                 >
                   {/* Subtle Top Active Blue Accent Line on Hover */}
                   <div className="h-[3px] w-0 group-hover:w-full bg-gradient-to-r from-[#2563EB] to-[#60A5FA] transition-all duration-300" />
