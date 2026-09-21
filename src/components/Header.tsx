@@ -185,7 +185,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     { name: 'Home', type: 'link' },
     { name: 'Services', type: 'dropdown', dropdownType: 'services', items: servicesList },
     { name: 'Our Brands', type: 'dropdown', dropdownType: 'brands', brands: brandsList },
-    { name: 'Work', type: 'link' },
+    { name: 'Portfolio', type: 'link', target: 'work' },
     { name: 'About', type: 'link' },
     { name: 'Insights', type: 'link' },
     { name: 'Contact', type: 'link' },
@@ -222,7 +222,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     }
   };
 
-  const handleNavClick = (name: string, e?: React.MouseEvent) => {
+  const handleNavClick = (name: string, e?: React.MouseEvent, target?: string) => {
     e?.preventDefault();
     setActiveItem(name);
     setFloatServicesOpen(false);
@@ -277,9 +277,9 @@ export const Header: React.FC<HeaderProps> = React.memo(({
 
     if (currentRoute !== 'home') {
       if (onNavigate) {
-        onNavigate('home', name === 'Home' ? undefined : name.toLowerCase());
+        onNavigate('home', name === 'Home' ? undefined : (target ?? name.toLowerCase()));
       } else {
-        window.location.href = name === 'Home' ? '/' : `/#${name.toLowerCase()}`;
+        window.location.href = name === 'Home' ? '/' : `/#${target ?? name.toLowerCase()}`;
       }
       return;
     }
@@ -287,7 +287,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     if (name === 'Home') {
       lenis.scrollTo(0, { duration: 1.2 });
     } else {
-      const section = document.getElementById(name.toLowerCase());
+      const section = document.getElementById(target ?? name.toLowerCase());
       if (section) {
         lenis.scrollTo(section, { offset: -80, duration: 1.2 });
       }
@@ -520,8 +520,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
               return (
                 <a
                   key={item.name}
-                  href={`#${item.name.toLowerCase()}`}
-                  onClick={(e) => handleNavClick(item.name, e)}
+                  href={`#${(item as { target?: string }).target ?? item.name.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(item.name, e, (item as { target?: string }).target)}
                   className={`relative inline-flex items-center justify-center py-2 text-[15px] font-semibold transition-colors duration-200 group select-none ${isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
                     }`}
                 >
@@ -684,8 +684,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
               return (
                 <a
                   key={item.name}
-                  href={`#${item.name.toLowerCase()}`}
-                  onClick={(e) => handleNavClick(item.name, e)}
+                  href={`#${(item as { target?: string }).target ?? item.name.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(item.name, e, (item as { target?: string }).target)}
                   className={`relative inline-flex items-center justify-center py-2 text-[15px] font-semibold transition-colors duration-200 group select-none ${isActive ? 'text-[#2563EB]' : 'text-[#1E293B] hover:text-[#2563EB]'
                     }`}
                 >
@@ -862,8 +862,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
               return (
                 <a
                   key={item.name}
-                  href={`#${item.name.toLowerCase()}`}
-                  onClick={(e) => handleNavClick(item.name, e)}
+                  href={`#${(item as { target?: string }).target ?? item.name.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(item.name, e, (item as { target?: string }).target)}
                   className={`text-lg font-bold py-1.5 transition-colors ${activeItem === item.name ? 'text-[#2563EB]' : 'text-slate-800'
                     }`}
                 >

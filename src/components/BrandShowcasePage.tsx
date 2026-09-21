@@ -45,6 +45,21 @@ export interface BrandSwitch {
     brandId: string;
 }
 
+export interface BrandCaseStudyResult {
+    label: string;
+    value: string;
+}
+
+export interface BrandCaseStudy {
+    title: string;
+    slug: string;
+    industry: string;
+    client: string | null;
+    excerpt: string;
+    link: string;
+    results: BrandCaseStudyResult[];
+}
+
 export interface BrandShowcaseConfig {
     brandName: string;
     route: string;
@@ -93,6 +108,11 @@ export interface BrandShowcaseConfig {
     ctaBannerDesc: string;
     ctaBannerGradient: string;
     switches: BrandSwitch[];
+    caseStudies?: BrandCaseStudy[];
+    caseStudiesLabel?: string;
+    caseStudiesHeading?: string;
+    caseStudiesCtaLabel?: string;
+    caseStudiesUrl?: string;
 }
 
 export interface BrandShowcasePageProps {
@@ -397,6 +417,71 @@ export const BrandShowcasePage: React.FC<BrandShowcasePageProps> = ({
                             ))}
                         </div>
                     </section>
+
+                    {/* Case Studies Section */}
+                    {config.caseStudies && config.caseStudies.length > 0 && (
+                        <section className="py-12 border-t border-slate-200/80">
+                            <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+                                <div>
+                                    <span className={`text-xs font-bold uppercase tracking-widest ${config.productsLabelClass}`}>
+                                        {config.caseStudiesLabel ?? 'Case Studies'}
+                                    </span>
+                                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+                                        {config.caseStudiesHeading ?? 'Real Results for Real Clients'}
+                                    </h2>
+                                </div>
+                                <a
+                                    href={config.caseStudiesUrl ?? config.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold ${config.accentText}`}
+                                >
+                                    <span>{config.caseStudiesCtaLabel ?? 'View all case studies'}</span>
+                                    <ExternalLink size={14} />
+                                </a>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {config.caseStudies.map((cs) => (
+                                    <a
+                                        key={cs.slug}
+                                        href={cs.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-7 rounded-3xl bg-white border border-slate-200 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between group"
+                                    >
+                                        <div>
+                                            <div className="flex items-center justify-between gap-2 mb-3">
+                                                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                                                    {cs.industry}
+                                                </span>
+                                                <ArrowUpRight size={15} className="text-slate-400 group-hover:text-slate-900 transition-colors shrink-0" />
+                                            </div>
+                                            <h3 className="text-lg font-bold text-slate-900 leading-snug transition-colors group-hover:text-slate-700">
+                                                {cs.title}
+                                            </h3>
+                                            <p className="text-sm text-slate-600 leading-relaxed mt-2.5">
+                                                {cs.excerpt}
+                                            </p>
+                                        </div>
+
+                                        <div className="mt-6 pt-4 border-t border-slate-100 grid grid-cols-3 gap-2">
+                                            {cs.results.slice(0, 3).map((r, ri) => (
+                                                <div key={ri}>
+                                                    <div className={`text-lg sm:text-xl font-extrabold bg-gradient-to-r bg-clip-text text-transparent ${config.statsGradient}`}>
+                                                        {r.value}
+                                                    </div>
+                                                    <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mt-0.5 leading-tight">
+                                                        {r.label}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+                        </section>
+                    )}
 
                     {/* Custom Services Section */}
                     <section className="py-12 border-t border-slate-200/80">

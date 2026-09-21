@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   ArrowRight,
   ArrowUpRight,
   BarChart2,
   ArrowDown,
-  X,
-  CheckCircle2,
-  Sparkles,
-  Zap,
 } from 'lucide-react';
 
 export interface CaseStudyItem {
@@ -26,7 +22,7 @@ export interface CaseStudyItem {
   results: string[];
 }
 
-const caseStudiesData: CaseStudyItem[] = [
+export const caseStudiesData: CaseStudyItem[] = [
   // 01: Apex Solar Technologies (Renewable Energy)
   {
     id: 'apex-solar',
@@ -93,14 +89,80 @@ const caseStudiesData: CaseStudyItem[] = [
       'Sub-second page load speeds across all luxury property listings',
     ],
   },
+  // 04: UK E-Commerce Store (E-Commerce) — Hello to Marketing case study
+  {
+    id: 'uk-ecommerce-3-campaign-system',
+    number: '04',
+    client: 'UK E-Commerce Store',
+    category: 'E-COMMERCE',
+    desc: 'A clean 3-campaign Google Ads system — Shopping, Performance Max and Search — driving 311 conversions and £21,518 in tracked revenue.',
+    metric: '£21.5K',
+    metricLabel: 'Tracked Revenue',
+    metricIconType: 'arrow-up-right',
+    image: '/work/health_glass.jpg',
+    challenge:
+      'A UK e-commerce store was spending on unstructured Google Ads with no clear separation between prospecting, product feed and branded search demand.',
+    solution:
+      'Built a clean 3-campaign Google Ads system — Shopping, Performance Max and Search — with tight negative keyword lists, feed optimisation and a 9.19% Search CTR.',
+    results: [
+      '£21,518 in tracked revenue from £6,857 in ad spend',
+      '311 conversions attributed across the 3-campaign system',
+      '9.19% click-through rate on the Search campaign',
+      'Clean Shopping / PMax / Search split with zero campaign overlap',
+    ],
+  },
+  // 05: Residential Painting Company (Home Services) — Hello to Marketing case study
+  {
+    id: 'residential-painting-leads',
+    number: '05',
+    client: 'Residential Painting Company',
+    category: 'HOME SERVICES',
+    desc: 'Generated 17 qualified residential painting leads in 11 days using Meta Instant Form ads at a $24.38 cost per lead.',
+    metric: '17',
+    metricLabel: 'Leads in 11 Days',
+    metricIconType: 'arrow-up-right',
+    image: '/work/luxury_condo2.jpg',
+    challenge:
+      'A residential painting company had a small local budget and needed qualified quote requests fast, without a lengthy landing-page build or high click costs.',
+    solution:
+      'Deployed Meta Instant Form lead ads with tight local radius targeting, qualification questions and a follow-up structure to filter genuinely ready-to-book homeowners.',
+    results: [
+      '17 qualified residential painting leads in 11 days',
+      '$24.38 average cost per qualified lead',
+      'Meta Instant Forms with built-in qualification questions',
+      'Local radius targeting to keep spend on serviceable jobs',
+    ],
+  },
+  // 06: EU E-Commerce Brand (E-Commerce) — Hello to Marketing case study
+  {
+    id: 'ecommerce-pmax-658k-revenue',
+    number: '06',
+    client: 'EU E-Commerce Brand',
+    category: 'E-COMMERCE',
+    desc: 'A single Performance Max campaign scaled to €2,500/day — 433K clicks, €658K in tracked revenue and 13,396 conversions.',
+    metric: '€658K',
+    metricLabel: 'Tracked Ad Revenue',
+    metricIconType: 'bar-chart',
+    image: '/work/solar_sunset2.jpg',
+    challenge:
+      'An EU e-commerce brand needed to scale paid revenue aggressively without losing efficiency, and its previous campaign structure could not absorb more budget.',
+    solution:
+      'Consolidated spend into a single Performance Max campaign with audience signals, feed segmentation and value-based bidding, then scaled budget in controlled steps to €2,500/day.',
+    results: [
+      '€658K in tracked revenue from a single Performance Max campaign',
+      '13,396 conversions and 433K clicks at peak scale',
+      'Campaign scaled to €2,500/day without efficiency collapse',
+      '100% Google Ads optimisation score maintained',
+    ],
+  },
 ];
 
 interface WorkSectionProps {
   onStartProjectClick?: () => void;
+  onViewAllProjects?: () => void;
 }
 
-export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick }) => {
-  const [selectedStudy, setSelectedStudy] = useState<CaseStudyItem | null>(null);
+export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) => {
 
   const renderMetricIcon = (type: 'arrow-up-right' | 'bar-chart' | 'arrow-down') => {
     switch (type) {
@@ -128,16 +190,16 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
         transition={{ duration: 0.6 }}
         className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 mb-12 sm:mb-16"
       >
-        
+
         {/* Top Header Row */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 relative">
-          
+
           {/* Left: Badge, Headline & Quote Bar */}
           <div className="max-w-2xl text-left">
             {/* Pill Badge: — OUR WORK */}
             <div className="flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.25em] text-[#2563EB] mb-3">
               <span className="w-5 h-[2px] bg-[#2563EB]" />
-              <span>OUR WORK</span>
+              <span>OUR PORTFOLIO</span>
             </div>
 
             {/* Headline */}
@@ -165,7 +227,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
               type="button"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => setSelectedStudy(caseStudiesData[0])}
+              onClick={() => onViewAllProjects?.()}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 text-slate-800 font-bold text-xs tracking-wide transition-shadow cursor-pointer"
             >
               <span>Explore All Case Studies</span>
@@ -203,7 +265,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
               >
                 {/* Visual Card Container: Two distinct columns so text never touches or overlaps the photo */}
                 <div className="relative w-full h-[380px] sm:h-[410px] xl:h-[430px] flex items-stretch justify-between">
-                  
+
                   {/* Left-aligned Text Information */}
                   <div className="relative z-10 w-[46%] lg:w-[45%] xl:w-[46%] pt-1 pr-2 text-left flex flex-col justify-start">
                     {/* Number Badge */}
@@ -218,7 +280,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
 
                     {/* Client Title */}
                     <h3
-                      onClick={() => setSelectedStudy(study)}
+                      onClick={() => onViewAllProjects?.()}
                       className="text-lg sm:text-[20px] xl:text-[22px] font-black text-[#0F172A] tracking-tight leading-[1.18] mb-2.5 hover:text-[#2563EB] transition-colors cursor-pointer"
                     >
                       {study.client}
@@ -232,10 +294,10 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
 
                   {/* Right Organic Pebble Photo Container */}
                   <div className="relative w-[53%] lg:w-[54%] xl:w-[53%] h-full flex items-center justify-end">
-                    
+
                     {/* Outer Drop Shadow Wrapper */}
                     <div className="relative w-full h-full filter drop-shadow-[0_20px_35px_rgba(15,23,42,0.12)] transition-transform duration-500 group-hover:scale-[1.015]">
-                      
+
                       {/* Clipped Container: Any rectangular photo automatically takes this organic silhouette */}
                       <div
                         className="relative w-full h-full overflow-hidden bg-slate-100"
@@ -278,7 +340,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
                   <motion.div
                     whileHover={{ scale: 1.03, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setSelectedStudy(study)}
+                    onClick={() => onViewAllProjects?.()}
                     className="absolute left-0 bottom-3 sm:bottom-4 z-20 bg-white rounded-2xl py-3 px-4 shadow-[0_12px_32px_-6px_rgba(15,23,42,0.14)] border border-slate-100/90 flex items-center gap-3 cursor-pointer hover:shadow-[0_16px_36px_-6px_rgba(37,99,235,0.22)] transition-shadow duration-300"
                   >
                     {/* Circle Icon Badge */}
@@ -301,7 +363,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
                 {/* Below Card: View Case Study with Circle Arrow */}
                 <button
                   type="button"
-                  onClick={() => setSelectedStudy(study)}
+                  onClick={() => onViewAllProjects?.()}
                   className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors mt-5 self-start group cursor-pointer select-none"
                 >
                   <span>View Case Study</span>
@@ -315,129 +377,6 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onStartProjectClick })
         </div>
       </div>
 
-      {/* ======================================================================= */}
-      {/* 3. Interactive Case Study Detail Modal                                  */}
-      {/* ======================================================================= */}
-      <AnimatePresence>
-        {selectedStudy && (
-          <div
-            className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-200"
-            onClick={() => setSelectedStudy(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-100 overflow-hidden text-left"
-            >
-              {/* Header Image */}
-              <div className="relative h-44 -mx-6 -mt-6 sm:-mx-8 sm:-mt-8 mb-6 overflow-hidden bg-slate-900">
-                <img
-                  src={selectedStudy.image}
-                  alt={selectedStudy.client}
-                  className="w-full h-full object-cover opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
-                
-                {/* Close Button */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedStudy(null)}
-                  className="absolute top-4 right-4 h-9 w-9 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <X size={18} />
-                </button>
-
-                {/* Title & Badge */}
-                <div className="absolute bottom-4 left-6 right-6 text-white">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-extrabold uppercase tracking-widest text-blue-200 mb-1">
-                    {selectedStudy.category} • CASE STUDY {selectedStudy.number}
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
-                    {selectedStudy.client}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Verified Metric Banner */}
-              <div className="rounded-2xl bg-blue-50/80 border border-blue-100 p-4 mb-6 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center shrink-0 shadow-sm">
-                  {renderMetricIcon(selectedStudy.metricIconType)}
-                </div>
-                <div>
-                  <span className="text-2xl font-black text-[#2563EB] leading-none block">
-                    {selectedStudy.metric}
-                  </span>
-                  <span className="text-xs font-bold text-blue-900 uppercase tracking-wide">
-                    {selectedStudy.metricLabel}
-                  </span>
-                </div>
-              </div>
-
-              {/* Challenge & Solution */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
-                    <Zap size={14} className="text-amber-500" />
-                    The Challenge
-                  </h4>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    {selectedStudy.challenge}
-                  </p>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
-                    <Sparkles size={14} className="text-[#2563EB]" />
-                    Our Solution
-                  </h4>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    {selectedStudy.solution}
-                  </p>
-                </div>
-              </div>
-
-              {/* Verified Results */}
-              <div className="mb-6">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
-                  Verified Campaign Outcomes:
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {selectedStudy.results.map((res, rIdx) => (
-                    <div key={rIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium">
-                      <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{res}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedStudy(null);
-                    onStartProjectClick?.();
-                  }}
-                  className="w-full sm:w-auto flex-1 py-3.5 px-6 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all text-center cursor-pointer"
-                >
-                  Scale Results Like {selectedStudy.client} →
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedStudy(null)}
-                  className="w-full sm:w-auto py-3.5 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-colors text-center cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </section>
   );

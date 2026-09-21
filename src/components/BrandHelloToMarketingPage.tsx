@@ -5,6 +5,7 @@ import {
     type BrandShowcaseConfig,
     type BrandShowcasePageProps,
 } from './BrandShowcasePage';
+import caseStudiesData from '../data/helloToMarketingCaseStudies.json';
 
 const config: BrandShowcaseConfig = {
     brandName: 'Hello to Marketing',
@@ -157,6 +158,11 @@ const config: BrandShowcaseConfig = {
     ctaBannerDesc:
         'Get a full-funnel growth partner across SEO, paid media, content, and analytics — or a focused channel sprint for rapid wins.',
     ctaBannerGradient: 'from-[#7C2D12] via-[#9A3412] to-[#7C2D12]',
+    caseStudies: caseStudiesData,
+    caseStudiesLabel: 'Client Results',
+    caseStudiesHeading: 'Case Studies — Real Revenue, Real Clients',
+    caseStudiesCtaLabel: 'View all case studies on hellotomarketing.com',
+    caseStudiesUrl: 'https://hellotomarketing.com/case-studies',
     switches: [
         { label: 'Clipping Fly', brandId: 'clipping-fly' },
         { label: 'Ecom with Faisal', brandId: 'ecom-with-faisal' },

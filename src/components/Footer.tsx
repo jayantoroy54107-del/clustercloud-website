@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Services', href: '#services' },
-    { name: 'Work', href: '#work' },
+    { name: 'Portfolio', href: '#work' },
     { name: 'About', href: '#about' },
     { name: 'Insights', href: '#insights' },
     { name: 'Contact', href: '/contact' },
@@ -50,12 +50,12 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
 
   return (
     <footer className="relative w-full bg-white overflow-hidden border-t border-slate-100 pt-16 pb-10">
-      
+
       {/* Background Subtle Gradient Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-b from-blue-100/40 via-blue-50/20 to-transparent rounded-full blur-2xl pointer-events-none -z-10" />
 
       <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20">
-        
+
         {/* ========================================================================= */}
         {/* Top Main Grid: Left Column, Center 3D Isometric Art, Right Column          */}
         {/* ========================================================================= */}
@@ -66,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
           transition={{ duration: 0.6 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center pb-16"
         >
-          
+
           {/* ----------------------------------------------------------------------- */}
           {/* 1. Left Side: Brand Logo, Slogan, Taglines, Pillar Marker               */}
           {/* ----------------------------------------------------------------------- */}
@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
           {/* 2. Center: 3D Isometric Translucent Glass Stack + Flowing Curves         */}
           {/* ----------------------------------------------------------------------- */}
           <div className="lg:col-span-4 flex flex-col items-center justify-center relative select-none">
-            
+
             {/* Top Text: IDEAS TO IMPACT */}
             <div className="text-center mb-1">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.26em] text-slate-400 leading-tight">
@@ -310,7 +310,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
           {/* 3. Right Side: Navigation Links, Circular CTA Button, Social Icons      */}
           {/* ----------------------------------------------------------------------- */}
           <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-between h-full">
-            
+
             {/* Top Navigation Links Row */}
             <div className="flex flex-wrap items-center gap-7 sm:gap-9 mb-10">
               {navLinks.map((link) => (
