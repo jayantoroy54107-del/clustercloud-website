@@ -17,142 +17,80 @@ export interface CaseStudyItem {
   metricLabel: string;
   metricIconType: 'arrow-up-right' | 'bar-chart' | 'arrow-down';
   image: string;
+  link?: string;
   challenge: string;
   solution: string;
   results: string[];
 }
 
 export const caseStudiesData: CaseStudyItem[] = [
-  // 01: Apex Solar Technologies (Renewable Energy)
+  // 01: Window Cleaning Business (Local Services) — Hello to Marketing case study
   {
-    id: 'apex-solar',
+    id: 'window-cleaning-google-ads-7-percent-ctr',
     number: '01',
-    client: 'Apex Solar Technologies',
-    category: 'RENEWABLE ENERGY',
-    desc: 'Complete SEO overhaul & Google Ads campaign generating over $4.2M in verified project revenue.',
-    metric: '+340%',
-    metricLabel: 'Inbound Pipeline Growth',
+    client: 'Window Cleaning Business',
+    category: 'LOCAL SERVICES',
+    desc: 'A targeted Google Search campaign for a UK window cleaning business delivering a 7.07% click-through rate and a 2.87% conversion rate.',
+    metric: '7.07%',
+    metricLabel: 'Click-Through Rate',
     metricIconType: 'arrow-up-right',
-    image: '/work/solar_panel_clean.jpg',
+    image: '/work/window_cleaning.jpg',
+    link: 'https://hellotomarketing.com/case-studies/window-cleaning-google-ads-7-percent-ctr',
     challenge:
-      'High cost-per-acquisition on generic search ads, sluggish local search visibility, and poor conversion on technical commercial solar proposals.',
+      'A UK window cleaning business needed a predictable flow of qualified local leads without wasting budget on broad, low-intent search terms.',
     solution:
-      'Rebuilt the digital presence with hyper-targeted commercial solar SEO, automated lead qualification funnels, and high-intent Google Search campaigns.',
+      'Built a tightly targeted Google Search campaign with local-intent keywords, negative keyword sculpting and conversion-focused ad copy.',
     results: [
-      '+340% increase in inbound commercial solar project leads',
-      '$4.2M verified pipeline revenue generated in 9 months',
-      'Top 3 organic rank for 48 commercial solar search queries',
-      '42% lower cost per qualified commercial solar procurement lead',
+      '7.07% click-through rate on Google Search',
+      '2.87% conversion rate on qualified local searches',
+      '85.6% Google Ads optimisation score',
+      'Scalable cost per qualified lead for the client',
     ],
   },
-  // 02: MedVanguard Health (Healthcare SaaS)
+  // 02: Jewelry E-Commerce Store (E-Commerce) — Hello to Marketing case study
   {
-    id: 'medvanguard',
+    id: 'jewelry-ecommerce-google-shopping-32k-revenue',
     number: '02',
-    client: 'MedVanguard Health',
-    category: 'HEALTHCARE SAAS',
-    desc: 'Precision B2B LinkedIn and search funnel targeting hospital procurement leads with zero wasted ad spend.',
-    metric: '4.8x',
-    metricLabel: 'Customer Acquisition ROI',
-    metricIconType: 'bar-chart',
-    image: '/work/health_building_clean.jpg',
-    challenge:
-      'Long 9-month enterprise sales cycles with hospital procurement officers and high demo drop-off rates across traditional PPC ads.',
-    solution:
-      'Implemented an Account-Based Marketing (ABM) engine combining personalized LinkedIn video retargeting with gated clinical ROI calculators.',
-    results: [
-      '4.8x verified customer acquisition ROI across hospital tiers',
-      'Shortened sales cycle from 9 months to 3.8 months',
-      'Captured 32 enterprise hospital procurement contract agreements',
-      'Zero wasted spend with 100% first-party IP-filtered target lists',
-    ],
-  },
-  // 03: UrbanNest Realty (Commercial Real Estate)
-  {
-    id: 'urbannest',
-    number: '03',
-    client: 'UrbanNest Realty',
-    category: 'COMMERCIAL REAL ESTATE',
-    desc: 'Conversion-rate optimized landing pages paired with automated email lead qualification workflows.',
-    metric: '82%',
-    metricLabel: 'Lower Cost Per Qualified Lead',
-    metricIconType: 'arrow-down',
-    image: '/work/luxury_condo_clean.jpg',
-    challenge:
-      'Low lead quality from residential portals and high friction in scheduling private viewings for luxury multi-unit developments.',
-    solution:
-      'Designed high-speed mobile-first landing pages with 3D virtual walkthroughs and automated SMS qualification bots for pre-cleared buyers.',
-    results: [
-      '82% reduction in cost per verified high-net-worth investor lead',
-      '94% private viewing attendance rate with automated SMS reminders',
-      '$18.5M in luxury apartment units sold within 4 months of campaign launch',
-      'Sub-second page load speeds across all luxury property listings',
-    ],
-  },
-  // 04: UK E-Commerce Store (E-Commerce) — Hello to Marketing case study
-  {
-    id: 'uk-ecommerce-3-campaign-system',
-    number: '04',
-    client: 'UK E-Commerce Store',
+    client: 'Jewelry E-Commerce Store',
     category: 'E-COMMERCE',
-    desc: 'A clean 3-campaign Google Ads system — Shopping, Performance Max and Search — driving 311 conversions and £21,518 in tracked revenue.',
-    metric: '£21.5K',
+    desc: 'Turned a jewelry Google Shopping campaign into a consistent revenue engine — €32,131 in tracked sales at 1.90x ROAS.',
+    metric: '€32K+',
     metricLabel: 'Tracked Revenue',
-    metricIconType: 'arrow-up-right',
-    image: '/work/health_glass.jpg',
-    challenge:
-      'A UK e-commerce store was spending on unstructured Google Ads with no clear separation between prospecting, product feed and branded search demand.',
-    solution:
-      'Built a clean 3-campaign Google Ads system — Shopping, Performance Max and Search — with tight negative keyword lists, feed optimisation and a 9.19% Search CTR.',
-    results: [
-      '£21,518 in tracked revenue from £6,857 in ad spend',
-      '311 conversions attributed across the 3-campaign system',
-      '9.19% click-through rate on the Search campaign',
-      'Clean Shopping / PMax / Search split with zero campaign overlap',
-    ],
-  },
-  // 05: Residential Painting Company (Home Services) — Hello to Marketing case study
-  {
-    id: 'residential-painting-leads',
-    number: '05',
-    client: 'Residential Painting Company',
-    category: 'HOME SERVICES',
-    desc: 'Generated 17 qualified residential painting leads in 11 days using Meta Instant Form ads at a $24.38 cost per lead.',
-    metric: '17',
-    metricLabel: 'Leads in 11 Days',
-    metricIconType: 'arrow-up-right',
-    image: '/work/luxury_condo2.jpg',
-    challenge:
-      'A residential painting company had a small local budget and needed qualified quote requests fast, without a lengthy landing-page build or high click costs.',
-    solution:
-      'Deployed Meta Instant Form lead ads with tight local radius targeting, qualification questions and a follow-up structure to filter genuinely ready-to-book homeowners.',
-    results: [
-      '17 qualified residential painting leads in 11 days',
-      '$24.38 average cost per qualified lead',
-      'Meta Instant Forms with built-in qualification questions',
-      'Local radius targeting to keep spend on serviceable jobs',
-    ],
-  },
-  // 06: EU E-Commerce Brand (E-Commerce) — Hello to Marketing case study
-  {
-    id: 'ecommerce-pmax-658k-revenue',
-    number: '06',
-    client: 'EU E-Commerce Brand',
-    category: 'E-COMMERCE',
-    desc: 'A single Performance Max campaign scaled to €2,500/day — 433K clicks, €658K in tracked revenue and 13,396 conversions.',
-    metric: '€658K',
-    metricLabel: 'Tracked Ad Revenue',
     metricIconType: 'bar-chart',
-    image: '/work/solar_sunset2.jpg',
+    image: '/work/jewelry_shopping.jpg',
+    link: 'https://hellotomarketing.com/case-studies/jewelry-ecommerce-google-shopping-32k-revenue',
     challenge:
-      'An EU e-commerce brand needed to scale paid revenue aggressively without losing efficiency, and its previous campaign structure could not absorb more budget.',
+      'A jewelry e-commerce brand needed its Google Shopping spend to convert into reliable, measurable revenue instead of scattered sales.',
     solution:
-      'Consolidated spend into a single Performance Max campaign with audience signals, feed segmentation and value-based bidding, then scaled budget in controlled steps to €2,500/day.',
+      'Optimised the Shopping feed and campaign structure with Target ROAS bidding, product segmentation and ongoing negative keyword management.',
     results: [
-      '€658K in tracked revenue from a single Performance Max campaign',
-      '13,396 conversions and 433K clicks at peak scale',
-      'Campaign scaled to €2,500/day without efficiency collapse',
-      '100% Google Ads optimisation score maintained',
+      '€32,131 in tracked sales from Google Shopping',
+      '1.90x ROAS sustained across the campaign',
+      '609 conversions at €27.73 each',
+      'Shopping campaign running eligible with a healthy optimisation score',
+    ],
+  },
+  // 03: Dutch SaaS Brand (B2B SaaS) — Hello to Marketing case study
+  {
+    id: 'saas-google-ads-286-conversions',
+    number: '03',
+    client: 'Dutch SaaS Brand',
+    category: 'B2B SAAS',
+    desc: 'Turned a niche B2B SaaS offer into a steady lead engine — 286 qualified conversions at just €7.18 each.',
+    metric: '286',
+    metricLabel: 'Conversions at €7.18 CPA',
+    metricIconType: 'arrow-down',
+    image: '/work/saas_ads.jpg',
+    link: 'https://hellotomarketing.com/case-studies/saas-google-ads-286-conversions',
+    challenge:
+      'A Dutch rental and reservation SaaS brand needed qualified demo and trial conversions without an inflated cost per acquisition.',
+    solution:
+      'Built Search and Performance Max campaigns around high-intent keywords, with conversion tracking and bidding focused on qualified sign-ups.',
+    results: [
+      '286 qualified conversions at €7.18 cost per conversion',
+      '2.09K clicks driving the conversion engine',
+      'Search + Performance Max campaign structure',
+      'Lower-funnel focus to protect budget efficiency',
     ],
   },
 ];
@@ -361,16 +299,30 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) =
                 </div>
 
                 {/* Below Card: View Case Study with Circle Arrow */}
-                <button
-                  type="button"
-                  onClick={() => onViewAllProjects?.()}
-                  className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors mt-5 self-start group cursor-pointer select-none"
-                >
-                  <span>View Case Study</span>
-                  <div className="h-7 w-7 rounded-full border border-slate-300 group-hover:border-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white flex items-center justify-center transition-all duration-200">
-                    <ArrowRight size={13} className="stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </button>
+                {study.link ? (
+                  <a
+                    href={study.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors mt-5 self-start group cursor-pointer select-none"
+                  >
+                    <span>View Case Study</span>
+                    <div className="h-7 w-7 rounded-full border border-slate-300 group-hover:border-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white flex items-center justify-center transition-all duration-200">
+                      <ArrowRight size={13} className="stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => onViewAllProjects?.()}
+                    className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors mt-5 self-start group cursor-pointer select-none"
+                  >
+                    <span>View Case Study</span>
+                    <div className="h-7 w-7 rounded-full border border-slate-300 group-hover:border-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white flex items-center justify-center transition-all duration-200">
+                      <ArrowRight size={13} className="stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </button>
+                )}
               </motion.div>
             );
           })}

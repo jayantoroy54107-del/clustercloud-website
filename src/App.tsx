@@ -18,6 +18,7 @@ const SingleBlogPage = lazy(() => import('./components/SingleBlogPage').then(m =
 const AllBlogsPage = lazy(() => import('./components/AllBlogsPage').then(m => ({ default: m.AllBlogsPage })));
 const AllServicesPage = lazy(() => import('./components/AllServicesPage').then(m => ({ default: m.AllServicesPage })));
 const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
+const PortfolioPage = lazy(() => import('./components/PortfolioPage').then(m => ({ default: m.PortfolioPage })));
 const BrandAiWithFaisalPage = lazy(() => import('./components/BrandAiWithFaisalPage').then(m => ({ default: m.BrandAiWithFaisalPage })));
 const BrandSwiftOutletPage = lazy(() => import('./components/BrandSwiftOutletPage').then(m => ({ default: m.BrandSwiftOutletPage })));
 const BrandHelloToMarketingPage = lazy(() => import('./components/BrandHelloToMarketingPage').then(m => ({ default: m.BrandHelloToMarketingPage })));
@@ -35,6 +36,7 @@ export type AppRoute =
   | 'allblogs'
   | 'services'
   | 'service-detail'
+  | 'portfolio'
   | 'brand-ai-with-faisal'
   | 'brand-swift-outlet'
   | 'brand-hello-to-marketing'
@@ -85,6 +87,9 @@ export const App: React.FC = () => {
         }
         return 'services';
       }
+      if (path === '/portfolio' || hash === '#portfolio') {
+        return 'portfolio';
+      }
       if (path.startsWith('/brands/')) {
         const brand = path.replace('/brands/', '').split('/')[0];
         if (brand) return `brand-${brand}` as AppRoute;
@@ -129,6 +134,8 @@ export const App: React.FC = () => {
       document.title = "Clipping Fly | Video Editing & Content Repurposing - Cluster Cloud";
     } else if (route === 'brand-ecom-with-faisal') {
       document.title = "Ecom with Faisal | E-commerce Growth & Store Scaling - Cluster Cloud";
+    } else if (route === 'portfolio') {
+      document.title = "Portfolio | Case Studies & Client Results - Cluster Cloud";
     } else if (route === 'blog') {
       document.title = "Insights & Strategy | Cluster Cloud Growth Blog";
     } else {
@@ -159,6 +166,9 @@ export const App: React.FC = () => {
           setSelectedServiceId(undefined);
           setRoute('services');
         }
+        window.scrollTo(0, 0);
+      } else if (path === '/portfolio' || hash === '#portfolio') {
+        setRoute('portfolio');
         window.scrollTo(0, 0);
       } else if (path.startsWith('/brands/')) {
         const brand = path.replace('/brands/', '').split('/')[0];
@@ -257,6 +267,11 @@ export const App: React.FC = () => {
     } else if (typeof targetRoute === 'string' && targetRoute.startsWith('brand-')) {
       window.history.pushState(null, '', brandRouteToPath(targetRoute));
       setRoute(targetRoute);
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'portfolio') {
+      window.history.pushState(null, '', '/portfolio');
+      setRoute('portfolio');
       window.scrollTo(0, 0);
       lenis.scrollTo(0, { duration: 0.6, immediate: true });
     } else if (targetRoute === 'allblogs') {
@@ -507,6 +522,37 @@ export const App: React.FC = () => {
     );
   }
 
+  // Dedicated Portfolio page
+  if (route === 'portfolio') {
+    return (
+      <ErrorBoundary>
+        <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+            <PortfolioPage
+              onNavigate={handleNavigate}
+              onNavigateHome={(section) => handleNavigate('home', section)}
+              onNavigateContact={() => handleNavigate('contact')}
+              onOpenSearch={handleOpenSearch}
+              onOpenGetStarted={handleOpenGetStarted}
+            />
+          </Suspense>
+
+          <Suspense fallback={null}>
+            {isSearchOpen && (
+              <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+            )}
+          </Suspense>
+
+          <Suspense fallback={null}>
+            {isGetStartedOpen && (
+              <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+            )}
+          </Suspense>
+        </div>
+      </ErrorBoundary>
+    );
+  }
+
   // All Blogs archive page
   if (route === 'allblogs') {
     return (
@@ -650,6 +696,7 @@ export const App: React.FC = () => {
       <Suspense fallback={<div className="min-h-[400px]" />}>
         <WorkSection
           onStartProjectClick={handleOpenGetStarted}
+          onViewAllProjects={() => handleNavigate('portfolio')}
         />
       </Suspense>
 

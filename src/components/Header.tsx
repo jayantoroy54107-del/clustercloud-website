@@ -10,6 +10,7 @@ export type NavRoute =
   | 'allblogs'
   | 'services'
   | 'service-detail'
+  | 'portfolio'
   | 'brand-ai-with-faisal'
   | 'brand-swift-outlet'
   | 'brand-hello-to-marketing'
@@ -59,9 +60,11 @@ export const Header: React.FC<HeaderProps> = React.memo(({
         ? 'Insights'
         : currentRoute === 'services' || currentRoute === 'service-detail'
           ? 'Services'
-          : currentRoute.startsWith('brand-')
-            ? 'Our Brands'
-            : 'Home'
+          : currentRoute === 'portfolio'
+            ? 'Portfolio'
+            : currentRoute.startsWith('brand-')
+              ? 'Our Brands'
+              : 'Home'
   );
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -73,6 +76,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       setActiveItem('Insights');
     } else if (currentRoute === 'services' || currentRoute === 'service-detail') {
       setActiveItem('Services');
+    } else if (currentRoute === 'portfolio') {
+      setActiveItem('Portfolio');
     } else if (currentRoute.startsWith('brand-')) {
       setActiveItem('Our Brands');
     } else {
@@ -271,6 +276,15 @@ export const Header: React.FC<HeaderProps> = React.memo(({
         onNavigate('brand-ai-with-faisal');
       } else {
         window.location.href = '/brands/ai-with-faisal';
+      }
+      return;
+    }
+
+    if (name === 'Portfolio') {
+      if (onNavigate) {
+        onNavigate('portfolio');
+      } else {
+        window.location.href = '/portfolio';
       }
       return;
     }
