@@ -26,6 +26,7 @@ interface MarketingCaseStudy {
     client: string;
     excerpt: string;
     link: string;
+    image: string;
     results: MarketingResult[];
 }
 
@@ -229,35 +230,45 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                                 href={study.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group flex flex-col rounded-3xl bg-white border border-slate-200/80 p-6 sm:p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
+                                className="group flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
                             >
-                                <div className="flex items-center justify-between mb-4">
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-[10px] font-extrabold uppercase tracking-widest">
+                                <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
+                                    {study.image ? (
+                                        <img
+                                            src={study.image}
+                                            alt={study.title}
+                                            loading="lazy"
+                                            onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+                                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                    ) : null}
+                                    <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
                                         {study.industry}
                                     </span>
-                                    <ArrowUpRight
-                                        size={16}
-                                        className="text-slate-400 group-hover:text-[#2563EB] transition-colors"
-                                    />
+                                    <span className="absolute top-4 right-4 h-8 w-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-slate-500 group-hover:text-[#2563EB] transition-colors">
+                                        <ArrowUpRight size={15} />
+                                    </span>
                                 </div>
 
-                                <h3 className="text-base sm:text-lg font-black text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:text-[#2563EB] transition-colors">
-                                    {study.title}
-                                </h3>
+                                <div className="flex flex-col flex-1 p-6 sm:p-7">
+                                    <h3 className="text-base sm:text-lg font-black text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:text-[#2563EB] transition-colors">
+                                        {study.title}
+                                    </h3>
 
-                                <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
-                                    {study.excerpt}
-                                </p>
+                                    <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
+                                        {study.excerpt}
+                                    </p>
 
-                                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
-                                    {study.results.slice(0, 3).map((r) => (
-                                        <div key={r.label}>
-                                            <p className="text-sm font-black text-[#0F172A] leading-none">{r.value}</p>
-                                            <p className="text-[9.5px] font-bold uppercase tracking-wide text-slate-400 mt-1 leading-tight">
-                                                {r.label}
-                                            </p>
-                                        </div>
-                                    ))}
+                                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
+                                        {study.results.slice(0, 3).map((r) => (
+                                            <div key={r.label}>
+                                                <p className="text-sm font-black text-[#0F172A] leading-none">{r.value}</p>
+                                                <p className="text-[9.5px] font-bold uppercase tracking-wide text-slate-400 mt-1 leading-tight">
+                                                    {r.label}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </a>
                         ))}
