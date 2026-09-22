@@ -467,7 +467,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         {/* ===================================================================== */}
         {/* 4. Main Stage: Orbital Growth Ecosystem (Desktop & Mobile)            */}
         {/* ===================================================================== */}
-        <div className="relative w-full max-w-[1240px] xl:max-w-[1280px] mx-auto min-h-[720px] sm:min-h-[760px] lg:min-h-[780px] flex items-center justify-center">
+        <div className="relative w-full max-w-[1240px] xl:max-w-[1280px] mx-auto min-h-[720px] sm:min-h-[760px] lg:min-h-[780px] flex flex-col lg:flex-row items-center justify-center">
 
           {/* ----------------------------------------------------------------- */}
           {/* A. Background Orbit Rings & Connecting SVG System (Desktop Centered)*/}
@@ -668,7 +668,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           {/* ----------------------------------------------------------------- */}
           {/* B. Centerpiece: 3D Isometric Cluster Cloud Logo Cube               */}
           {/* ----------------------------------------------------------------- */}
-          <div className="relative lg:absolute lg:left-1/2 lg:top-[48%] lg:-translate-x-1/2 lg:-translate-y-1/2 z-20 flex flex-col items-center justify-center pointer-events-none mb-10 lg:mb-0">
+          <div className="hidden lg:flex lg:absolute lg:left-1/2 lg:top-[48%] lg:-translate-x-1/2 lg:-translate-y-1/2 z-20 flex-col items-center justify-center pointer-events-none">
 
             {/* Handwritten callout above logo: "Your Digital Growth Partner" */}
             <motion.div
@@ -733,16 +733,87 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             ))}
           </div>
 
-          {/* TABLET / MOBILE VIEW: Responsive 2-Column / 1-Column Grid */}
-          <div className="lg:hidden w-full grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 z-10">
+          {/* TABLET / MOBILE VIEW: Minimal Vertical Service List */}
+          <div className="lg:hidden w-full max-w-xl mx-auto grid grid-cols-1 gap-3.5 z-10">
             {servicesData.map((service, idx) => (
               <MobileServiceCard
                 key={service.id}
                 service={service}
                 onClick={() => onViewServiceDetail ? onViewServiceDetail(service.id) : onExploreAllServices?.()}
-                customDelay={0.08 + idx * 0.04}
+                customDelay={0.06 + idx * 0.04}
               />
             ))}
+
+            {/* 07: Customer Support (24/7) — static info card */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.06 + servicesData.length * 0.04, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center gap-4 rounded-3xl bg-white/95 backdrop-blur-md border border-slate-100 p-4 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.18)]"
+            >
+              <div className="relative shrink-0 rounded-full bg-blue-100/70 p-1.5">
+                <div className="relative h-12 w-12 rounded-full bg-gradient-to-br from-[#38BDF8] via-[#0070F3] to-[#0A3D91] text-white flex items-center justify-center shadow-[inset_0_3px_6px_rgba(255,255,255,0.65),inset_0_-3px_6px_rgba(0,0,0,0.25),0_12px_28px_rgba(0,112,243,0.45)]">
+                  <div className="absolute top-1 left-2 w-3 h-1.5 rounded-full bg-white/45 blur-[0.5px] pointer-events-none" />
+                  <Headphones size={22} className="stroke-[2.3] drop-shadow-[0_2px_3px_rgba(0,0,0,0.25)]" />
+                </div>
+              </div>
+              <div className="min-w-0 flex-1 text-left">
+                <div className="mb-1 flex items-center gap-1.5">
+                  <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-black tracking-wider text-slate-500">
+                    24/7
+                  </span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#0070F3]" />
+                </div>
+                <h3 className="text-[15px] font-black leading-snug tracking-tight text-[#0F172A]">
+                  Customer Support
+                </h3>
+                <p className="mt-0.5 text-xs leading-relaxed text-slate-500">
+                  Real humans, real answers — anytime you need us.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* MOBILE / TABLET: Centerpiece logo with handwritten callouts */}
+          <div className="lg:hidden relative z-20 mt-10 mb-2 w-full max-w-xl mx-auto flex items-center justify-between gap-1">
+            {/* Left handwritten callout */}
+            <div className="relative shrink-0 font-handwriting text-[15px] text-slate-800 leading-[1.05] font-semibold text-left">
+              <span>Your</span><br />
+              <span className="text-slate-900 font-bold">Digital Growth</span><br />
+              <span>Partner</span>
+              <div className="absolute -bottom-5 right-1 text-slate-700">
+                <svg width="26" height="22" viewBox="0 0 50 40" fill="none">
+                  <path d="M 6 4 C 16 12 30 16 40 30" stroke="#334155" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M 33 28 L 40 30 L 40 22" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Center 3D logo + orbit rings */}
+            <div className="relative shrink-0 flex items-center justify-center pointer-events-none">
+              <div className="absolute w-28 h-16 rounded-[50%] border border-slate-200/90" />
+              <div className="absolute w-36 h-20 rounded-[50%] border border-slate-100" />
+              <img
+                src="/cluster-3d-logo.png"
+                alt="Cluster Cloud 3D Logo"
+                loading="lazy"
+                decoding="async"
+                className="relative w-24 h-24 object-contain select-none filter drop-shadow-[0_16px_26px_rgba(0,112,243,0.35)]"
+              />
+            </div>
+
+            {/* Right handwritten callout */}
+            <div className="relative shrink-0 font-handwriting text-[15px] text-slate-800 leading-[1.05] font-semibold text-right">
+              <span>Same Services</span><br />
+              <span className="text-slate-900 font-bold">Greater Possibilities</span>
+              <div className="absolute -bottom-5 left-1 text-slate-700">
+                <svg width="26" height="22" viewBox="0 0 50 40" fill="none">
+                  <path d="M 44 4 C 34 12 20 16 10 30" stroke="#334155" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M 17 28 L 10 30 L 10 22" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
           </div>
 
           {/* ----------------------------------------------------------------- */}
@@ -875,9 +946,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         </div>
 
         {/* Mobile / Tablet Bottom CTA Bar */}
-        <div className="lg:hidden relative mt-8 pt-2 flex flex-col sm:flex-row items-center justify-center gap-5 max-w-xl mx-auto">
+        <div className="lg:hidden relative mt-8 flex flex-col items-stretch gap-4 max-w-xl mx-auto">
           {/* Businesses Scaled */}
-          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-md shadow-sm border border-slate-100">
+          <div className="self-start flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/95 backdrop-blur-md shadow-sm border border-slate-100">
             <div className="h-10 w-10 rounded-xl bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0">
               <TrendingUp size={20} className="stroke-[2.5]" />
             </div>
@@ -891,11 +962,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             </div>
           </div>
 
-          {/* Primary & Secondary Buttons */}
-          <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
+          {/* Primary Action Button */}
+          <div className="w-full">
             <button
               onClick={() => onExploreAllServices?.()}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm tracking-wide shadow-md transition-all cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#1D68F7] hover:bg-[#185ADB] text-white font-bold text-sm tracking-wide shadow-[0_10px_24px_rgba(29,104,247,0.35)] transition-all cursor-pointer"
             >
               <span>Explore All Services</span>
               <ArrowRight size={16} />
@@ -1093,43 +1164,42 @@ const MobileServiceCard: React.FC<MobileServiceCardProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: customDelay }}
-      whileHover={{ scale: 1.02 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.45, delay: customDelay, ease: [0.22, 1, 0.36, 1] }}
       onClick={onClick}
       className="group w-full cursor-pointer"
     >
-      <div
-        className={`rounded-2xl bg-gradient-to-br from-white/98 to-slate-50/92 backdrop-blur-md border-t-2 border-l-2 border-white border-b border-r border-slate-200/60 p-5 shadow-[0_14px_30px_-6px_rgba(15,23,42,0.08)] ${service.accent.card3dGlow} transition-all duration-300 flex items-center gap-4`}
-        style={{
-          boxShadow: 'inset 0 1px 1px 0 rgba(255, 255, 255, 1), 0 14px 30px -6px rgba(15,23,42,0.08)',
-        }}
-      >
-        <div className={`p-1.5 rounded-full ${service.accent.haloBg} shrink-0`}>
-          <div className={`relative h-12 w-12 rounded-full bg-gradient-to-br ${service.accent.iconGradient} text-white flex items-center justify-center shadow-[inset_0_3px_5px_rgba(255,255,255,0.7),inset_0_-3px_5px_rgba(0,0,0,0.3)] ${service.accent.iconShadow}`}>
-            <div className="absolute top-1 left-2 w-3 h-1.5 rounded-full bg-white/40 blur-[0.5px] pointer-events-none" />
+      <div className="flex items-center gap-4 rounded-3xl bg-white/95 backdrop-blur-md border border-slate-100 p-4 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.18)] transition-all duration-300 group-hover:shadow-[0_18px_42px_-22px_rgba(15,23,42,0.30)] group-active:scale-[0.99]">
+        {/* Icon with halo ring */}
+        <div className={`relative shrink-0 rounded-full ${service.accent.haloBg} p-1.5`}>
+          <div className={`relative h-12 w-12 rounded-full bg-gradient-to-br ${service.accent.iconGradient} text-white flex items-center justify-center shadow-[inset_0_3px_6px_rgba(255,255,255,0.65),inset_0_-3px_6px_rgba(0,0,0,0.25)] ${service.accent.iconShadow}`}>
+            <div className="absolute top-1 left-2 w-3 h-1.5 rounded-full bg-white/45 blur-[0.5px] pointer-events-none" />
             <Icon size={22} className="stroke-[2.3] drop-shadow-[0_2px_3px_rgba(0,0,0,0.25)]" />
           </div>
         </div>
 
-        <div className="flex-1 text-left">
-          <div className="flex items-center justify-between mb-0.5">
-            <span className="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-[10px] font-black text-slate-400 tracking-wider">
+        {/* Content */}
+        <div className="min-w-0 flex-1 text-left">
+          <div className="mb-1 flex items-center gap-1.5">
+            <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-black tracking-wider text-slate-500">
               {service.number}
             </span>
-            <span className={`h-5 w-5 rounded-full ${service.accent.arrowBg} flex items-center justify-center shadow-2xs`}>
-              <ArrowRight size={10} className="stroke-[2.5]" />
-            </span>
+            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: service.accent.nodeColor }} />
           </div>
-          <h3 className="text-base font-black text-[#0F172A] tracking-tight group-hover:text-[#1D68F7] transition-colors leading-snug">
+          <h3 className="text-[15px] font-black leading-snug tracking-tight text-[#0F172A]">
             {service.title}
           </h3>
-          <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mt-0.5">
+          <p className="mt-0.5 text-xs leading-relaxed text-slate-500 line-clamp-2">
             {service.shortDesc}
           </p>
         </div>
+
+        {/* Arrow */}
+        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${service.accent.arrowBg} shadow-2xs transition-transform duration-300 group-hover:translate-x-0.5`}>
+          <ArrowRight size={14} className="stroke-[2.5]" />
+        </span>
       </div>
     </motion.div>
   );
