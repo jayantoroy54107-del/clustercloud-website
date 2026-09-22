@@ -552,7 +552,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
           </nav>
 
           {/* Action Buttons (Right) */}
-          <div className="flex items-center justify-end gap-3 sm:gap-3.5 shrink-0">
+          <div className="flex items-center justify-end gap-1.5 sm:gap-3.5 shrink-0">
             <button
               type="button"
               onClick={onSearchClick}

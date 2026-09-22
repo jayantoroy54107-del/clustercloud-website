@@ -24,7 +24,7 @@ interface AboutSectionProps {
 
 export const AboutSection: React.FC<AboutSectionProps> = ({
   onStartProjectClick,
-  heroImage = '/about/about_office_base.png',
+  heroImage = '/about/about_office_new.png',
   experienceYears = '7+',
   experienceLabel = 'Years of Experience',
   experienceSubtext = 'Building brands, driving growth',
@@ -218,6 +218,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                     alt="Cluster Cloud Office"
                     loading="lazy"
                     decoding="async"
+                    onError={(e) => {
+                      // Graceful fallback: if the newly supplied image file isn't in
+                      // public/about/ yet, keep showing the base office photo.
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/about/about_office_base.png';
+                    }}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105 select-none"
                   />
                   {/* Subtle lighting overlay for extra depth */}
