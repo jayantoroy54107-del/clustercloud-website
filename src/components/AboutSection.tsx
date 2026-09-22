@@ -86,20 +86,18 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             </p>
 
             {/* Stats Row (3 Columns) */}
-            <div className="flex items-center gap-6 sm:gap-8 mb-8 pb-1">
-              <div>
-                <span className="block text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight">99.4%</span>
-                <span className="block text-xs font-semibold text-slate-500 mt-1">Client Retention Rate</span>
+            <div className="grid grid-cols-3 gap-2 sm:gap-8 sm:flex sm:items-center mb-8 pb-1">
+              <div className="min-w-0">
+                <span className="block text-2xl sm:text-4xl font-black text-[#0F172A] tracking-tight">99.4%</span>
+                <span className="block text-[10px] leading-tight sm:text-xs font-semibold text-slate-500 mt-1">Client Retention Rate</span>
               </div>
-              <div className="h-10 w-[1px] bg-slate-200" />
-              <div>
-                <span className="block text-3xl sm:text-4xl font-black text-[#2563EB] tracking-tight">$48M+</span>
-                <span className="block text-xs font-semibold text-slate-500 mt-1">Tracked Client Revenue</span>
+              <div className="min-w-0 sm:border-l sm:border-slate-200 sm:pl-8">
+                <span className="block text-2xl sm:text-4xl font-black text-[#2563EB] tracking-tight">$48M+</span>
+                <span className="block text-[10px] leading-tight sm:text-xs font-semibold text-slate-500 mt-1">Tracked Client Revenue</span>
               </div>
-              <div className="h-10 w-[1px] bg-slate-200" />
-              <div>
-                <span className="block text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight">300+</span>
-                <span className="block text-xs font-semibold text-slate-500 mt-1">Projects Delivered</span>
+              <div className="min-w-0 sm:border-l sm:border-slate-200 sm:pl-8">
+                <span className="block text-2xl sm:text-4xl font-black text-[#0F172A] tracking-tight">300+</span>
+                <span className="block text-[10px] leading-tight sm:text-xs font-semibold text-slate-500 mt-1">Projects Delivered</span>
               </div>
             </div>
 

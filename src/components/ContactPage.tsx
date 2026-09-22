@@ -12,10 +12,19 @@ import {
   Copy,
   CheckCircle2,
   Building2,
+  AlertCircle,
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { lenis } from '../lib/lenis';
+
+// Web3Forms access key — submissions are delivered to the email this key was
+// registered with (info@clustercloud.org). This key is PUBLIC by design (it is
+// meant to live in client-side code), so it is safe to keep here. You can still
+// override it per-environment via a .env file (VITE_WEB3FORMS_ACCESS_KEY=...).
+const WEB3FORMS_ACCESS_KEY =
+  (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined) ||
+  'e1496bb0-cefd-4f79-b222-889c0e4fd4a7';
 
 export interface ContactPageProps {
   onNavigate?: (route: any, targetSection?: string) => void;
@@ -43,24 +52,62 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Copy email handler
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigator.clipboard.writeText('hello@clustercloud.co');
+    navigator.clipboard.writeText('info@clustercloud.org');
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2400);
   };
 
-  // Form submit handler
-  const handleSubmit = (e: React.FormEvent) => {
+  // Form submit handler — sends the enquiry to info@clustercloud.org via Web3Forms
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate high-speed submission
-    setTimeout(() => {
+    setSubmitError(null);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `New Website Enquiry — ${formData.service}`,
+          from_name: 'ClusterCloud Website',
+          name: formData.fullName,
+          email: formData.email,
+          company: formData.company || '—',
+          phone: formData.phone || '—',
+          service: formData.service,
+          message: formData.message,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setIsSubmitted(true);
+        setFormData({
+          fullName: '',
+          email: '',
+          company: '',
+          phone: '',
+          service: 'AI Automation',
+          message: '',
+        });
+      } else {
+        setSubmitError(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setSubmitError('Network error. Please check your connection and try again.');
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 900);
+    }
   };
 
   const servicesList = [
@@ -159,10 +206,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       Email
                     </span>
                     <a
-                      href="mailto:hello@clustercloud.co"
+                      href="mailto:info@clustercloud.org"
                       className="block text-[15px] sm:text-base font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors truncate"
                     >
-                      hello@clustercloud.co
+                      info@clustercloud.org
                     </a>
                   </div>
                   <button
@@ -463,6 +510,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                         className="w-full rounded-xl border border-slate-200/90 bg-slate-50/50 hover:bg-white focus:bg-white px-3.5 py-2.5 text-[13.5px] text-slate-900 placeholder:text-slate-400 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/15 focus:outline-none transition-all resize-none"
                       />
                     </div>
+
+                    {/* Error Message */}
+                    {submitError && (
+                      <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-medium text-red-700">
+                        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                        <span>{submitError}</span>
+                      </div>
+                    )}
 
                     {/* Submit Button */}
                     <button

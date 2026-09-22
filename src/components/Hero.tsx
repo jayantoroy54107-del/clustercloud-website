@@ -449,8 +449,30 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative w-full max-w-7xl xl:max-w-[1400px] mx-auto mt-10 sm:mt-14 px-2 sm:px-4 select-none"
         >
-          <div className="relative w-full overflow-x-auto sm:overflow-visible pb-4 sm:pb-0 scrollbar-none">
-            <div className="relative w-full min-w-[560px] sm:min-w-0 h-[175px] sm:h-[195px] lg:h-[210px]">
+          {/* Mobile: 2x2 stat grid (the wave graph below is tablet/desktop only) */}
+          <div className="sm:hidden grid grid-cols-2 gap-3">
+            {[
+              { value: '300+', label: 'Happy Clients' },
+              { value: '7+', label: 'Years Experience' },
+              { value: '3K+', label: 'Projects Completed' },
+              { value: '130+', label: 'Industries Served' },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="flex flex-col items-center justify-center text-center rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-100 shadow-[0_8px_24px_-14px_rgba(15,23,42,0.18)] px-3 py-5"
+              >
+                <span className="text-3xl font-extrabold text-[#0F172A] tracking-tight leading-none">
+                  {s.value}
+                </span>
+                <span className="mt-1.5 text-[11px] font-semibold text-slate-500">
+                  {s.label}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden sm:block relative w-full overflow-visible pb-0">
+            <div className="relative w-full h-[195px] lg:h-[210px]">
 
               {/* Sinuous Wave SVG Line stretching across stats width */}
               <svg
