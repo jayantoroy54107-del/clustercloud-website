@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
     ArrowRight,
     ArrowUpRight,
@@ -55,6 +55,36 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
     }, []);
 
     const filters = useMemo(() => ['ALL', 'SEO & ADS', 'E-COMMERCE', 'LEAD GEN'], []);
+
+    // Classify each case study into the active filter bucket.
+    // SEO & ADS  -> paid search / social / SEO style performance campaigns
+    // E-COMMERCE -> online stores, retail & shopping campaigns
+    // LEAD GEN   -> lead, demo, registration & enquiry campaigns
+    const matchesFilter = useCallback(
+        (text: string) => {
+            if (activeFilter === 'ALL') return true;
+            const matchers: Record<string, RegExp> = {
+                'SEO & ADS':
+                    /google|meta|ads|search|shopping|pmax|pay-per-click|\bppc\b|\bseo\b|roas|\bcpc\b|\bctr\b|clicks?/i,
+                'E-COMMERCE': /e-?commerce|retail|shopping|\bstore\b|products?/i,
+                'LEAD GEN':
+                    /lead|registration|sign-?up|demo|cost-per|conversions?|enquir|inquir|claim/i,
+            };
+            const rx = matchers[activeFilter];
+            return rx ? rx.test(text) : true;
+        },
+        [activeFilter],
+    );
+
+    const filteredCaseStudies = useMemo(
+        () => caseStudiesData.filter((s) => matchesFilter(`${s.category} ${s.client} ${s.desc}`)),
+        [matchesFilter],
+    );
+
+    const filteredMarketingStudies = useMemo(
+        () => marketingStudies.filter((s) => matchesFilter(`${s.industry} ${s.title} ${s.excerpt}`)),
+        [matchesFilter],
+    );
 
     const totalStudies = caseStudiesData.length + marketingStudies.length;
 
@@ -144,136 +174,151 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                 </div>
 
                 {/* Featured Case Studies */}
-                <section className="mt-14 sm:mt-18 text-left">
-                    <div className="flex items-center gap-3 mb-8">
-                        <Layers size={20} className="text-[#2563EB]" />
-                        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
-                            Featured Case Studies
-                        </h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
-                        {caseStudiesData.map((study) => (
-                            <article
-                                key={study.id}
-                                className="group relative flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
-                            >
-                                <div className="relative w-full h-52 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
-                                    <img
-                                        src={study.image}
-                                        alt={study.client}
-                                        loading="lazy"
-                                        onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-                                        className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                                    />
-                                    <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
-                                        {study.category}
-                                    </span>
-                                </div>
-
-                                <div className="flex flex-col flex-1 p-6 sm:p-7">
-                                    <span className="text-xs font-extrabold text-slate-300 tracking-tight mb-1">
-                                        {study.number}
-                                    </span>
-                                    <h3 className="text-lg sm:text-xl font-black text-[#0F172A] tracking-tight leading-snug mb-2.5 group-hover:text-[#2563EB] transition-colors">
-                                        {study.client}
-                                    </h3>
-                                    <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
-                                        {study.desc}
-                                    </p>
-
-                                    <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                                        <div className="flex items-center gap-2">
-                                            <TrendingUp size={16} className="text-emerald-500" />
-                                            <div>
-                                                <p className="text-base font-black text-[#0F172A] leading-none">
-                                                    {study.metric}
-                                                </p>
-                                                <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 mt-1">
-                                                    {study.metricLabel}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={() => onNavigateHome('work')}
-                                            className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[#2563EB] hover:gap-2.5 transition-all cursor-pointer"
-                                        >
-                                            <span>Details</span>
-                                            <ArrowRight size={13} className="stroke-[2.5]" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Performance Marketing Case Studies */}
-                <section className="mt-16 sm:mt-20 text-left">
-                    <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
-                        <div className="flex items-center gap-3">
-                            <BarChart2 size={20} className="text-[#2563EB]" />
+                {filteredCaseStudies.length > 0 && (
+                    <section className="mt-14 sm:mt-18 text-left">
+                        <div className="flex items-center gap-3 mb-8">
+                            <Layers size={20} className="text-[#2563EB]" />
                             <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
-                                Performance Marketing Case Studies
+                                Featured Case Studies
                             </h2>
                         </div>
-                        <span className="text-xs font-bold text-slate-500">
-                            {marketingStudies.length} studies
-                        </span>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
-                        {marketingStudies.map((study) => (
-                            <a
-                                key={study.slug}
-                                href={study.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
-                            >
-                                <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
-                                    {study.image ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
+                            {filteredCaseStudies.map((study) => (
+                                <article
+                                    key={study.id}
+                                    className="group relative flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
+                                >
+                                    <div className="relative w-full h-52 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
                                         <img
                                             src={study.image}
-                                            alt={study.title}
+                                            alt={study.client}
                                             loading="lazy"
                                             onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-                                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                            className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                                         />
-                                    ) : null}
-                                    <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
-                                        {study.industry}
-                                    </span>
-                                    <span className="absolute top-4 right-4 h-8 w-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-slate-500 group-hover:text-[#2563EB] transition-colors">
-                                        <ArrowUpRight size={15} />
-                                    </span>
-                                </div>
-
-                                <div className="flex flex-col flex-1 p-6 sm:p-7">
-                                    <h3 className="text-base sm:text-lg font-black text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:text-[#2563EB] transition-colors">
-                                        {study.title}
-                                    </h3>
-
-                                    <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
-                                        {study.excerpt}
-                                    </p>
-
-                                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
-                                        {study.results.slice(0, 3).map((r) => (
-                                            <div key={r.label}>
-                                                <p className="text-sm font-black text-[#0F172A] leading-none">{r.value}</p>
-                                                <p className="text-[9.5px] font-bold uppercase tracking-wide text-slate-400 mt-1 leading-tight">
-                                                    {r.label}
-                                                </p>
-                                            </div>
-                                        ))}
+                                        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
+                                            {study.category}
+                                        </span>
                                     </div>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
-                </section>
+
+                                    <div className="flex flex-col flex-1 p-6 sm:p-7">
+                                        <span className="text-xs font-extrabold text-slate-300 tracking-tight mb-1">
+                                            {study.number}
+                                        </span>
+                                        <h3 className="text-lg sm:text-xl font-black text-[#0F172A] tracking-tight leading-snug mb-2.5 group-hover:text-[#2563EB] transition-colors">
+                                            {study.client}
+                                        </h3>
+                                        <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
+                                            {study.desc}
+                                        </p>
+
+                                        <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                                            <div className="flex items-center gap-2">
+                                                <TrendingUp size={16} className="text-emerald-500" />
+                                                <div>
+                                                    <p className="text-base font-black text-[#0F172A] leading-none">
+                                                        {study.metric}
+                                                    </p>
+                                                    <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400 mt-1">
+                                                        {study.metricLabel}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => onNavigateHome('work')}
+                                                className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[#2563EB] hover:gap-2.5 transition-all cursor-pointer"
+                                            >
+                                                <span>Details</span>
+                                                <ArrowRight size={13} className="stroke-[2.5]" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Performance Marketing Case Studies */}
+                {filteredMarketingStudies.length > 0 && (
+                    <section className="mt-16 sm:mt-20 text-left">
+                        <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
+                            <div className="flex items-center gap-3">
+                                <BarChart2 size={20} className="text-[#2563EB]" />
+                                <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
+                                    Performance Marketing Case Studies
+                                </h2>
+                            </div>
+                            <span className="text-xs font-bold text-slate-500">
+                                {filteredMarketingStudies.length}{' '}
+                                {filteredMarketingStudies.length === 1 ? 'study' : 'studies'}
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
+                            {filteredMarketingStudies.map((study) => (
+                                <a
+                                    key={study.slug}
+                                    href={study.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
+                                >
+                                    <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
+                                        {study.image ? (
+                                            <img
+                                                src={study.image}
+                                                alt={study.title}
+                                                loading="lazy"
+                                                onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+                                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                        ) : null}
+                                        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
+                                            {study.industry}
+                                        </span>
+                                        <span className="absolute top-4 right-4 h-8 w-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-slate-500 group-hover:text-[#2563EB] transition-colors">
+                                            <ArrowUpRight size={15} />
+                                        </span>
+                                    </div>
+
+                                    <div className="flex flex-col flex-1 p-6 sm:p-7">
+                                        <h3 className="text-base sm:text-lg font-black text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:text-[#2563EB] transition-colors">
+                                            {study.title}
+                                        </h3>
+
+                                        <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
+                                            {study.excerpt}
+                                        </p>
+
+                                        <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
+                                            {study.results.slice(0, 3).map((r) => (
+                                                <div key={r.label}>
+                                                    <p className="text-sm font-black text-[#0F172A] leading-none">{r.value}</p>
+                                                    <p className="text-[9.5px] font-bold uppercase tracking-wide text-slate-400 mt-1 leading-tight">
+                                                        {r.label}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </a>))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Empty state when a filter has no matching studies */}
+                {activeFilter !== 'ALL' &&
+                    filteredCaseStudies.length === 0 &&
+                    filteredMarketingStudies.length === 0 && (
+                        <div className="mt-14 sm:mt-18 py-20 text-center rounded-3xl border border-dashed border-slate-300 bg-white/60">
+                            <p className="text-slate-500 font-semibold">
+                                No case studies match this filter yet.
+                            </p>
+                        </div>
+                    )}
 
                 {/* CTA */}
                 <div className="mt-20 sm:mt-24 rounded-[28px] sm:rounded-[36px] bg-[#0F172A] text-white p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">

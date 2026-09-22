@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { blogArticles } from '../data/blogArticles';
+import { blogArticles, BLOG_CATEGORIES } from '../data/blogArticles';
 import { lenis } from '../lib/lenis';
 
 export interface AllBlogsPageProps {
@@ -45,14 +45,10 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
   }, []);
 
   const categories = useMemo(() => {
-    const counts: Record<string, number> = {
-      ALL: blogArticles.length,
-      SEO: 0,
-      AI: 0,
-      MARKETING: 0,
-      GROWTH: 0,
-      BUSINESS: 0,
-    };
+    const counts: Record<string, number> = {};
+    BLOG_CATEGORIES.forEach((cat) => {
+      counts[cat] = 0;
+    });
     blogArticles.forEach((art) => {
       if (counts[art.category] !== undefined) {
         counts[art.category]++;
@@ -60,12 +56,8 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
     });
 
     return [
-      { name: 'ALL', count: 150 }, // Total insights count
-      { name: 'SEO', count: 42 },
-      { name: 'AI', count: 28 },
-      { name: 'MARKETING', count: 26 },
-      { name: 'GROWTH', count: 32 },
-      { name: 'BUSINESS', count: 24 },
+      { name: 'ALL', count: blogArticles.length },
+      ...BLOG_CATEGORIES.map((cat) => ({ name: cat, count: counts[cat] })),
     ];
   }, []);
 
@@ -189,7 +181,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
               <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>
                 Showing <strong className="text-slate-900">{filteredArticles.length}</strong> of{' '}
-                <strong className="text-slate-900">150+</strong> curated insights
+                <strong className="text-slate-900">{blogArticles.length}</strong> curated insights
               </span>
             </div>
 
@@ -205,8 +197,8 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
                   type="button"
                   onClick={() => setSelectedCategory(cat.name)}
                   className={`shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-[13px] font-extrabold tracking-wide uppercase transition-all duration-200 cursor-pointer select-none ${isActive
-                      ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
-                      : 'bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50'
+                    ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
+                    : 'bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                 >
                   <span>{cat.name}</span>

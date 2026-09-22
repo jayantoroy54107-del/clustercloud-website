@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, X, Clock, BookOpen, Share2, Check } from 'lucide-react';
+import { blogArticles, BLOG_CATEGORIES, type BlogCategory } from '../data/blogArticles';
 
 export interface InsightArticle {
   id: string;
   slug: string;
-  category: 'SEO' | 'AI' | 'MARKETING' | 'GROWTH' | 'CASE STUDIES' | 'BUSINESS';
+  category: BlogCategory;
   tag: string;
   title: string;
   excerpt: string;
@@ -25,111 +26,28 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onSelectArticl
   const [activeArticle, setActiveArticle] = useState<InsightArticle | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
 
+  // Single source of truth: the real blog articles, mapped to this section's shape.
+  const articles: InsightArticle[] = blogArticles.map((a) => ({
+    id: a.slug,
+    slug: a.slug,
+    category: a.category,
+    tag: a.tag,
+    title: a.title,
+    excerpt: a.excerpt,
+    readTime: a.readTime,
+    image: a.coverImage,
+    keyTakeaways: a.keyTakeaways,
+  }));
+
+  const featuredArticle: InsightArticle | undefined = articles[0];
+
   const categories = [
-    { name: 'ALL', count: 150 },
-    { name: 'SEO', count: 42 },
-    { name: 'AI', count: 28 },
-    { name: 'MARKETING', count: 26 },
-    { name: 'GROWTH', count: 32 },
-    { name: 'CASE STUDIES', count: 18 },
-    { name: 'BUSINESS', count: 24 },
-  ];
-
-  const featuredArticle: InsightArticle = {
-    id: 'feat-1',
-    slug: 'how-ai-search-is-changing-seo-forever',
-    category: 'AI',
-    tag: 'FEATURED ARTICLE',
-    title: 'How AI Search Is Changing SEO Forever',
-    excerpt:
-      "Explore how Google's AI-first search ecosystem is reshaping the future — and what businesses can do to stay ahead.",
-    readTime: '6 min read',
-    image: '/insights/featured_building.jpg',
-    content: `Google Search Generative Experience (SGE) and AI Overview engines have permanently decoupled organic clicks from standard top-10 ten-blue-links. For modern businesses, ranking alone is no longer enough: your brand must become the primary cited authority for conversational answer engines.
-
-In this deep dive, we outline the exact architecture of Generative Engine Optimization (GEO):
-1. Structured Semantic Schema: Feeding LLM crawlers with unambiguous entity relationships.
-2. Information Gain Scoring: Google rewards original statistical findings, exclusive benchmarks, and proprietary frameworks over generic commodity text.
-3. Multimodal Search Readiness: Optimizing high-resolution imagery, video chapters, and technical tables for immediate AI citation.`,
-    keyTakeaways: [
-      'Focus on "Information Gain" rather than redundant keyword stuffing.',
-      'Implement deep schema markups to be directly cited by Gemini and ChatGPT.',
-      'Build branded proprietary data assets that competitors cannot reproduce.',
-    ],
-  };
-
-  const articles: InsightArticle[] = [
-    {
-      id: 'art-1',
-      slug: 'how-local-businesses-can-dominate-search-in-2026',
-      category: 'SEO',
-      tag: 'SEO STRATEGY',
-      title: 'How Local Businesses Can Dominate Search in 2026',
-      excerpt: 'Practical SEO strategies to get more visibility, traffic, and real customers.',
-      readTime: '4 min read',
-      image: '/insights/card1_curve.jpg',
-      content:
-        'Local SEO in 2026 relies on hyper-localized entity authority, geo-tagged mobile reviews, and proximity signals. Businesses that connect Google Business Profiles with high-velocity landing pages generate up to 340% more localized inbound calls without paid advertising waste.',
-      keyTakeaways: [
-        'Optimize localized landing pages with localized FAQs.',
-        'Actively manage review velocity and direct query responses.',
-        'Ensure 100% NAP (Name, Address, Phone) consistency across directories.',
-      ],
-    },
-    {
-      id: 'art-2',
-      slug: 'the-future-of-content-creation-with-ai',
-      category: 'AI',
-      tag: 'AI MARKETING',
-      title: 'The Future of Content Creation With AI',
-      excerpt: 'How AI is changing the way brands create, scale, and win.',
-      readTime: '5 min read',
-      image: '/insights/card2_laptop.jpg',
-      content:
-        'Generative AI has democratized content creation, but true market leadership belongs to brands that combine human editorial discretion with automated production workflows. Learn how top studios generate 10x content output while maintaining distinctive brand voice.',
-      keyTakeaways: [
-        'Use AI for exploratory ideation and research acceleration.',
-        'Enforce rigorous human editorial gates for brand authenticity.',
-        'Repurpose high-performing long-form pieces into dozens of micro-assets.',
-      ],
-    },
-    {
-      id: 'art-3',
-      slug: 'building-ads-that-actually-convert',
-      category: 'GROWTH',
-      tag: 'PAID GROWTH',
-      title: 'Building Ads That Actually Convert',
-      excerpt: 'A data-driven approach to creating high-performing ad campaigns.',
-      readTime: '5 min read',
-      image: '/insights/card3_facade.jpg',
-      content:
-        'With rising CPMs across Meta, Google, and LinkedIn, creative fatigue is the silent killer of ad performance. High-growth advertisers rely on rapid creative testing matrices and automated bid cap architectures to keep customer acquisition costs sustainable.',
-      keyTakeaways: [
-        'Test 5 hook variations for every core creative asset.',
-        'Align ad messaging with landing page headlines with zero friction.',
-        'Leverage first-party server-side tracking (CAPI) to combat signal loss.',
-      ],
-    },
-    {
-      id: 'art-4',
-      slug: 'marketing-automation-for-scalable-growth',
-      category: 'BUSINESS',
-      tag: 'BUSINESS GROWTH',
-      title: 'Marketing Automation for Scalable Growth',
-      excerpt: 'Save time, nurture leads, and grow faster with smart automation.',
-      readTime: '4 min read',
-      image: '/insights/card4_leaves.jpg',
-      content:
-        'Scalable growth happens when no lead falls through the cracks. By connecting your CRM with automated intent triggers, email nurturing sequences, and real-time sales alerts, modern companies can increase pipeline conversion rates by over 80%.',
-      keyTakeaways: [
-        'Automate lead scoring based on content engagement and intent signals.',
-        'Deploy dynamic email drips tailored to specific buyer pain points.',
-        'Integrate Slack or CRM alerts for immediate follow-up on hot prospects.',
-      ],
-    },
-  ];
-
-  // Filtered articles based on selected category
+    { name: 'ALL', count: articles.length },
+    ...BLOG_CATEGORIES.map((c) => ({
+      name: c,
+      count: articles.filter((a) => a.category === c).length,
+    })),
+  ];  // Filtered articles based on selected category
   const filteredArticles =
     selectedCategory === 'ALL'
       ? articles
@@ -143,17 +61,17 @@ In this deep dive, we outline the exact architecture of Generative Engine Optimi
 
   return (
     <section className="relative w-full bg-[#FFFFFF] py-16 sm:py-24 lg:py-28 overflow-hidden text-[#0F172A] border-t border-slate-100">
-      
+
       {/* Background Subtle Ambient Glows */}
       <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-gradient-to-b from-blue-50/60 via-indigo-50/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="w-full max-w-[1520px] mx-auto px-5 sm:px-8 lg:px-14 xl:px-20">
-        
+
         {/* ========================================================================= */}
         {/* 1. Top Section Header (Headline + Handwritten Doodle + Stats)             */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start justify-between pb-10 sm:pb-12">
-          
+
           {/* Left: Indicator & Headline */}
           <div className="lg:col-span-6 text-left">
             {/* Top Indicator: INSIGHTS ── */}
@@ -211,7 +129,7 @@ In this deep dive, we outline the exact architecture of Generative Engine Optimi
             <div className="flex items-center gap-6 sm:gap-8">
               <div>
                 <span className="block text-3xl sm:text-4xl lg:text-[42px] font-black text-[#2563EB] tracking-tight leading-none">
-                  150+
+                  {articles.length}
                 </span>
                 <span className="mt-1.5 block text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
                   ARTICLES
@@ -223,7 +141,7 @@ In this deep dive, we outline the exact architecture of Generative Engine Optimi
 
               <div>
                 <span className="block text-3xl sm:text-4xl lg:text-[42px] font-black text-[#2563EB] tracking-tight leading-none">
-                  10+
+                  {categories.filter((c) => c.name !== 'ALL' && c.count > 0).length}
                 </span>
                 <span className="mt-1.5 block text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
                   TOPIC CATEGORIES
@@ -242,77 +160,79 @@ In this deep dive, we outline the exact architecture of Generative Engine Optimi
         {/* 2. Middle Featured Article Row & Category Filter List                     */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-10 items-stretch mt-4 sm:mt-6">
-          
+
           {/* A. Featured Article Card (Left/Center, col-span-12 lg:col-span-8 xl:col-span-9) */}
-          <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
-            <div className="relative w-full rounded-[28px] sm:rounded-[36px] border border-slate-200/80 bg-white overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)] transition-all duration-300 flex flex-col md:flex-row items-stretch group">
-              
-              {/* Left Architectural Brand Block with Typography */}
-              <div className="relative w-full md:w-[55%] min-h-[280px] sm:min-h-[320px] md:min-h-[360px] overflow-hidden bg-slate-100 flex flex-col justify-between p-6 sm:p-8">
-                {/* Background Architectural Image */}
-                <img
-                  src="/insights/featured_building.jpg"
-                  alt="Modern Architecture"
-                  loading="lazy"
-                  decoding="async"
-                  className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                />
+          {featuredArticle && (
+            <div className="lg:col-span-8 xl:col-span-9 flex flex-col">
+              <div className="relative w-full rounded-[28px] sm:rounded-[36px] border border-slate-200/80 bg-white overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)] transition-all duration-300 flex flex-col md:flex-row items-stretch group">
 
-                {/* Soft Gradient Overlay on Left Side for Typography Clarity */}
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-100/90 via-slate-100/40 to-transparent pointer-events-none" />
+                {/* Left Architectural Brand Block with Typography */}
+                <div className="relative w-full md:w-[55%] min-h-[280px] sm:min-h-[320px] md:min-h-[360px] overflow-hidden bg-slate-100 flex flex-col justify-between p-6 sm:p-8">
+                  {/* Background Architectural Image */}
+                  <img
+                    src={featuredArticle.image}
+                    alt={featuredArticle.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
 
-                {/* Top-Left Category Words Stack */}
-                <div className="relative z-10 text-left select-none">
-                  <div className="space-y-1 sm:space-y-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-slate-700 tracking-[0.24em] uppercase">
-                    <p>S T R A T E G Y</p>
-                    <p>M A R K E T I N G</p>
-                    <p>T E C H N O L O G Y</p>
-                    <p>G R O W T H</p>
+                  {/* Soft Gradient Overlay on Left Side for Typography Clarity */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-100/90 via-slate-100/40 to-transparent pointer-events-none" />
+
+                  {/* Top-Left Category Words Stack */}
+                  <div className="relative z-10 text-left select-none">
+                    <div className="space-y-1 sm:space-y-1.5 text-[10.5px] sm:text-[11.5px] font-bold text-slate-700 tracking-[0.24em] uppercase">
+                      <p>S T R A T E G Y</p>
+                      <p>M A R K E T I N G</p>
+                      <p>T E C H N O L O G Y</p>
+                      <p>G R O W T H</p>
+                    </div>
+                  </div>
+
+                  {/* Bottom-Left Tagline */}
+                  <div className="relative z-10 text-left select-none mt-auto pt-10">
+                    <p className="text-[12px] sm:text-[13px] font-semibold text-slate-700 leading-snug max-w-[160px]">
+                      A smarter tomorrow for bolder brands.
+                    </p>
                   </div>
                 </div>
 
-                {/* Bottom-Left Tagline */}
-                <div className="relative z-10 text-left select-none mt-auto pt-10">
-                  <p className="text-[12px] sm:text-[13px] font-semibold text-slate-700 leading-snug max-w-[160px]">
-                    A smarter tomorrow for bolder brands.
+                {/* Right Featured Article Details & Call to Action */}
+                <div className="w-full md:w-[45%] p-6 sm:p-8 xl:p-10 flex flex-col justify-center text-left bg-white">
+                  <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-[#2563EB] mb-2.5 block">
+                    FEATURED ARTICLE
+                  </span>
+
+                  <h3 className="text-2xl sm:text-[26px] xl:text-[28px] font-black text-[#0F172A] tracking-tight leading-[1.18] mb-3 group-hover:text-[#2563EB] transition-colors duration-200">
+                    {featuredArticle.title}
+                  </h3>
+
+                  <p className="text-slate-600 text-[13.5px] sm:text-[14.5px] leading-relaxed font-normal mb-6">
+                    {featuredArticle.excerpt}
                   </p>
+
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onSelectArticle) {
+                          onSelectArticle(featuredArticle.slug);
+                        } else {
+                          setActiveArticle(featuredArticle);
+                        }
+                      }}
+                      className="inline-flex items-center gap-2.5 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] px-7 py-3 text-[14px] font-bold text-white shadow-[0_6px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_28px_rgba(37,99,235,0.45)] transition-all duration-200 cursor-pointer"
+                    >
+                      <span>Read Article</span>
+                      <ArrowRight size={16} strokeWidth={2.4} />
+                    </button>
+                  </div>
                 </div>
+
               </div>
-
-              {/* Right Featured Article Details & Call to Action */}
-              <div className="w-full md:w-[45%] p-6 sm:p-8 xl:p-10 flex flex-col justify-center text-left bg-white">
-                <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-[#2563EB] mb-2.5 block">
-                  FEATURED ARTICLE
-                </span>
-
-                <h3 className="text-2xl sm:text-[26px] xl:text-[28px] font-black text-[#0F172A] tracking-tight leading-[1.18] mb-3 group-hover:text-[#2563EB] transition-colors duration-200">
-                  {featuredArticle.title}
-                </h3>
-
-                <p className="text-slate-600 text-[13.5px] sm:text-[14.5px] leading-relaxed font-normal mb-6">
-                  {featuredArticle.excerpt}
-                </p>
-
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onSelectArticle) {
-                        onSelectArticle(featuredArticle.slug);
-                      } else {
-                        setActiveArticle(featuredArticle);
-                      }
-                    }}
-                    className="inline-flex items-center gap-2.5 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] px-7 py-3 text-[14px] font-bold text-white shadow-[0_6px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_28px_rgba(37,99,235,0.45)] transition-all duration-200 cursor-pointer"
-                  >
-                    <span>Read Article</span>
-                    <ArrowRight size={16} strokeWidth={2.4} />
-                  </button>
-                </div>
-              </div>
-
             </div>
-          </div>
+          )}
 
           {/* B. Category Filter List (Right, col-span-12 lg:col-span-4 xl:col-span-3) */}
           <div className="lg:col-span-4 xl:col-span-3 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-slate-200/80 pt-6 lg:pt-0 lg:pl-8 xl:pl-10">
@@ -325,17 +245,15 @@ In this deep dive, we outline the exact architecture of Generative Engine Optimi
                     key={cat.name}
                     type="button"
                     onClick={() => setSelectedCategory(cat.name)}
-                    className={`w-full flex items-center justify-between px-5 py-2.5 rounded-full text-[13.5px] font-extrabold transition-all duration-200 cursor-pointer select-none ${
-                      isActive
-                        ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
-                        : 'text-slate-700 hover:text-[#2563EB] hover:bg-slate-100/70'
-                    }`}
+                    className={`w-full flex items-center justify-between px-5 py-2.5 rounded-full text-[13.5px] font-extrabold transition-all duration-200 cursor-pointer select-none ${isActive
+                      ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
+                      : 'text-slate-700 hover:text-[#2563EB] hover:bg-slate-100/70'
+                      }`}
                   >
                     <span className="tracking-wide uppercase">{cat.name}</span>
                     <span
-                      className={`text-xs font-semibold ${
-                        isActive ? 'text-white/90' : 'text-slate-400'
-                      }`}
+                      className={`text-xs font-semibold ${isActive ? 'text-white/90' : 'text-slate-400'
+                        }`}
                     >
                       {cat.count}
                     </span>

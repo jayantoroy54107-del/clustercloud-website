@@ -47,8 +47,8 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
   onOpenSearch,
   onOpenGetStarted,
 }) => {
-  // Find current article or fallback to flagship
-  const article: BlogArticle =
+  // Find the current article. There is no demo fallback — the list may be empty.
+  const article: BlogArticle | undefined =
     blogArticles.find((a) => a.slug === articleSlug) || blogArticles[0];
 
   const [readingProgress, setReadingProgress] = useState(0);
@@ -73,13 +73,14 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
       }
 
       // Check which section heading is currently active
-      const headings = article.tableOfContents.map((toc) => document.getElementById(toc.id));
+      const toc = article?.tableOfContents ?? [];
+      const headings = toc.map((item) => document.getElementById(item.id));
       const scrollPos = window.scrollY + 180;
 
       for (let i = headings.length - 1; i >= 0; i--) {
         const h = headings[i];
         if (h && h.offsetTop <= scrollPos) {
-          setActiveTocId(article.tableOfContents[i].id);
+          setActiveTocId(toc[i].id);
           break;
         }
       }
@@ -104,14 +105,14 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
   };
 
   // Find Next and Previous articles
-  const currentIndex = blogArticles.findIndex((a) => a.slug === article.slug);
+  const currentIndex = blogArticles.findIndex((a) => a.slug === article?.slug);
   const prevArticle = currentIndex > 0 ? blogArticles[currentIndex - 1] : null;
   const nextArticle =
     currentIndex < blogArticles.length - 1 ? blogArticles[currentIndex + 1] : null;
 
   // Filter 3 related articles
   const relatedArticles = blogArticles
-    .filter((a) => a.slug !== article.slug)
+    .filter((a) => a.slug !== article?.slug)
     .slice(0, 3);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
@@ -122,6 +123,27 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
       setNewsletterEmail('');
     }
   };
+
+  // No articles published yet — render a friendly placeholder instead of crashing.
+  if (!article) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-[#F8FAFC] px-6 text-center">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#0F172A] tracking-tight mb-3">
+            No articles yet
+          </h1>
+          <p className="text-slate-500 mb-6">New insights are on the way. Check back soon.</p>
+          <button
+            type="button"
+            onClick={() => onNavigateHome()}
+            className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-6 py-3 text-sm font-bold text-white hover:bg-[#1D4ED8] transition-colors cursor-pointer"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
@@ -281,7 +303,7 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
         {/* ===================================================================== */}
         {/* Full-Width Hero Cover Image                                           */}
         {/* ===================================================================== */}
-        <div className="relative w-full h-[320px] sm:h-[440px] md:h-[540px] rounded-[32px] sm:rounded-[40px] overflow-hidden border border-slate-200/90 shadow-2xl mb-12 sm:mb-16 bg-slate-900 group">
+        <div className="relative w-full aspect-[16/10] rounded-[32px] sm:rounded-[40px] overflow-hidden border border-slate-200/90 shadow-2xl mb-12 sm:mb-16 bg-slate-900 group">
           <img
             src={article.coverImage}
             alt={article.title}
@@ -328,8 +350,8 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
                       href={`#${toc.id}`}
                       onClick={(e) => handleTocClick(toc.id, e)}
                       className={`block text-[13.5px] py-1 transition-all duration-150 leading-snug cursor-pointer ${isActive
-                          ? 'font-bold text-[#2563EB] translate-x-1.5'
-                          : 'font-medium text-slate-600 hover:text-[#2563EB]'
+                        ? 'font-bold text-[#2563EB] translate-x-1.5'
+                        : 'font-medium text-slate-600 hover:text-[#2563EB]'
                         }`}
                     >
                       {toc.title}
@@ -434,11 +456,62 @@ export const SingleBlogPage: React.FC<SingleBlogPageProps> = ({
                     {section.title}
                   </h2>
 
-                  {/* Section Paragraphs */}
+                  {/* Section Body — paragraphs, sub-headings, lists and FAQ */}
                   <div className="prose prose-slate max-w-none text-slate-700 text-base sm:text-[17px] leading-[1.8] space-y-5">
-                    {section.body.map((p, idx) => (
-                      <p key={idx}>{p}</p>
-                    ))}
+                    {section.body.map((block, idx) => {
+                      if (typeof block === 'string') {
+                        return <p key={idx}>{block}</p>;
+                      }
+                      if (block.type === 'heading') {
+                        return (
+                          <h3
+                            key={idx}
+                            className="text-lg sm:text-xl font-black text-[#0F172A] tracking-tight pt-2"
+                          >
+                            {block.text}
+                          </h3>
+                        );
+                      }
+                      if (block.type === 'list') {
+                        return block.ordered ? (
+                          <ol
+                            key={idx}
+                            className="list-decimal pl-6 space-y-2 marker:text-[#2563EB] marker:font-bold font-medium"
+                          >
+                            {block.items.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ol>
+                        ) : (
+                          <ul
+                            key={idx}
+                            className="list-disc pl-6 space-y-2 marker:text-[#2563EB] font-medium"
+                          >
+                            {block.items.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        );
+                      }
+                      if (block.type === 'faq') {
+                        return (
+                          <div key={idx} className="not-prose space-y-4 pt-1">
+                            {block.items.map((f, i) => (
+                              <div
+                                key={i}
+                                className="rounded-2xl bg-white border border-slate-200/80 p-5 sm:p-6 shadow-xs"
+                              >
+                                <h4 className="text-base sm:text-[17px] font-black text-[#0F172A] tracking-tight mb-2">
+                                  {f.q}
+                                </h4>
+                                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">{f.a}</p>
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
                   </div>
 
                   {/* Highlight Quote Box */}
