@@ -272,35 +272,6 @@ export const CaseStudyPage: React.FC<CaseStudyPageProps> = ({
                     </div>
                 </section>
 
-                {/* Gallery */}
-                {study.gallery.length > 0 && (
-                    <section className="mt-14 sm:mt-20 text-left">
-                        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight mb-6">
-                            Project Highlights
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {study.gallery.map((g) => (
-                                <figure
-                                    key={g.caption}
-                                    className="rounded-3xl overflow-hidden bg-white border border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.04)]"
-                                >
-                                    <div className="w-full h-56 sm:h-64 overflow-hidden bg-gradient-to-br from-slate-200 via-blue-50 to-blue-100">
-                                        <img
-                                            src={g.src}
-                                            alt={g.caption}
-                                            loading="lazy"
-                                            className="w-full h-full object-cover object-center"
-                                        />
-                                    </div>
-                                    <figcaption className="px-5 py-4 text-xs sm:text-[13px] font-semibold text-slate-600">
-                                        {g.caption}
-                                    </figcaption>
-                                </figure>
-                            ))}
-                        </div>
-                    </section>
-                )}
-
                 {/* Real Work — embedded Instagram reels */}
                 {study.reels && study.reels.length > 0 && (
                     <section className="mt-14 sm:mt-20 text-left">

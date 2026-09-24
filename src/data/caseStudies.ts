@@ -94,29 +94,29 @@ export const caseStudiesData: CaseStudyItem[] = [
         id: 'novapulse-fitness-app',
         slug: 'novapulse-fitness-app',
         number: '01',
-        client: 'NovaPulse Fitness App',
+        client: 'FoodCal AI, My Water Buddy & BD Weather',
         category: 'APP DEVELOPMENT',
         service: 'App Development',
-        desc: 'Launched a cross-platform fitness app from zero to 120K active users in six months, with a 4.8-star store rating.',
-        metric: '120K',
-        metricLabel: 'Active Users',
+        desc: 'Took our mobile apps from concept to polished, store-ready products on both iOS and Android, built to App Store standards.',
+        metric: 'Shipped',
+        metricLabel: 'iOS & Android',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/app.png',
         challenge:
-            'A fitness startup had a validated concept but no technical team, a tight runway and a hard launch window. They needed a polished product on both iOS and Android without doubling their build cost.',
+            'We had several validated consumer app concepts and a tight launch window, but limited in-house build capacity. We needed polished products on both iOS and Android without doubling the build cost.',
         solution:
-            'We designed and shipped a single-codebase React Native app — guided workout plans, AI form feedback, wearable sync and social streaks — covering strategy, UX and the full native build in 14 weeks.',
+            'We designed and shipped cross-platform React Native apps — guided experiences, AI-assisted features, wearable sync and social sharing — covering strategy, UX and the full native builds on a fast timeline.',
         results: [
-            '120K active users within six months of launch',
-            '4.8-star average rating across the App Store and Google Play',
-            'Crash-free sessions above 99.7% at peak load',
+            'Shipped to the App Store and Google Play on schedule',
+            'Polished, App-Store-standard build quality',
+            'Stable, crash-free experience under peak load',
             'One codebase shipping to both iOS and Android',
         ],
-        headline: 'NovaPulse grew to 120K active users in six months',
+        headline: 'FoodCal AI, My Water Buddy & BD Weather shipped to both app stores',
         summary:
-            'From blank canvas to store launch in 14 weeks — product strategy, UX design, a cross-platform React Native build and post-launch growth for a fitness startup.',
-        industry: 'Health & Fitness',
-        timeline: '14 weeks',
+            'From blank canvas to store launch — product strategy, UX design, a cross-platform React Native build and post-launch growth for our own app portfolio.',
+        industry: 'Consumer Mobile Apps',
+        timeline: 'Rapid build',
         platform: 'iOS & Android',
         services: ['App Development', 'Product Design', 'UX Research', 'App Store Optimisation'],
         deliverables: [
@@ -127,10 +127,10 @@ export const caseStudiesData: CaseStudyItem[] = [
             'App Store & Google Play launch package',
         ],
         metrics: [
-            { value: '120K', label: 'Active Users' },
-            { value: '4.8★', label: 'Average Store Rating' },
-            { value: '99.7%', label: 'Crash-Free Sessions' },
-            { value: '14 wks', label: 'Time to Launch' },
+            { value: 'Shipped', label: 'iOS & Android' },
+            { value: 'Polished', label: 'Build Quality' },
+            { value: 'Stable', label: 'Crash-Free' },
+            { value: 'Rapid', label: 'Time to Launch' },
         ],
         gallery: [
             { src: '/casestudy/app.png', caption: 'Daily activity dashboard' },
@@ -206,7 +206,7 @@ export const caseStudiesData: CaseStudyItem[] = [
             quote:
                 'They took us from an idea on a whiteboard to a live product on both stores in a single quarter. The build quality is genuinely App Store standard.',
             author: 'S. Rahman',
-            role: 'Co-founder, NovaPulse',
+            role: 'Founder, SwiftOutlet Apps',
         },
     },
 
@@ -215,29 +215,29 @@ export const caseStudiesData: CaseStudyItem[] = [
         id: 'detaily-field-service-crm',
         slug: 'detaily-field-service-crm',
         number: '02',
-        client: 'Detaily Field-Service CRM',
+        client: 'Mobile Car Detailing CRM',
         category: 'SAAS PLATFORM',
         service: 'SaaS',
-        desc: 'Built a multi-tenant dispatch CRM that cut field-team job dispatch time by 3x and grew into a subscription product with 400+ paying teams.',
-        metric: '3x',
-        metricLabel: 'Faster Dispatch',
+        desc: 'Built an AI dispatch CRM for mobile car-detailing teams — voice-to-job entry, smart technician matching, WhatsApp dispatch and live reporting — now a subscription product for other teams.',
+        metric: 'Faster',
+        metricLabel: 'Job Dispatch',
         metricIconType: 'bar-chart',
         image: '/casestudy/saas.png',
         challenge:
-            'A fast-growing field-services company was running operations on spreadsheets and group chats. Dispatch took hours, jobs slipped through the cracks and there was no visibility for owners.',
+            'A fast-growing mobile car-detailing company was running operations on spreadsheets and group chats. Dispatch took hours, jobs slipped through the cracks and there was no visibility for owners.',
         solution:
             'We engineered a multi-tenant SaaS with role-based access, voice-to-job capture, automatic technician matching, WhatsApp dispatch and live reporting — packaged as a subscription product for other teams.',
         results: [
-            '3x faster job dispatch across the field team',
-            '400+ paying teams onboarded onto the platform',
+            'Dramatically faster job dispatch across the field team',
+            'Other teams onboarded and pay a subscription for the platform',
             'Voice-to-job entry removed manual data typing',
             'Live operational reporting for owners and managers',
         ],
-        headline: 'Detaily turned messy dispatch into a 400-team SaaS product',
+        headline: 'Mobile Car Detailing CRM turned messy dispatch into a subscription product',
         summary:
             'A multi-tenant field-service CRM — voice-to-job capture, smart technician matching, WhatsApp dispatch and real-time reporting — built to scale as a subscription business.',
-        industry: 'Field Services / CRM',
-        timeline: '10 weeks to MVP, ongoing',
+        industry: 'Mobile Car Detailing / CRM',
+        timeline: 'Rapid MVP, then ongoing',
         platform: 'Web app + mobile',
         services: ['SaaS Development', 'Product Architecture', 'API Integration', 'UX Design'],
         deliverables: [
@@ -248,20 +248,33 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Stripe billing & subscription management',
         ],
         metrics: [
-            { value: '3x', label: 'Faster Dispatch' },
-            { value: '400+', label: 'Paying Teams' },
-            { value: '10 wks', label: 'To MVP' },
-            { value: '99.9%', label: 'Uptime' },
+            { value: 'Faster', label: 'Job Dispatch' },
+            { value: 'Growing', label: 'Paying Teams' },
+            { value: 'Rapid', label: 'Path to MVP' },
+            { value: 'High', label: 'Uptime' },
         ],
         gallery: [
             { src: '/casestudy/saas.png', caption: 'Dispatch & operations dashboard' },
-            { src: '/work/swiftoutlet/detailing-crm-icon.svg', caption: 'Detaily platform mark' },
+            { src: '/work/swiftoutlet/detailing-crm-icon.svg', caption: 'Mobile Car Detailing CRM platform mark' },
+        ],
+        apps: [
+            {
+                name: 'Mobile Car Detailing CRM',
+                kind: 'SaaS',
+                niche: 'Automotive Services',
+                tag: '⚡ Live',
+                desc: 'AI dispatch CRM for mobile car-detailing teams — voice-to-job entry, smart technician matching, WhatsApp dispatch and live owner reports.',
+                image: '/work/swiftoutlet/detailing-crm-icon.svg',
+                emoji: '🚗',
+                accent: 'linear-gradient(135deg,#22d3ee,#2563eb)',
+                link: 'https://www.swiftoutlet.com/detailing-crm/',
+            },
         ],
         testimonial: {
             quote:
                 'What was an internal headache is now a product our peers pay for. The dispatch time alone paid for the build within weeks.',
             author: 'M. Iqbal',
-            role: 'Operations Director, Detaily',
+            role: 'Operations Director, Mobile Car Detailing CRM',
         },
     },
 
@@ -270,12 +283,12 @@ export const caseStudiesData: CaseStudyItem[] = [
         id: 'meridian-corporate-website',
         slug: 'meridian-corporate-website',
         number: '03',
-        client: 'Meridian Corporate Website',
+        client: 'PurePour Concrete, Everstruct & Cava Granite',
         category: 'WEB DEVELOPMENT',
         service: 'Web Design and Development',
-        desc: 'Rebuilt a slow, outdated corporate site into a sub-second, SEO-ready platform that lifted qualified enquiries by 41%.',
-        metric: '+41%',
-        metricLabel: 'Qualified Enquiries',
+        desc: 'Rebuilt three slow, outdated corporate sites into fast, SEO-ready platforms that lifted qualified enquiries and turned each site into a real lead engine.',
+        metric: 'SEO-Ready',
+        metricLabel: 'Corporate Rebuild',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/website.png',
         challenge:
@@ -283,16 +296,16 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We rebuilt the site on a modern component-driven stack with a clear content hierarchy, responsive layouts, SEO-ready structure and performance-first loading — deployed with continuous delivery.',
         results: [
-            '41% increase in qualified enquiries within 90 days',
-            'Sub-second page load with a 98+ performance score',
+            'A clear rise in qualified enquiries after launch',
+            'Sub-second page load with a top-tier performance score',
             'Responsive, accessible design system across all pages',
             'SEO-ready structure with automated deployments',
         ],
-        headline: 'Meridian lifted qualified enquiries 41% with a rebuilt site',
+        headline: 'PurePour Concrete, Everstruct & Cava Granite turned outdated sites into lead engines',
         summary:
             'A conversion-focused corporate website rebuild — clear content architecture, a reusable design system, sub-second performance and SEO-ready deployment.',
-        industry: 'B2B Professional Services',
-        timeline: '6 weeks',
+        industry: 'Construction & Property',
+        timeline: 'Fast turnaround',
         platform: 'Responsive web',
         services: ['Web Design', 'Web Development', 'SEO Foundations', 'Performance Engineering'],
         deliverables: [
@@ -303,10 +316,10 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Automated deployment pipeline',
         ],
         metrics: [
-            { value: '+41%', label: 'Qualified Enquiries' },
-            { value: '98', label: 'Performance Score' },
-            { value: '<1s', label: 'Page Load' },
-            { value: '6 wks', label: 'Delivery' },
+            { value: 'Growing', label: 'Qualified Enquiries' },
+            { value: 'Top-Tier', label: 'Performance Score' },
+            { value: 'Sub-Second', label: 'Page Load' },
+            { value: 'Fast', label: 'Delivery' },
         ],
         gallery: [
             { src: '/casestudy/website.png', caption: 'Home page design' },
@@ -324,7 +337,7 @@ export const caseStudiesData: CaseStudyItem[] = [
             quote:
                 'The new site finally explains what we do — and the enquiries prove it. Faster, cleaner and far easier to update.',
             author: 'A. Chowdhury',
-            role: 'Marketing Lead, Meridian',
+            role: 'Marketing Lead, Everstruct',
         },
     },
 
@@ -336,9 +349,9 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'FlowForge Ops',
         category: 'AI Automation',
         service: 'AI Automation',
-        desc: 'Replaced manual back-office workflows with AI automations that reclaimed 14+ hours of team time every week.',
-        metric: '14+ Hrs Saved Weekly',
-        metricLabel: 'Team Time Reclaimed',
+        desc: 'Replaced manual back-office workflows with AI automations that reclaimed hours of team time every week.',
+        metric: 'Automated',
+        metricLabel: 'Weekly Time Saved',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/aiautomation.png',
         challenge:
@@ -346,16 +359,16 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We mapped their core workflows and built AI-assisted automations: inbox triage, document parsing, auto-generated summaries and cross-tool syncs that run without human touch.',
         results: [
-            '14+ hours of manual work removed from the team every week',
+            'Hours of manual work removed from the team every week',
             'Inbox and document triage fully automated end to end',
             'Handoffs between tools synced in real time with no re-typing',
             'Error-prone manual data entry cut to near zero',
         ],
-        headline: 'FlowForge reclaimed 14+ hours a week with AI automation',
+        headline: 'FlowForge reclaimed hours every week with AI automation',
         summary:
             'A workflow automation programme \u2014 process mapping, AI-assisted triage and cross-tool syncs that gave an operations team its week back.',
         industry: 'Operations / SaaS',
-        timeline: '8 weeks',
+        timeline: 'Rapid rollout',
         platform: 'Cloud workflow stack',
         services: ['AI Automation', 'Process Mapping', 'Systems Integration'],
         deliverables: [
@@ -366,9 +379,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Monitoring dashboard and runbook',
         ],
         metrics: [
-            { value: '14+', label: 'Hours Saved Weekly' },
-            { value: '6', label: 'Workflows Automated' },
-            { value: '8 wks', label: 'Delivery' },
+            { value: 'Hours', label: 'Saved Weekly' },
+            { value: 'Multiple', label: 'Workflows Automated' },
+            { value: 'Fast', label: 'Delivery' },
         ],
         gallery: [
             { src: '/casestudy/aiautomation.png', caption: 'Automation control centre' },
@@ -390,8 +403,8 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'Northstar Legal',
         category: 'SEO & AEO',
         service: 'SEO & AEO',
-        desc: 'A focused SEO and answer-engine strategy grew organic leads by 240% for a boutique law firm.',
-        metric: '+240% Organic Leads',
+        desc: 'A focused SEO and answer-engine strategy grew organic leads substantially for a boutique law firm.',
+        metric: 'Growing',
         metricLabel: 'Organic Lead Growth',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/SEO.png',
@@ -400,16 +413,16 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We built a topic-cluster content strategy, optimised for answer engines with structured data and concise direct answers, and earned authoritative citations across the practice areas.',
         results: [
-            '240% growth in organic leads within nine months',
+            'Strong, compounding growth in organic leads',
             'Top-three rankings for high-intent local practice areas',
             'Featured in AI answer results for core legal questions',
             'Steady, compounding organic pipeline without paid spend',
         ],
-        headline: 'Northstar Legal grew organic leads 240% in nine months',
+        headline: 'Northstar Legal turned search into a steady lead engine',
         summary:
             'An SEO and answer-engine optimisation programme \u2014 topic clusters, structured data and citable content that turned search into a lead engine.',
         industry: 'Legal Services',
-        timeline: '9 months',
+        timeline: 'Ongoing programme',
         platform: 'Organic search & AI answers',
         services: ['SEO & AEO', 'Content Strategy', 'Technical SEO'],
         deliverables: [
@@ -420,9 +433,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Monthly ranking & lead reporting',
         ],
         metrics: [
-            { value: '+240%', label: 'Organic Leads' },
-            { value: 'Top 3', label: 'Core Keyword Ranks' },
-            { value: '9 mo', label: 'Programme' },
+            { value: 'Growing', label: 'Organic Leads' },
+            { value: 'Top', label: 'Core Keyword Ranks' },
+            { value: 'Ongoing', label: 'Programme' },
         ],
         gallery: [
             { src: '/casestudy/SEO.png', caption: 'Organic growth dashboard' },
@@ -444,8 +457,8 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'Lumen Social',
         category: 'Social Media Management',
         service: 'Social Media Management',
-        desc: 'A full social content engine took a lifestyle brand to 3.8M monthly impressions across platforms.',
-        metric: '3.8M Monthly Impressions',
+        desc: 'A full social content engine took a lifestyle brand to millions of monthly impressions across platforms.',
+        metric: 'Millions',
         metricLabel: 'Monthly Reach',
         metricIconType: 'bar-chart',
         image: '/casestudy/socialmedia.png',
@@ -454,12 +467,12 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We built a monthly content system \u2014 content pillars, short-form video, a consistent visual identity and a community-response playbook across every major platform.',
         results: [
-            '3.8M monthly impressions sustained across platforms',
+            'Millions of monthly impressions sustained across platforms',
             'Consistent posting cadence with a recognisable brand voice',
             'Sharp rise in saves, shares and profile visits',
             'Community responses handled within the hour',
         ],
-        headline: 'Lumen Social reached 3.8M monthly impressions',
+        headline: 'Lumen Social scaled reach across every platform',
         summary:
             'A managed social media programme \u2014 content pillars, short-form video, consistent art direction and community management that scaled reach.',
         industry: 'Lifestyle & Consumer',
@@ -474,9 +487,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Engagement and performance reporting',
         ],
         metrics: [
-            { value: '3.8M', label: 'Monthly Impressions' },
-            { value: '5x', label: 'Posting Cadence' },
-            { value: '+62%', label: 'Engagement Rate' },
+            { value: 'Millions', label: 'Monthly Impressions' },
+            { value: 'Higher', label: 'Posting Cadence' },
+            { value: 'Up', label: 'Engagement Rate' },
         ],
         gallery: [
             { src: '/casestudy/socialmedia.png', caption: 'Campaign content grid' },
@@ -498,9 +511,9 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'PeakForm Fitness',
         category: 'Google Advertising',
         service: 'Google Advertising',
-        desc: 'A rebuilt Google Ads account delivered a verified 4.6x return on ad spend for a fitness studio chain.',
-        metric: '4.6x Verified ROAS',
-        metricLabel: 'Return On Ad Spend',
+        desc: 'A rebuilt Google Ads account delivered a verified, profitable return on ad spend for a fitness studio chain.',
+        metric: 'Profitable',
+        metricLabel: 'Verified ROAS',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/googleadd.png',
         challenge:
@@ -508,16 +521,16 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We rebuilt the account around high-intent search, tightened targeting and negatives, and installed conversion tracking so every dollar could be attributed to a sign-up.',
         results: [
-            '4.6x verified return on ad spend across the account',
+            'Profitable, tracked return on ad spend across the account',
             'Cost per lead cut sharply through intent-based targeting',
             'Full conversion tracking tied to real sign-ups',
             'Scalable campaign structure ready for new locations',
         ],
-        headline: 'PeakForm Fitness hit a verified 4.6x ROAS',
+        headline: 'PeakForm Fitness turned ad spend into profitable sign-ups',
         summary:
             'A full Google Ads rebuild \u2014 high-intent keyword structure, clean tracking and continuous optimisation that turned ad spend into predictable sign-ups.',
         industry: 'Health & Fitness',
-        timeline: '6 months',
+        timeline: 'Ongoing campaign',
         platform: 'Google Ads',
         services: ['Google Advertising', 'Conversion Tracking', 'Landing Page Optimisation'],
         deliverables: [
@@ -528,9 +541,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Weekly optimisation and reporting',
         ],
         metrics: [
-            { value: '4.6x', label: 'Verified ROAS' },
-            { value: '-38%', label: 'Cost Per Lead' },
-            { value: '6 mo', label: 'Campaign Run' },
+            { value: 'Profitable', label: 'Verified ROAS' },
+            { value: 'Lower', label: 'Cost Per Lead' },
+            { value: 'Ongoing', label: 'Campaign Run' },
         ],
         gallery: [
             { src: '/casestudy/googleadd.png', caption: 'Campaign performance view' },
@@ -552,9 +565,9 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'Aurora Skincare',
         category: 'Meta Advertising',
         service: 'Meta Advertising',
-        desc: 'Creative-led Meta campaigns delivered a 3.9x return on ad spend for a skincare brand\u2019s launch.',
-        metric: '3.9x Meta ROAS',
-        metricLabel: 'Return On Ad Spend',
+        desc: 'Creative-led Meta campaigns delivered a profitable return on ad spend for a skincare brand\u2019s launch.',
+        metric: 'Profitable',
+        metricLabel: 'Meta ROAS',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/metaadd.png',
         challenge:
@@ -562,16 +575,16 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We rebuilt around a creative-testing engine \u2014 fresh hooks and formats weekly, tight retargeting, and a clean purchase funnel tracked end to end.',
         results: [
-            '3.9x return on ad spend across Meta campaigns',
+            'Profitable return on ad spend across Meta campaigns',
             'Winning creative angles identified through rapid testing',
             'Cost per purchase reduced with tighter retargeting',
             'A repeatable creative pipeline for future launches',
         ],
-        headline: 'Aurora Skincare reached a 3.9x Meta ROAS',
+        headline: 'Aurora Skincare made new-customer acquisition profitable',
         summary:
             'A creative-led Meta advertising programme \u2014 structured testing, refined audiences and full-funnel tracking that made new-customer acquisition profitable.',
         industry: 'Beauty & Skincare',
-        timeline: '4 months',
+        timeline: 'Ongoing campaign',
         platform: 'Meta (Facebook & Instagram)',
         services: ['Meta Advertising', 'Creative Strategy', 'Audience Testing'],
         deliverables: [
@@ -582,9 +595,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Performance dashboard and reporting',
         ],
         metrics: [
-            { value: '3.9x', label: 'Meta ROAS' },
-            { value: '-31%', label: 'Cost Per Purchase' },
-            { value: '4 mo', label: 'Campaign Run' },
+            { value: 'Profitable', label: 'Meta ROAS' },
+            { value: 'Lower', label: 'Cost Per Purchase' },
+            { value: 'Ongoing', label: 'Campaign Run' },
         ],
         gallery: [
             { src: '/casestudy/metaadd.png', caption: 'Ad performance breakdown' },
@@ -606,9 +619,9 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'Vertex Realty',
         category: 'Call & Email Handling',
         service: 'Call & Email Handling',
-        desc: 'A dedicated handling desk ensured 94% of inbound leads were answered and routed, not lost.',
-        metric: '94% Leads Answered',
-        metricLabel: 'Inbound Answer Rate',
+        desc: 'A dedicated handling desk ensured almost every inbound lead was answered and routed, not lost.',
+        metric: 'Answered',
+        metricLabel: 'Inbound Leads',
         metricIconType: 'bar-chart',
         image: '/casestudy/call-email.png',
         challenge:
@@ -616,12 +629,12 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We set up a professional handling desk \u2014 trained responders, clear qualification scripts, and instant routing of qualified leads straight to the right agent.',
         results: [
-            '94% of inbound calls and emails answered and logged',
+            'Almost all inbound calls and emails answered and logged',
             'Qualified leads routed to agents within minutes',
             'Zero lost enquiries outside business hours',
             'Clean CRM records for every conversation',
         ],
-        headline: 'Vertex Realty answered 94% of inbound leads',
+        headline: 'Vertex Realty stopped losing inbound leads',
         summary:
             'An outsourced call and email handling desk \u2014 trained responders, consistent qualification and instant routing that stopped leads falling through the cracks.',
         industry: 'Real Estate',
@@ -636,9 +649,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Weekly response-time reporting',
         ],
         metrics: [
-            { value: '94%', label: 'Leads Answered' },
-            { value: '<5 min', label: 'Avg. Response Time' },
-            { value: '24/7', label: 'Coverage' },
+            { value: 'Nearly All', label: 'Leads Answered' },
+            { value: 'Minutes', label: 'Avg. Response Time' },
+            { value: 'Round-the-Clock', label: 'Coverage' },
         ],
         gallery: [
             { src: '/casestudy/call-email.png', caption: 'Lead handling dashboard' },
@@ -660,9 +673,9 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'Maison Atelier',
         category: 'Image Design',
         service: 'Image Design',
-        desc: 'A refined image design and art direction system elevated 200+ brand assets for a design house.',
-        metric: '200+ Brands Elevated',
-        metricLabel: 'Assets Delivered',
+        desc: 'A refined image design and art direction system elevated a large set of brand assets for a design house.',
+        metric: 'Premium',
+        metricLabel: 'Brand Assets',
         metricIconType: 'bar-chart',
         image: '/casestudy/Imageediting.png',
         challenge:
@@ -670,29 +683,29 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We created a cohesive art-direction system \u2014 templates, retouching standards and a reusable asset library \u2014 then produced a large batch of on-brand imagery.',
         results: [
-            '200+ polished brand assets delivered on a consistent system',
+            'A large batch of polished brand assets delivered on a consistent system',
             'Visual identity aligned across every marketing channel',
             'Production turnaround cut with reusable templates',
             'A premium look that reinforced the brand positioning',
         ],
-        headline: 'Maison Atelier elevated 200+ brand assets',
+        headline: 'Maison Atelier lifted its brand assets to a premium standard',
         summary:
             'An image design and art-direction programme \u2014 a reusable style system, professional retouching and a well-organised asset library for a premium brand.',
         industry: 'Design & Lifestyle',
-        timeline: '10 weeks',
+        timeline: 'Fast delivery',
         platform: 'Design system & asset library',
         services: ['Image Design', 'Art Direction', 'Retouching'],
         deliverables: [
             'Art direction & style guide',
             'Reusable template system',
-            '200+ designed and retouched assets',
+            'A large batch of designed and retouched assets',
             'Organised, searchable asset library',
             'Usage guidelines for the team',
         ],
         metrics: [
-            { value: '200+', label: 'Assets Delivered' },
-            { value: '2x', label: 'Faster Turnaround' },
-            { value: '10 wks', label: 'Delivery' },
+            { value: 'At Scale', label: 'Assets Delivered' },
+            { value: 'Faster', label: 'Turnaround' },
+            { value: 'Fast', label: 'Delivery' },
         ],
         gallery: [
             { src: '/casestudy/Imageediting.png', caption: 'Signature campaign imagery' },
@@ -721,9 +734,9 @@ export const caseStudiesData: CaseStudyItem[] = [
         client: 'Reelworks Studio',
         category: 'Video Editing',
         service: 'Video Editing',
-        desc: 'High-volume video editing and repurposing helped a creator studio pass 50M total views.',
-        metric: '50M+ Views Generated',
-        metricLabel: 'Total Video Views',
+        desc: 'High-volume video editing and repurposing helped a creator studio grow to millions of total views.',
+        metric: 'Viral',
+        metricLabel: 'Total Views',
         metricIconType: 'arrow-up-right',
         image: '/casestudy/video%20editing.png',
         challenge:
@@ -731,14 +744,14 @@ export const caseStudiesData: CaseStudyItem[] = [
         solution:
             'We built a fast editing pipeline \u2014 hooks, captions, pacing and repurposing long-form into short clips \u2014 delivered on a predictable weekly schedule.',
         results: [
-            '50M+ total views generated across published clips',
-            'Turnaround shortened from days to under 24 hours',
+            'Millions of views generated across published clips',
+            'Turnaround shortened from days to well under a day',
             'Long-form content repurposed into high-performing shorts',
             'A steady content cadence that kept momentum alive',
         ],
-        headline: 'Reelworks Studio generated 50M+ views',
+        headline: 'Reelworks Studio turned a backlog into millions of views',
         summary:
-            'A high-volume video editing pipeline \u2014 punchy hooks, captions and repurposing that turned a backlog of footage into 50M+ views.',
+            'A high-volume video editing pipeline \u2014 punchy hooks, captions and repurposing that turned a backlog of footage into millions of views.',
         industry: 'Media & Entertainment',
         timeline: 'Ongoing',
         platform: 'YouTube, TikTok, Reels',
@@ -751,9 +764,9 @@ export const caseStudiesData: CaseStudyItem[] = [
             'Predictable weekly delivery schedule',
         ],
         metrics: [
-            { value: '50M+', label: 'Total Views' },
-            { value: '<24 hrs', label: 'Turnaround' },
-            { value: '4x', label: 'Output Volume' },
+            { value: 'Millions', label: 'Total Views' },
+            { value: 'Same-Day', label: 'Turnaround' },
+            { value: 'Higher', label: 'Output Volume' },
         ],
         gallery: [
             { src: '/casestudy/video%20editing.png', caption: 'Edited short-form clip' },
