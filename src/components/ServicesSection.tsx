@@ -286,7 +286,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   return (
     <section
       id="services"
-      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FBFDFF] to-[#F1F6FE]/50 pt-16 sm:pt-20 pb-20 sm:pb-28 lg:pb-32 select-none"
+      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FBFDFF] to-[#F1F6FE]/50 pt-16 sm:pt-20 pb-20 sm:pb-28 lg:pb-32"
     >
       {/* ======================================================================= */}
       {/* 1. Ambient Background Atmosphere & Corner Wave Accents                  */}

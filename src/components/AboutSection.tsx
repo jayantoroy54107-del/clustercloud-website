@@ -37,7 +37,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   return (
     <section
       id="about"
-      className="relative w-full overflow-hidden bg-[#FAFCFF] pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-24 border-t border-slate-100 select-none"
+      className="relative w-full overflow-hidden bg-[#FAFCFF] pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-24 border-t border-slate-100"
     >
       {/* ======================================================================= */}
       {/* SVG ClipPath Definition for the Organic Shaped Container                */}

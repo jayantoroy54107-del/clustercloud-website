@@ -129,7 +129,7 @@ export const BrandSection: React.FC = () => {
   const duplicatedLine2 = [...line2Brands, ...line2Brands];
 
   return (
-    <section className="relative w-full overflow-hidden bg-white select-none">
+    <section className="relative w-full overflow-hidden bg-white">
 
       {/* ========================================================================= */}
       {/* 1. TOP DYNAMIC FLUID ROYAL BLUE WAVE BANNER (Exact Match to Screenshot 2) */}

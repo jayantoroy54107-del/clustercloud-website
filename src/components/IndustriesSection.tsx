@@ -37,7 +37,7 @@ const industriesData: IndustryItem[] = [
     title: 'Real Estate',
     subtitle: 'Properties to People. Faster.',
     cardLines: ['PROPERTIES', 'TO PEOPLE'],
-    image: '/industries/real-estate.jpg',
+    image: '/industries/REALSTATE.png',
     icon: Building2,
     deliverables: [
       'Hyper-Local SEO & Geo-Targeted High-Intent Search Ads',
@@ -55,7 +55,7 @@ const industriesData: IndustryItem[] = [
     title: 'E-Commerce',
     subtitle: 'Turn Clicks Into Customers.',
     cardLines: ['GOOD', 'PRODUCTS', 'BETTER', 'PEOPLE'],
-    image: '/industries/ecommerce.jpg',
+    image: '/industries/ECOMMERCE.png',
     icon: ShoppingBag,
     deliverables: [
       'Omnichannel Meta, TikTok & Performance Max Scaling',
@@ -73,7 +73,7 @@ const industriesData: IndustryItem[] = [
     title: 'Healthcare',
     subtitle: 'Healthier People. Stronger Communities.',
     cardLines: ['BETTER', 'CARE', 'BRIGHTER', 'LIVES'],
-    image: '/industries/healthcare.jpg',
+    image: '/industries/HEALTHCARE.png',
     icon: HeartPulse,
     deliverables: [
       'HIPAA-Compliant Patient Acquisition & Booking Funnels',
@@ -91,7 +91,7 @@ const industriesData: IndustryItem[] = [
     title: 'SaaS & Technology',
     subtitle: 'Innovations That Scale.',
     cardLines: ['IDEAS', 'PRODUCTS', 'PEOPLE', 'PROGRESS'],
-    image: '/industries/saas-tech-hero.png',
+    image: '/industries/SAAS&TECHNOLOGY.png',
     icon: Laptop,
     deliverables: [
       'High-Intent Product-Led Growth (PLG) User Acquisition',
@@ -109,7 +109,7 @@ const industriesData: IndustryItem[] = [
     title: 'Construction',
     subtitle: 'Build Visibility. Win More Projects.',
     cardLines: ['SOLID', 'FOUNDATIONS', 'BRIGHTER', 'FUTURES'],
-    image: '/industries/construction.jpg',
+    image: '/industries/CONSTRUCTION.png',
     icon: Hammer,
     deliverables: [
       'Commercial RFP & General Contractor Tender Marketing',
@@ -127,7 +127,7 @@ const industriesData: IndustryItem[] = [
     title: 'Professional Services',
     subtitle: 'Expertise That Grows.',
     cardLines: ['PEOPLE', 'STRATEGY', 'RESULTS'],
-    image: '/industries/professional-services.jpg',
+    image: '/industries/PROFESSIONALSERVICE.png',
     icon: Briefcase,
     deliverables: [
       'Executive Thought Leadership & High-Authority Branding',
@@ -145,7 +145,7 @@ const industriesData: IndustryItem[] = [
     title: 'Hospitality',
     subtitle: 'Memorable Experiences. Lasting Loyalty.',
     cardLines: ['EXPERIENCES', 'THAT', 'CONNECT'],
-    image: '/industries/hospitality.jpg',
+    image: '/industries/HOSPITALITY.png',
     icon: UtensilsCrossed,
     deliverables: [
       'Direct Booking Engine & Zero-Commission OTA Funnels',
@@ -164,14 +164,13 @@ interface IndustriesSectionProps {
 
 // 7 Fixed 3D Slot Configurations (Amphitheater Perspective)
 // Slot 3 is ALWAYS the Center Hero (facing front, 0deg tilt, taller)
-const slotConfigs = [
-  { slot: 0, rotateY: 48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.72 },
-  { slot: 1, rotateY: 36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.82 },
-  { slot: 2, rotateY: 22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.92 },
-  { slot: 3, rotateY: 0, scale: 1.06, zIndex: 30, isHero: true, opacity: 1.00 }, // CENTER HERO
-  { slot: 4, rotateY: -22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.92 },
-  { slot: 5, rotateY: -36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.82 },
-  { slot: 6, rotateY: -48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.72 },
+const slotConfigs = [{ slot: 0, rotateY: 48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.9 },
+{ slot: 1, rotateY: 36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.95 },
+{ slot: 2, rotateY: 22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.98 },
+{ slot: 3, rotateY: 0, scale: 1.06, zIndex: 30, isHero: true, opacity: 1.00 }, // CENTER HERO
+{ slot: 4, rotateY: -22, scale: 0.99, zIndex: 20, isHero: false, opacity: 0.98 },
+{ slot: 5, rotateY: -36, scale: 0.98, zIndex: 15, isHero: false, opacity: 0.95 },
+{ slot: 6, rotateY: -48, scale: 0.96, zIndex: 10, isHero: false, opacity: 0.9 },
 ];
 
 // Smooth spring used for all card 3D position transitions
@@ -220,7 +219,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
   return (
     <section
       id="industries"
-      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FBFDFF] to-[#F1F6FE]/30 pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-28 select-none"
+      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FBFDFF] to-[#F1F6FE]/30 pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-28"
     >
       {/* Ambient Lighting Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-blue-100/25 rounded-full blur-2xl pointer-events-none -z-10" />
@@ -356,14 +355,9 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                 key={slot}
                 onClick={() => handleSlotClick(slot, item)}
                 className="group flex flex-col items-center cursor-pointer select-none"
-                style={{ zIndex }}
-                animate={{
-                  // Smoothly animate the card's 3D tilt + scale + depth fade on every index change
-                  rotateY,
-                  scale,
-                  opacity,
-                }}
+                animate={{ rotateY, scale, opacity }}
                 transition={cardSpring}
+                style={{ zIndex, transformStyle: 'preserve-3d' }}
               >
                 {/* Sized card shell — hero is taller & wider */}
                 <motion.div
@@ -374,8 +368,8 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                   }}
                   transition={cardSpring}
                   className={`relative rounded-[22px] xl:rounded-[26px] overflow-hidden border border-white/90 ${isHero
-                      ? 'w-[165px] xl:w-[195px] 2xl:w-[210px] h-[310px] xl:h-[350px] 2xl:h-[375px] ring-2 ring-[#1D68F7]/50'
-                      : 'w-[130px] sm:w-[140px] xl:w-[155px] 2xl:w-[168px] h-[265px] sm:h-[285px] xl:h-[310px] 2xl:h-[330px]'
+                    ? 'w-[165px] xl:w-[195px] 2xl:w-[210px] h-[310px] xl:h-[350px] 2xl:h-[375px] ring-2 ring-[#1D68F7]/50'
+                    : 'w-[130px] sm:w-[140px] xl:w-[155px] 2xl:w-[168px] h-[265px] sm:h-[285px] xl:h-[310px] 2xl:h-[330px]'
                     }`}
                   style={{ transformStyle: 'preserve-3d' }}
                 >
@@ -397,17 +391,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                           loading="lazy"
                           decoding="async"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40 pointer-events-none" />
-                        {item.id !== 'saas-tech' && (
-                          <div className="absolute top-5 left-4 right-4 text-left text-white select-none pointer-events-none">
-                            <div className="font-extrabold text-[12px] xl:text-[13px] uppercase tracking-[0.14em] leading-[1.25] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                              {item.cardLines.map((line, lIdx) => (
-                                <span key={lIdx} className="block">{line}</span>
-                              ))}
-                            </div>
-                            <div className="mt-1.5 text-white/80 font-bold text-xs tracking-widest">—</div>
-                          </div>
-                        )}
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/15 pointer-events-none" />
                       </motion.div>
                     </AnimatePresence>
                   </div>
@@ -444,7 +428,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                         }`}>
                         {item.title}
                       </h4>
-                      <p className="text-[10.5px] xl:text-[11px] text-slate-500 font-medium leading-relaxed">
+                      <p className="text-[10.5px] xl:text-[11px] text-slate-600 font-semibold leading-relaxed">
                         {item.subtitle}
                       </p>
                     </motion.div>
@@ -482,17 +466,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                         decoding="async"
                         className="w-full h-full object-cover select-none"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40 pointer-events-none" />
-                      {current.id !== 'saas-tech' && (
-                        <div className="absolute top-6 left-6 right-6 text-left text-white select-none">
-                          <div className="font-extrabold text-[14px] uppercase tracking-[0.14em] leading-[1.25] text-white">
-                            {current.cardLines.map((line, lIdx) => (
-                              <span key={lIdx} className="block">{line}</span>
-                            ))}
-                          </div>
-                          <div className="mt-2 text-white/80 font-bold text-xs tracking-widest">—</div>
-                        </div>
-                      )}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/15 pointer-events-none" />
                     </div>
 
                     {/* Contact shadow */}
@@ -506,7 +480,7 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                       <h4 className="text-base font-black text-[#0F172A] tracking-tight mb-0.5">
                         {current.title}
                       </h4>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      <p className="text-xs text-slate-600 font-semibold leading-relaxed">
                         {current.subtitle}
                       </p>
                     </div>
@@ -523,8 +497,8 @@ export const IndustriesSection: React.FC<IndustriesSectionProps> = ({
                 key={idx}
                 onClick={() => navigate(idx > centerIndex ? 1 : -1)}
                 className={`h-2 rounded-full transition-all cursor-pointer ${idx === centerIndex
-                    ? 'w-6 bg-[#1D68F7]'
-                    : 'w-2 bg-slate-300 hover:bg-slate-400'
+                  ? 'w-6 bg-[#1D68F7]'
+                  : 'w-2 bg-slate-300 hover:bg-slate-400'
                   }`}
                 aria-label={`Go to industry ${idx + 1}`}
               />

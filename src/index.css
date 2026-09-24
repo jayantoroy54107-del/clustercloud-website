@@ -56,13 +56,23 @@
    Only translate on X axis — no Z — to avoid unnecessary layer promotion depth
    ========================================================================= */
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-reverse {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-marquee {
@@ -94,6 +104,7 @@
  * layer bleed on lower-end GPUs.
  */
 @media (prefers-reduced-motion: no-preference) {
+
   .animate-marquee,
   .animate-marquee-reverse {
     will-change: transform;
@@ -101,7 +112,38 @@
 }
 
 /* Reduced motion accessibility */
+/* =========================================================================
+   Text selection
+   Several section wrappers use Tailwind's `select-none` utility, which made
+   body copy impossible to select across the site. This unlayered rule
+   re-enables selection for readable content and wins over Tailwind's
+   `@layer utilities` (unlayered declarations take precedence over layered ones),
+   so no `!important` is required. Decorative layers that use
+   `pointer-events-none` are unaffected.
+   ========================================================================= */
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+a,
+button,
+label,
+blockquote,
+figcaption,
+td,
+th,
+div {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 @media (prefers-reduced-motion: reduce) {
+
   *,
   ::before,
   ::after {
@@ -110,6 +152,7 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
   .animate-marquee,
   .animate-marquee-reverse {
     animation: none !important;
