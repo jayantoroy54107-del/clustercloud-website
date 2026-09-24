@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     currentRoute === 'contact'
       ? 'Contact'
       : currentRoute === 'blog' || currentRoute === 'allblogs'
-        ? 'Insights'
+        ? 'Blog'
         : currentRoute === 'services' || currentRoute === 'service-detail'
           ? 'Services'
           : currentRoute === 'portfolio'
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     if (currentRoute === 'contact') {
       setActiveItem('Contact');
     } else if (currentRoute === 'blog' || currentRoute === 'allblogs') {
-      setActiveItem('Insights');
+      setActiveItem('Blog');
     } else if (currentRoute === 'services' || currentRoute === 'service-detail') {
       setActiveItem('Services');
     } else if (currentRoute === 'portfolio') {
@@ -192,7 +192,7 @@ export const Header: React.FC<HeaderProps> = React.memo(({
     { name: 'Our Brands', type: 'dropdown', dropdownType: 'brands', brands: brandsList },
     { name: 'Portfolio', type: 'link', target: 'work' },
     { name: 'About', type: 'link' },
-    { name: 'Insights', type: 'link' },
+    { name: 'Blog', type: 'link', target: 'insights' },
     { name: 'Contact', type: 'link' },
   ];
 
@@ -435,10 +435,10 @@ export const Header: React.FC<HeaderProps> = React.memo(({
       {/* ========================================================================= */}
       {/* PART 1: FLOATING HEADER (Non-Sticky, Main Header at Page Top)             */}
       {/* ========================================================================= */}
-      <div className="w-full pt-5 sm:pt-6 pb-2 px-4 sm:px-6 lg:px-8 relative z-30">
+      <div className="w-full pt-5 sm:pt-6 pb-2 px-[26px] sm:px-[34px] lg:px-[42px] relative z-30">
         <div
-          className="w-full max-w-[1360px] mx-auto bg-white/95 backdrop-blur-md rounded-full border border-slate-200/80 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.1)] hover:shadow-[0_16px_44px_-6px_rgba(15,23,42,0.14)] transition-all duration-300 h-[74px] sm:h-[78px] px-5 sm:px-7 md:px-8 flex items-center justify-between"
-          style={{ width: '100%', maxWidth: '1360px', marginLeft: 'auto', marginRight: 'auto', boxSizing: 'border-box' }}
+          className="w-full bg-white/95 backdrop-blur-md rounded-full border border-slate-200/80 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.1)] hover:shadow-[0_16px_44px_-6px_rgba(15,23,42,0.14)] transition-all duration-300 h-[74px] sm:h-[78px] px-5 sm:px-7 md:px-8 flex items-center justify-between"
+          style={{ width: '100%', boxSizing: 'border-box' }}
         >
           {/* Logo (Left) */}
           <a
@@ -601,8 +601,8 @@ export const Header: React.FC<HeaderProps> = React.memo(({
         style={{ width: '100%', boxSizing: 'border-box' }}
       >
         <div
-          className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-18 h-[74px] flex items-center justify-between"
-          style={{ width: '100%', maxWidth: '1600px', marginLeft: 'auto', marginRight: 'auto', boxSizing: 'border-box' }}
+          className="w-full px-[26px] sm:px-[34px] lg:px-[42px] h-[74px] flex items-center justify-between"
+          style={{ width: '100%', boxSizing: 'border-box' }}
         >
           {/* Logo (Left) */}
           <a

@@ -245,14 +245,14 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onSelectArticl
                     key={cat.name}
                     type="button"
                     onClick={() => setSelectedCategory(cat.name)}
-                    className={`w-full flex items-center justify-between px-5 py-2.5 rounded-full text-[13.5px] font-extrabold transition-all duration-200 cursor-pointer select-none ${isActive
+                    className={`w-full flex items-center justify-between gap-3 px-5 py-2.5 rounded-full text-left text-[13.5px] font-extrabold transition-all duration-200 cursor-pointer select-none ${isActive
                       ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
                       : 'text-slate-700 hover:text-[#2563EB] hover:bg-slate-100/70'
                       }`}
                   >
-                    <span className="tracking-wide uppercase">{cat.name}</span>
+                    <span className="min-w-0 tracking-wide uppercase">{cat.name}</span>
                     <span
-                      className={`text-xs font-semibold ${isActive ? 'text-white/90' : 'text-slate-400'
+                      className={`shrink-0 text-xs font-semibold ${isActive ? 'text-white/90' : 'text-slate-400'
                         }`}
                     >
                       {cat.count}

@@ -54,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
       {/* Background Subtle Gradient Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-b from-blue-100/40 via-blue-50/20 to-transparent rounded-full blur-2xl pointer-events-none -z-10" />
 
-      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20">
+      <div className="w-full px-[26px] sm:px-[34px] lg:px-[42px]">
 
         {/* ========================================================================= */}
         {/* Top Main Grid: Left Column, Center 3D Isometric Art, Right Column          */}

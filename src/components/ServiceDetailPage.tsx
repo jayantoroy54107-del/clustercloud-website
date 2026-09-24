@@ -49,6 +49,7 @@ interface ServiceFullDef {
   category: string;
   process: { step: string; title: string; desc: string }[];
   faqs: { q: string; a: string }[];
+  realWork?: { url: string }[];
 }
 
 const servicesData: ServiceFullDef[] = [
@@ -312,6 +313,13 @@ const servicesData: ServiceFullDef[] = [
       { q: 'Can you create a complete brand identity?', a: 'Yes — our brand identity packages include logo design, colour system, typography, and brand guidelines document.' },
       { q: 'What file formats do you deliver?', a: 'We deliver all assets in print-ready and digital formats including SVG, PNG, PDF, and any platform-specific sizes.' },
     ],
+    realWork: [
+      { url: 'https://www.behance.net/embed/project/255802925?ilo0=1' },
+      { url: 'https://www.behance.net/embed/project/255092437?ilo0=1' },
+      { url: 'https://www.behance.net/embed/project/255090135?ilo0=1' },
+      { url: 'https://www.behance.net/embed/project/255087449?ilo0=1' },
+      { url: 'https://www.behance.net/embed/project/255085835?ilo0=1' },
+    ],
   },
   {
     id: 'video-editing',
@@ -540,6 +548,44 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
           </motion.div>
         </div>
       </section>
+
+      {/* Real Work — Behance embeds */}
+      {service.realWork && service.realWork.length > 0 && (
+        <section className="py-16 sm:py-20 bg-[#F8FAFC] border-b border-slate-100">
+          <div className="max-w-5xl mx-auto px-5 sm:px-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">
+                <Sparkles size={12} /><span>Real Work</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight">
+                Selected <span style={{ color: service.accentColor }}>{service.title}</span> Projects
+              </h2>
+              <p className="mt-4 text-slate-500 max-w-2xl mx-auto">A glimpse of real projects we have designed — explore the full case studies on Behance.</p>
+            </motion.div>
+
+            <div className="flex flex-wrap justify-center gap-6">
+              {service.realWork.map((work, i) => (
+                <motion.div key={work.url} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.08 }}
+                  className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] max-w-[404px] rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-[0_4px_16px_rgba(15,23,42,0.05)]"
+                >
+                  <iframe
+                    src={work.url}
+                    title={`${service.title} project ${i + 1}`}
+                    width="404"
+                    height="316"
+                    allowFullScreen
+                    loading="lazy"
+                    frameBorder="0"
+                    allow="clipboard-write"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    className="w-full h-[316px] block"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ─── Process ────────────────────────────────────────────────────────────── */}
       <section className="py-16 sm:py-24">
