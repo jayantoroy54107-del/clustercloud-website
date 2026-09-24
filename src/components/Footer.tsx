@@ -312,13 +312,13 @@ export const Footer: React.FC<FooterProps> = ({ onGetStartedClick, onNavigate })
           <div className="lg:col-span-4 flex flex-col items-center sm:items-start lg:items-end justify-between h-full w-full">
 
             {/* Top Navigation Links Row */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start lg:justify-end gap-6 sm:gap-9 mb-10">
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 sm:justify-start sm:gap-x-8 lg:flex-nowrap lg:justify-end lg:gap-x-6 lg:text-[13.5px] mb-10">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="text-[14.5px] font-semibold text-slate-800 hover:text-[#2563EB] transition-colors duration-200"
+                  className="text-[14.5px] font-semibold text-slate-800 hover:text-[#2563EB] transition-colors duration-200 whitespace-nowrap"
                 >
                   {link.name}
                 </a>
