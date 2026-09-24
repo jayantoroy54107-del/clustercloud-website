@@ -106,7 +106,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects, onV
 
       <div className="relative w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 my-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-10 items-start">
-          {caseStudiesData.map((study, idx) => {
+          {caseStudiesData.slice(0, 3).map((study, idx) => {
             return (
               <motion.div
                 key={study.id}

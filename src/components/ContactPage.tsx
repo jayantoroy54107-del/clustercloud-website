@@ -265,7 +265,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     </span>
                     <span className="block text-[14px] sm:text-[15px] font-bold text-[#0F172A] leading-relaxed">
                       #207/3, Padma Residential Area<br />
-                      East Side of Road No: 03<br />
                       Rajshahi, 6207
                     </span>
                   </div>

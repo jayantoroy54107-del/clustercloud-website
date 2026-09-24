@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
     ArrowRight,
     ArrowUpRight,
@@ -10,14 +10,12 @@ import {
     Smartphone,
     Gamepad2,
     Cloud,
-    Globe,
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { caseStudiesData } from '../data/caseStudies';
 import marketingCaseStudies from '../data/helloToMarketingCaseStudies.json';
 import swiftOutletProducts from '../data/swiftOutletProducts.json';
-import webProjectsJson from '../data/webProjects.json';
 import { lenis } from '../lib/lenis';
 
 interface MarketingResult {
@@ -52,24 +50,20 @@ interface SwiftProduct {
 }
 
 const swiftProducts = swiftOutletProducts as SwiftProduct[];
-const PRODUCT_FILTERS = ['APPS', 'GAMES', 'SAAS'];
 
-interface WebResult {
-    label: string;
-    value: string;
-}
-
-interface WebProject {
-    title: string;
-    slug: string;
-    category: string;
-    excerpt: string;
-    image: string;
-    caseStudySlug?: string;
-    results: WebResult[];
-}
-
-const webProjects = webProjectsJson as WebProject[];
+// Portfolio filter pills — 'ALL' first, then primary services, then the rest.
+const PRIMARY_FILTERS = ['App Development', 'SaaS', 'Web Design and Development'];
+const OTHER_SERVICE_FILTERS = [
+    'AI Automation',
+    'SEO & AEO',
+    'Social Media Management',
+    'Google Advertising',
+    'Meta Advertising',
+    'Call & Email Handling',
+    'Image Design',
+    'Video Editing',
+];
+const PORTFOLIO_FILTERS = ['ALL', ...PRIMARY_FILTERS, ...OTHER_SERVICE_FILTERS];
 
 export interface PortfolioPageProps {
     onNavigate?: (route: any, targetSection?: string) => void;
@@ -95,59 +89,22 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
         lenis.scrollTo(0, { duration: 0.5, immediate: true });
     }, []);
 
-    const filters = useMemo(
-        () => ['ALL', 'WEB DEVELOPMENT', 'APPS', 'GAMES', 'SAAS', 'SEO & ADS', 'E-COMMERCE', 'LEAD GEN'],
-        [],
-    );
-
-    // Classify each case study into the active filter bucket.
-    // SEO & ADS  -> paid search / social / SEO style performance campaigns
-    // E-COMMERCE -> online stores, retail & shopping campaigns
-    // LEAD GEN   -> lead, demo, registration & enquiry campaigns
-    const matchesFilter = useCallback(
-        (text: string) => {
-            if (activeFilter === 'ALL') return true;
-            // App / Game / SaaS filters belong to the SwiftOutlet products block only,
-            // so they never match the marketing or featured case studies.
-            if (PRODUCT_FILTERS.includes(activeFilter)) return false;
-            // The web-development filter drives its own dedicated section only.
-            if (activeFilter === 'WEB DEVELOPMENT') return false;
-            const matchers: Record<string, RegExp> = {
-                'SEO & ADS':
-                    /google|meta|ads|search|shopping|pmax|pay-per-click|\bppc\b|\bseo\b|roas|\bcpc\b|\bctr\b|clicks?/i,
-                'E-COMMERCE': /e-?commerce|retail|shopping|\bstore\b|products?/i,
-                'LEAD GEN':
-                    /lead|registration|sign-?up|demo|cost-per|conversions?|enquir|inquir|claim/i,
-            };
-            const rx = matchers[activeFilter];
-            return rx ? rx.test(text) : true;
-        },
+    // Featured case studies are tagged with a `service` (matching the pills above).
+    // Selecting a service shows only its dedicated case study; 'ALL' shows everything.
+    const filteredCaseStudies = useMemo(
+        () => caseStudiesData.filter((s) => activeFilter === 'ALL' || s.service === activeFilter),
         [activeFilter],
     );
 
-    const filteredCaseStudies = useMemo(
-        () => caseStudiesData.filter((s) => matchesFilter(`${s.category} ${s.client} ${s.desc}`)),
-        [matchesFilter],
-    );
-
+    // The Performance Marketing and SwiftOutlet product sections are shown on
+    // the unfiltered 'ALL' view only.
     const filteredMarketingStudies = useMemo(
-        () => marketingStudies.filter((s) => matchesFilter(`${s.industry} ${s.title} ${s.excerpt}`)),
-        [matchesFilter],
+        () => (activeFilter === 'ALL' ? marketingStudies : []),
+        [activeFilter],
     );
 
-    const filteredProducts = useMemo(() => {
-        if (activeFilter === 'ALL') return swiftProducts;
-        const kindByFilter: Record<string, SwiftProduct['kind']> = {
-            APPS: 'App',
-            GAMES: 'Game',
-            SAAS: 'SaaS',
-        };
-        const kind = kindByFilter[activeFilter];
-        return kind ? swiftProducts.filter((p) => p.kind === kind) : [];
-    }, [activeFilter]);
-
-    const filteredWebProjects = useMemo(
-        () => (activeFilter === 'ALL' || activeFilter === 'WEB DEVELOPMENT' ? webProjects : []),
+    const filteredProducts = useMemo(
+        () => (activeFilter === 'ALL' ? swiftProducts : []),
         [activeFilter],
     );
 
@@ -219,8 +176,8 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                     </div>
 
                     {/* Filter Pills */}
-                    <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar py-4 mt-6">
-                        {filters.map((f) => {
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 py-4 mt-6">
+                        {PORTFOLIO_FILTERS.map((f) => {
                             const isActive = activeFilter === f;
                             return (
                                 <button
@@ -303,71 +260,6 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                                     </div>
                                 </article>
                             ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Website Development */}
-                {filteredWebProjects.length > 0 && (
-                    <section className="mt-16 sm:mt-20 text-left">
-                        <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
-                            <div className="flex items-center gap-3">
-                                <Globe size={20} className="text-[#2563EB]" />
-                                <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
-                                    Website Development
-                                </h2>
-                            </div>
-                            <span className="text-xs font-bold text-slate-500">
-                                {filteredWebProjects.length}{' '}
-                                {filteredWebProjects.length === 1 ? 'project' : 'projects'}
-                            </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
-                            {filteredWebProjects.map((project) => {
-                                const clickable = Boolean(project.caseStudySlug);
-                                return (
-                                    <article
-                                        key={project.slug}
-                                        onClick={() => project.caseStudySlug && onViewCaseStudy?.(project.caseStudySlug)}
-                                        className={`group flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300 ${clickable ? 'cursor-pointer' : ''}`}
-                                    >
-                                        <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-gradient-to-br from-slate-300 via-blue-100 to-blue-200">
-                                            <img
-                                                src={project.image}
-                                                alt={project.title}
-                                                loading="lazy"
-                                                onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-                                                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                            />
-                                            <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
-                                                {project.category}
-                                            </span>
-                                        </div>
-
-                                        <div className="flex flex-col flex-1 p-6 sm:p-7">
-                                            <h3 className="text-base sm:text-lg font-black text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:text-[#2563EB] transition-colors">
-                                                {project.title}
-                                            </h3>
-
-                                            <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
-                                                {project.excerpt}
-                                            </p>
-
-                                            <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
-                                                {project.results.slice(0, 3).map((r) => (
-                                                    <div key={r.label}>
-                                                        <p className="text-sm font-black text-[#0F172A] leading-none">{r.value}</p>
-                                                        <p className="text-[9.5px] font-bold uppercase tracking-wide text-slate-400 mt-1 leading-tight">
-                                                            {r.label}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </article>
-                                );
-                            })}
                         </div>
                     </section>
                 )}

@@ -453,9 +453,9 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
           <div className="sm:hidden grid grid-cols-2 gap-3">
             {[
               { value: '300+', label: 'Happy Clients' },
-              { value: '7+', label: 'Years Experience' },
+              { value: '12+', label: 'Years Experience' },
               { value: '3K+', label: 'Projects Completed' },
-              { value: '130+', label: 'Industries Served' },
+              { value: '40+', label: 'Industries Served' },
             ].map((s) => (
               <div
                 key={s.label}
@@ -505,7 +505,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                 <circle cx="194" cy="30" r="8" fill="#3B82F6" opacity="0.25" className="animate-ping" />
                 <line x1="194" y1="30" x2="194" y2="72" stroke="#93C5FD" strokeWidth="1.5" strokeDasharray="3 3" />
 
-                {/* Station 2: 7+ Years Experience (x=398, y=64) */}
+                {/* Station 2: 12+ Years Experience (x=398, y=64) */}
                 <circle cx="398" cy="64" r="4" fill="#2563EB" />
                 <circle cx="398" cy="64" r="8" fill="#3B82F6" opacity="0.25" className="animate-ping" />
                 <line x1="398" y1="64" x2="398" y2="90" stroke="#93C5FD" strokeWidth="1.5" strokeDasharray="3 3" />
@@ -515,7 +515,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                 <circle cx="602" cy="40" r="8" fill="#3B82F6" opacity="0.25" className="animate-ping" />
                 <line x1="602" y1="40" x2="602" y2="84" stroke="#93C5FD" strokeWidth="1.5" strokeDasharray="3 3" />
 
-                {/* Station 4: 130+ Industries Served (x=806, y=49) */}
+                {/* Station 4: 40+ Industries Served (x=806, y=49) */}
                 <circle cx="806" cy="49" r="4" fill="#2563EB" />
                 <circle cx="806" cy="49" r="8" fill="#3B82F6" opacity="0.25" className="animate-ping" />
                 <line x1="806" y1="49" x2="806" y2="75" stroke="#93C5FD" strokeWidth="1.5" strokeDasharray="3 3" />
@@ -541,7 +541,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                 style={{ left: '39.8%', top: '55%' }}
               >
                 <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0F172A] tracking-tight leading-none">
-                  7+
+                  12+
                 </span>
                 <span className="text-[11px] sm:text-xs lg:text-sm font-semibold text-slate-500 mt-1 whitespace-nowrap">
                   Years Experience
@@ -567,7 +567,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProjectClick }) => {
                 style={{ left: '80.6%', top: '46%' }}
               >
                 <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0F172A] tracking-tight leading-none">
-                  130+
+                  40+
                 </span>
                 <span className="text-[11px] sm:text-xs lg:text-sm font-semibold text-slate-500 mt-1 whitespace-nowrap">
                   Industries Served

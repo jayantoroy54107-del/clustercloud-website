@@ -25,7 +25,7 @@ interface AboutSectionProps {
 export const AboutSection: React.FC<AboutSectionProps> = ({
   onStartProjectClick,
   heroImage = '/about/about_office_new.png',
-  experienceYears = '7+',
+  experienceYears = '12+',
   experienceLabel = 'Years of Experience',
   experienceSubtext = 'Building brands, driving growth',
   calloutLine1 = 'Ideas',
@@ -231,7 +231,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 </div>
               </div>
 
-              {/* 4. Separate Floating Blue Card: 7+ Years of Experience */}
+              {/* 4. Separate Floating Blue Card: 12+ Years of Experience */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
