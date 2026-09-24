@@ -7,11 +7,15 @@ import {
     TrendingUp,
     BarChart2,
     Layers,
+    Smartphone,
+    Gamepad2,
+    Cloud,
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { caseStudiesData } from './WorkSection';
 import marketingCaseStudies from '../data/helloToMarketingCaseStudies.json';
+import swiftOutletProducts from '../data/swiftOutletProducts.json';
 import { lenis } from '../lib/lenis';
 
 interface MarketingResult {
@@ -31,6 +35,22 @@ interface MarketingCaseStudy {
 }
 
 const marketingStudies = marketingCaseStudies as MarketingCaseStudy[];
+
+interface SwiftProduct {
+    title: string;
+    slug: string;
+    kind: 'App' | 'Game' | 'SaaS';
+    niche: string;
+    tag: string;
+    excerpt: string;
+    image: string;
+    emoji: string;
+    accent: string;
+    link: string;
+}
+
+const swiftProducts = swiftOutletProducts as SwiftProduct[];
+const PRODUCT_FILTERS = ['APPS', 'GAMES', 'SAAS'];
 
 export interface PortfolioPageProps {
     onNavigate?: (route: any, targetSection?: string) => void;
@@ -54,7 +74,10 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
         lenis.scrollTo(0, { duration: 0.5, immediate: true });
     }, []);
 
-    const filters = useMemo(() => ['ALL', 'SEO & ADS', 'E-COMMERCE', 'LEAD GEN'], []);
+    const filters = useMemo(
+        () => ['ALL', 'APPS', 'GAMES', 'SAAS', 'SEO & ADS', 'E-COMMERCE', 'LEAD GEN'],
+        [],
+    );
 
     // Classify each case study into the active filter bucket.
     // SEO & ADS  -> paid search / social / SEO style performance campaigns
@@ -63,6 +86,9 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
     const matchesFilter = useCallback(
         (text: string) => {
             if (activeFilter === 'ALL') return true;
+            // App / Game / SaaS filters belong to the SwiftOutlet products block only,
+            // so they never match the marketing or featured case studies.
+            if (PRODUCT_FILTERS.includes(activeFilter)) return false;
             const matchers: Record<string, RegExp> = {
                 'SEO & ADS':
                     /google|meta|ads|search|shopping|pmax|pay-per-click|\bppc\b|\bseo\b|roas|\bcpc\b|\bctr\b|clicks?/i,
@@ -86,7 +112,19 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
         [matchesFilter],
     );
 
-    const totalStudies = caseStudiesData.length + marketingStudies.length;
+    const filteredProducts = useMemo(() => {
+        if (activeFilter === 'ALL') return swiftProducts;
+        const kindByFilter: Record<string, SwiftProduct['kind']> = {
+            APPS: 'App',
+            GAMES: 'Game',
+            SAAS: 'SaaS',
+        };
+        const kind = kindByFilter[activeFilter];
+        return kind ? swiftProducts.filter((p) => p.kind === kind) : [];
+    }, [activeFilter]);
+
+    const totalStudies =
+        caseStudiesData.length + marketingStudies.length + swiftProducts.length;
 
     return (
         <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
@@ -309,10 +347,96 @@ export const PortfolioPage: React.FC<PortfolioPageProps> = ({
                     </section>
                 )}
 
+                {/* Apps, Games & SaaS — products engineered by the SwiftOutlet team */}
+                {filteredProducts.length > 0 && (
+                    <section className="mt-16 sm:mt-20 text-left">
+                        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+                            <div className="flex items-center gap-3">
+                                <Cloud size={20} className="text-[#2563EB]" />
+                                <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight">
+                                    Apps, Games &amp; SaaS
+                                </h2>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-slate-200/80 px-3 py-1.5 text-[11px] font-bold text-slate-600">
+                                    <Smartphone size={13} className="text-[#2563EB]" />
+                                    {swiftProducts.filter((p) => p.kind === 'App').length} Apps
+                                </span>
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-slate-200/80 px-3 py-1.5 text-[11px] font-bold text-slate-600">
+                                    <Gamepad2 size={13} className="text-[#2563EB]" />
+                                    {swiftProducts.filter((p) => p.kind === 'Game').length} Games
+                                </span>
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-slate-200/80 px-3 py-1.5 text-[11px] font-bold text-slate-600">
+                                    <Cloud size={13} className="text-[#2563EB]" />
+                                    {swiftProducts.filter((p) => p.kind === 'SaaS').length} SaaS
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
+                            {filteredProducts.map((p) => (
+                                <a
+                                    key={p.slug}
+                                    href={p.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex flex-col rounded-3xl bg-white border border-slate-200/80 overflow-hidden shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.08)] transition-all duration-300"
+                                >
+                                    <div className="relative w-full h-44 sm:h-48 flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-0 opacity-[0.14]" style={{ background: p.accent }} />
+                                        {p.image ? (
+                                            <img
+                                                src={p.image}
+                                                alt={p.title}
+                                                loading="lazy"
+                                                className="relative h-20 w-20 rounded-[22px] object-contain drop-shadow-[0_10px_22px_rgba(15,23,42,0.2)] transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <span
+                                                className="relative flex h-20 w-20 items-center justify-center rounded-[22px] text-3xl shadow-[0_10px_22px_rgba(15,23,42,0.22)]"
+                                                style={{ background: p.accent }}
+                                            >
+                                                {p.emoji}
+                                            </span>
+                                        )}
+                                        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest">
+                                            {p.kind}
+                                        </span>
+                                        <span className="absolute top-4 right-4 inline-flex items-center px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-[10px] font-bold text-slate-700">
+                                            {p.tag}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex flex-col flex-1 p-6 sm:p-7">
+                                        <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400 mb-1.5">
+                                            {p.niche}
+                                        </span>
+                                        <h3 className="text-base sm:text-lg font-black text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:text-[#2563EB] transition-colors">
+                                            {p.title}
+                                        </h3>
+                                        <p className="text-slate-500 text-[13px] leading-relaxed mb-5 flex-1">
+                                            {p.excerpt}
+                                        </p>
+
+                                        <div className="flex items-center gap-2 pt-4 border-t border-slate-100 text-[12px] font-bold text-[#2563EB]">
+                                            <span>View {p.kind}</span>
+                                            <ArrowUpRight
+                                                size={14}
+                                                className="stroke-[2.5] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                            />
+                                        </div>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 {/* Empty state when a filter has no matching studies */}
                 {activeFilter !== 'ALL' &&
                     filteredCaseStudies.length === 0 &&
-                    filteredMarketingStudies.length === 0 && (
+                    filteredMarketingStudies.length === 0 &&
+                    filteredProducts.length === 0 && (
                         <div className="mt-14 sm:mt-18 py-20 text-center rounded-3xl border border-dashed border-slate-300 bg-white/60">
                             <p className="text-slate-500 font-semibold">
                                 No case studies match this filter yet.

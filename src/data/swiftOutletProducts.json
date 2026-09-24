@@ -1,0 +1,74 @@
+[
+    {
+        "title": "FoodCal AI",
+        "slug": "foodcal-ai",
+        "kind": "App",
+        "niche": "Health",
+        "tag": "⭐ 4.8",
+        "excerpt": "Your smart and personal nutrition companion. Track daily calories, macros and water intake effortlessly using advanced AI photo recognition.",
+        "image": "/work/swiftoutlet/foodcal-ai-icon.png",
+        "emoji": "🍎",
+        "accent": "linear-gradient(135deg,#34d399,#0d9488)",
+        "link": "https://www.swiftoutlet.com/foodcal-ai/"
+    },
+    {
+        "title": "My Water Buddy",
+        "slug": "my-water-buddy",
+        "kind": "App",
+        "niche": "Wellness",
+        "tag": "💧 Live",
+        "excerpt": "Smart water reminder and hydration tracker with beautiful animations, sleep-aware reminders, streaks and 15-language support. Now live on Google Play.",
+        "image": "/work/swiftoutlet/mywaterbuddy-icon.png",
+        "emoji": "💧",
+        "accent": "linear-gradient(135deg,#38bdf8,#2563eb)",
+        "link": "https://www.swiftoutlet.com/mywaterbuddy/"
+    },
+    {
+        "title": "BD Weather",
+        "slug": "bd-weather",
+        "kind": "App",
+        "niche": "Weather",
+        "tag": "🌦️ Live",
+        "excerpt": "Senior-friendly Bangla weather app built for Bangladesh — free to use, with no ads.",
+        "image": "/work/swiftoutlet/bdweather-icon.png",
+        "emoji": "🌦️",
+        "accent": "linear-gradient(135deg,#818cf8,#7c3aed)",
+        "link": "https://play.google.com/store/apps/details?id=com.swiftoutlet.bdweather"
+    },
+    {
+        "title": "Project Nebula",
+        "slug": "project-nebula",
+        "kind": "Game",
+        "niche": "Action",
+        "tag": "In Dev",
+        "excerpt": "A fast-paced multiplayer sci-fi arena shooter crafted for iOS and Android.",
+        "image": "",
+        "emoji": "🚀",
+        "accent": "linear-gradient(45deg,#ff007f,#7f00ff)",
+        "link": "https://www.swiftoutlet.com/#games"
+    },
+    {
+        "title": "Mobile Car Detailing CRM",
+        "slug": "detailing-crm",
+        "kind": "SaaS",
+        "niche": "Business / CRM",
+        "tag": "⚡ Live",
+        "excerpt": "AI dispatch CRM for mobile car-detailing teams — voice-to-job entry, smart technician matching, WhatsApp dispatch and live reports.",
+        "image": "/work/swiftoutlet/detailing-crm-icon.svg",
+        "emoji": "🚗",
+        "accent": "linear-gradient(135deg,#22d3ee,#2563eb)",
+        "link": "https://www.swiftoutlet.com/detailing-crm/"
+    },
+    {
+        "title": "ColdMail Pro",
+        "slug": "coldmail-pro",
+        "kind": "SaaS",
+        "niche": "B2B Sales",
+        "tag": "Beta",
+        "excerpt": "Automated B2B cold email outreach platform with AI personalization.",
+        "image": "",
+        "emoji": "✉️",
+        "accent": "linear-gradient(45deg,#10b981,#3b82f6)",
+        "link": "https://www.swiftoutlet.com/#saas"
+    }
+]
