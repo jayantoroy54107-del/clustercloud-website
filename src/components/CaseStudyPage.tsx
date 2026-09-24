@@ -14,9 +14,14 @@ import {
     Quote,
     Building2,
     Monitor,
+    Smartphone,
+    Sparkles,
 } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { InstagramEmbed } from './InstagramEmbed';
+import { WebsiteEmbed } from './WebsiteEmbed';
+import { AppShowcaseCard } from './AppShowcaseCard';
 import { lenis } from '../lib/lenis';
 import {
     caseStudiesData,
@@ -291,6 +296,106 @@ export const CaseStudyPage: React.FC<CaseStudyPageProps> = ({
                                         {g.caption}
                                     </figcaption>
                                 </figure>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Real Work — embedded Instagram reels */}
+                {study.reels && study.reels.length > 0 && (
+                    <section className="mt-14 sm:mt-20 text-left">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-extrabold uppercase tracking-widest mb-5">
+                            <Layers size={14} />
+                            <span>Real Work</span>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight mb-2">
+                            Videos We Delivered
+                        </h2>
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mb-8">
+                            Live reels edited, captioned and delivered by our team — straight from the clients' feeds.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
+                            {study.reels.map((reel) => (
+                                <InstagramEmbed key={reel.url} url={reel.url} caption={reel.caption} />
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Real Work — live website embeds */}
+                {study.websites && study.websites.length > 0 && (
+                    <section className="mt-14 sm:mt-20 text-left">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-extrabold uppercase tracking-widest mb-5">
+                            <Monitor size={14} />
+                            <span>Real Work</span>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight mb-2">
+                            Live Websites We Built
+                        </h2>
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mb-8">
+                            Explore the live sites our team designed and shipped — click "Visit" to open any of them.
+                        </p>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {study.websites.map((site) => (
+                                <WebsiteEmbed key={site.url} url={site.url} caption={site.caption} />
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Real Work — shipped apps & products */}
+                {study.apps && study.apps.length > 0 && (
+                    <section className="mt-14 sm:mt-20 text-left">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-extrabold uppercase tracking-widest mb-5">
+                            <Smartphone size={14} />
+                            <span>Real Work</span>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight mb-2">
+                            Apps &amp; Products We Shipped
+                        </h2>
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mb-8">
+                            A selection of the mobile apps and products engineered and published by our team — tap any card to open it.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {study.apps.map((app) => (
+                                <AppShowcaseCard key={app.name} {...app} />
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Real Work — image-design project embeds (Behance) */}
+                {study.designs && study.designs.length > 0 && (
+                    <section className="mt-14 sm:mt-20 text-left">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-extrabold uppercase tracking-widest mb-5">
+                            <Sparkles size={14} />
+                            <span>Real Work</span>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight mb-2">
+                            Selected <span className="text-[#2563EB]">Image Design</span> Projects
+                        </h2>
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mb-8">
+                            A glimpse of real projects we have designed — explore the full case studies on Behance.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-6">
+                            {study.designs.map((design, i) => (
+                                <div
+                                    key={design.url}
+                                    className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] max-w-[404px] rounded-2xl overflow-hidden bg-white border border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.04)]"
+                                >
+                                    <iframe
+                                        src={design.url}
+                                        title={`Image Design project ${i + 1}`}
+                                        width="404"
+                                        height="316"
+                                        allowFullScreen
+                                        loading="lazy"
+                                        frameBorder="0"
+                                        allow="clipboard-write"
+                                        referrerPolicy="strict-origin-when-cross-origin"
+                                        className="w-full h-[316px] block"
+                                    />
+                                </div>
                             ))}
                         </div>
                     </section>

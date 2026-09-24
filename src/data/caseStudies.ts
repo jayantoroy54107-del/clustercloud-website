@@ -10,6 +10,39 @@ export interface CaseStudyGalleryItem {
     caption: string;
 }
 
+export interface CaseStudyReel {
+    /** Canonical Instagram post / reel URL, rendered as an official embed. */
+    url: string;
+    caption: string;
+}
+
+export interface CaseStudyWebsite {
+    /** Live site URL, rendered as an interactive iframe preview. */
+    url: string;
+    caption: string;
+}
+
+export interface CaseStudyApp {
+    /** Shipped app / product name. */
+    name: string;
+    /** Product type, e.g. App, Game, SaaS. */
+    kind: string;
+    /** Market / niche. */
+    niche: string;
+    /** Small status / rating badge, e.g. "⭐ 4.8". */
+    tag: string;
+    desc: string;
+    image?: string;
+    emoji?: string;
+    accent?: string;
+    link: string;
+}
+
+export interface CaseStudyDesign {
+    /** Behance (or other) embed URL rendered as an interactive iframe. */
+    url: string;
+}
+
 export interface CaseStudyItem {
     id: string;
     slug: string;
@@ -37,6 +70,14 @@ export interface CaseStudyItem {
     deliverables: string[];
     metrics: CaseStudyMetric[];
     gallery: CaseStudyGalleryItem[];
+    /** Optional embedded Instagram reels, shown as "Real Work" on the detail page. */
+    reels?: CaseStudyReel[];
+    /** Optional live website previews, shown as "Real Work" on the detail page. */
+    websites?: CaseStudyWebsite[];
+    /** Optional shipped apps / products, shown as "Real Work" on the detail page. */
+    apps?: CaseStudyApp[];
+    /** Optional image-design project embeds (e.g. Behance), shown as "Real Work". */
+    designs?: CaseStudyDesign[];
     testimonial: { quote: string; author: string; role: string };
     liveUrl?: string;
 }
@@ -94,6 +135,72 @@ export const caseStudiesData: CaseStudyItem[] = [
         gallery: [
             { src: '/casestudy/app.png', caption: 'Daily activity dashboard' },
             { src: '/work/swiftoutlet/foodcal-ai-icon.png', caption: 'AI nutrition companion module' },
+        ],
+        apps: [
+            {
+                name: 'FoodCal AI',
+                kind: 'App',
+                niche: 'Health',
+                tag: '⭐ 4.8',
+                desc: 'Smart personal nutrition companion — track daily calories, macros and water intake effortlessly with advanced AI photo recognition.',
+                image: '/work/swiftoutlet/foodcal-ai-icon.png',
+                emoji: '🍎',
+                accent: 'linear-gradient(135deg,#34d399,#0d9488)',
+                link: 'https://www.swiftoutlet.com/foodcal-ai/',
+            },
+            {
+                name: 'My Water Buddy',
+                kind: 'App',
+                niche: 'Wellness',
+                tag: '💧 Live',
+                desc: 'Smart water reminder and hydration tracker with sleep-aware notifications, beautiful animations, streaks and 15-language support.',
+                image: '/work/swiftoutlet/mywaterbuddy-icon.png',
+                emoji: '💧',
+                accent: 'linear-gradient(135deg,#38bdf8,#2563eb)',
+                link: 'https://play.google.com/store/apps/details?id=com.swiftoutlet.mywaterbuddy',
+            },
+            {
+                name: 'BD Weather',
+                kind: 'App',
+                niche: 'Weather',
+                tag: '🌦️ Live',
+                desc: 'Senior-friendly Bangla weather app built for Bangladesh — zero ads, accessible design and accurate district-level data.',
+                image: '/work/swiftoutlet/bdweather-icon.png',
+                emoji: '🌦️',
+                accent: 'linear-gradient(135deg,#818cf8,#7c3aed)',
+                link: 'https://play.google.com/store/apps/details?id=com.swiftoutlet.bdweather',
+            },
+            {
+                name: 'Project Nebula',
+                kind: 'Game',
+                niche: 'Action',
+                tag: 'In Dev',
+                desc: 'A fast-paced multiplayer sci-fi arena shooter crafted from the ground up for low-latency play on iOS and Android.',
+                emoji: '🚀',
+                accent: 'linear-gradient(45deg,#ff007f,#7f00ff)',
+                link: 'https://www.swiftoutlet.com/#games',
+            },
+            {
+                name: 'Mobile Car Detailing CRM',
+                kind: 'SaaS',
+                niche: 'Business / CRM',
+                tag: '⚡ Live',
+                desc: 'AI dispatch CRM for mobile car-detailing teams — voice-to-job entry, smart technician matching, WhatsApp dispatch and live reports.',
+                image: '/work/swiftoutlet/detailing-crm-icon.svg',
+                emoji: '🚗',
+                accent: 'linear-gradient(135deg,#22d3ee,#2563eb)',
+                link: 'https://www.swiftoutlet.com/detailing-crm/',
+            },
+            {
+                name: 'ColdMail Pro',
+                kind: 'SaaS',
+                niche: 'B2B Sales',
+                tag: 'Beta',
+                desc: 'Automated B2B cold email outreach platform with contextual AI personalization and automatic conversion follow-ups.',
+                emoji: '✉️',
+                accent: 'linear-gradient(45deg,#10b981,#3b82f6)',
+                link: 'https://www.swiftoutlet.com/#saas',
+            },
         ],
         testimonial: {
             quote:
@@ -203,6 +310,15 @@ export const caseStudiesData: CaseStudyItem[] = [
         ],
         gallery: [
             { src: '/casestudy/website.png', caption: 'Home page design' },
+        ],
+        websites: [
+            { url: 'https://purepourconcrete.com/', caption: 'PurePour Concrete' },
+            { url: 'https://everstruct.ca/', caption: 'Everstruct' },
+            { url: 'https://cavagranite.com/', caption: 'Cava Granite' },
+            { url: 'https://alhaddafcarwash.com/', caption: 'Al Haddaf Car Wash' },
+            { url: 'https://www.decoscape.com/', caption: 'Decoscape' },
+            { url: 'https://redandwhitecleaningservices.com/', caption: 'Red & White Cleaning Services' },
+            { url: 'https://oaktree.marketing/', caption: 'Oak Tree Marketing' },
         ],
         testimonial: {
             quote:
@@ -582,6 +698,13 @@ export const caseStudiesData: CaseStudyItem[] = [
             { src: '/casestudy/Imageediting.png', caption: 'Signature campaign imagery' },
             { src: '/casestudy/website.png', caption: 'Art-direction style guide' },
         ],
+        designs: [
+            { url: 'https://www.behance.net/embed/project/255802925?ilo0=1' },
+            { url: 'https://www.behance.net/embed/project/255092437?ilo0=1' },
+            { url: 'https://www.behance.net/embed/project/255090135?ilo0=1' },
+            { url: 'https://www.behance.net/embed/project/255087449?ilo0=1' },
+            { url: 'https://www.behance.net/embed/project/255085835?ilo0=1' },
+        ],
         testimonial: {
             quote:
                 'Every image now feels unmistakably ours. The system saves us time and makes the brand look genuinely premium.',
@@ -635,6 +758,15 @@ export const caseStudiesData: CaseStudyItem[] = [
         gallery: [
             { src: '/casestudy/video%20editing.png', caption: 'Edited short-form clip' },
             { src: '/casestudy/app.png', caption: 'Editing timeline preview' },
+        ],
+        reels: [
+            { url: 'https://www.instagram.com/reel/DddrTZzzr28/', caption: 'Travel short-form reel \u2014 @familytravelgenie_' },
+            { url: 'https://www.instagram.com/reel/DdT9FyMzbfG/', caption: 'Travel short-form reel \u2014 @familytravelgenie_' },
+            { url: 'https://www.instagram.com/reel/Dcf8kPizf9L/', caption: 'Travel short-form reel \u2014 @familytravelgenie_' },
+            { url: 'https://www.instagram.com/reel/Ddj1ZCzpene/', caption: 'Interior design reel \u2014 @zzdesigninteriors' },
+            { url: 'https://www.instagram.com/reel/DdZtplXTPDY/', caption: 'Interior design reel \u2014 @zzdesigninteriors' },
+            { url: 'https://www.instagram.com/reel/DdE9CoIBwv3/', caption: 'Interior design reel \u2014 @zzdesigninteriors' },
+            { url: 'https://www.instagram.com/reel/DcgmC-_RBLn/', caption: 'Interior design reel \u2014 @zzdesigninteriors' },
         ],
         testimonial: {
             quote:
