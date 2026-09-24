@@ -224,7 +224,7 @@ export const caseStudiesData: CaseStudyItem[] = [
         metric: '14+ Hrs Saved Weekly',
         metricLabel: 'Team Time Reclaimed',
         metricIconType: 'arrow-up-right',
-        image: '/casestudy/app.png',
+        image: '/casestudy/aiautomation.png',
         challenge:
             'FlowForge\u2019s operations team was drowning in repetitive work \u2014 copying data between tools, chasing approvals and writing the same follow-ups by hand, every single day.',
         solution:
@@ -255,7 +255,7 @@ export const caseStudiesData: CaseStudyItem[] = [
             { value: '8 wks', label: 'Delivery' },
         ],
         gallery: [
-            { src: '/casestudy/app.png', caption: 'Automation control centre' },
+            { src: '/casestudy/aiautomation.png', caption: 'Automation control centre' },
             { src: '/casestudy/saas.png', caption: 'Workflow run history' },
         ],
         testimonial: {
