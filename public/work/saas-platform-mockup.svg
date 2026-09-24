@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1560" width="900" height="1560" role="img" aria-label="SaaS platform dashboard mockup">
+  <defs>
+    <linearGradient id="plBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="plPanel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF4FF"/>
+    </linearGradient>
+    <linearGradient id="plAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="1560" fill="url(#plBg)"/>
+  <circle cx="760" cy="180" r="220" fill="#38BDF8" opacity="0.18"/>
+  <circle cx="140" cy="1380" r="240" fill="#2563EB" opacity="0.2"/>
+
+  <!-- App window -->
+  <rect x="60" y="90" width="780" height="1380" rx="34" fill="url(#plPanel)" stroke="#DCE6F5" stroke-width="2"/>
+
+  <!-- Top bar -->
+  <rect x="60" y="90" width="780" height="96" rx="34" fill="#FFFFFF"/>
+  <rect x="60" y="150" width="780" height="36" fill="#FFFFFF"/>
+  <circle cx="118" cy="138" r="14" fill="url(#plAccent)"/>
+  <rect x="146" y="130" width="120" height="16" rx="8" fill="#1E293B"/>
+  <rect x="600" y="126" width="120" height="26" rx="13" fill="#EEF4FF"/>
+  <circle cx="792" cy="139" r="18" fill="#DBEAFE"/>
+  <circle cx="792" cy="133" r="6" fill="#2563EB"/>
+  <path d="M781 152 a11 11 0 0 1 22 0 z" fill="#2563EB"/>
+
+  <!-- Sidebar -->
+  <rect x="60" y="186" width="200" height="1284" fill="#FFFFFF"/>
+  <rect x="86" y="230" width="150" height="34" rx="10" fill="#2563EB"/>
+  <rect x="86" y="286" width="150" height="18" rx="9" fill="#E2E8F0"/>
+  <rect x="86" y="320" width="120" height="18" rx="9" fill="#E2E8F0"/>
+  <rect x="86" y="354" width="140" height="18" rx="9" fill="#E2E8F0"/>
+  <rect x="86" y="388" width="110" height="18" rx="9" fill="#E2E8F0"/>
+  <rect x="86" y="1320" width="150" height="18" rx="9" fill="#E2E8F0"/>
+
+  <!-- Content header -->
+  <rect x="292" y="222" width="220" height="22" rx="11" fill="#0F172A"/>
+  <rect x="292" y="256" width="160" height="14" rx="7" fill="#94A3B8"/>
+  <rect x="700" y="224" width="118" height="34" rx="17" fill="url(#plAccent)"/>
+
+  <!-- KPI cards -->
+  <rect x="292" y="300" width="166" height="130" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <rect x="472" y="300" width="166" height="130" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <rect x="652" y="300" width="166" height="130" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <rect x="314" y="326" width="60" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="314" y="352" width="90" height="26" rx="8" fill="#2563EB"/>
+  <rect x="314" y="398" width="110" height="10" rx="5" fill="#E2E8F0"/>
+  <rect x="494" y="326" width="60" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="494" y="352" width="80" height="26" rx="8" fill="#0EA5E9"/>
+  <rect x="494" y="398" width="110" height="10" rx="5" fill="#E2E8F0"/>
+  <rect x="674" y="326" width="60" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="674" y="352" width="70" height="26" rx="8" fill="#22C55E"/>
+  <rect x="674" y="398" width="110" height="10" rx="5" fill="#E2E8F0"/>
+
+  <!-- Big chart -->
+  <rect x="292" y="454" width="526" height="330" rx="20" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <rect x="322" y="486" width="140" height="16" rx="8" fill="#334155"/>
+  <rect x="322" y="516" width="80" height="10" rx="5" fill="#94A3B8"/>
+  <rect x="330" y="640" width="40" height="100" rx="10" fill="url(#plAccent)"/>
+  <rect x="390" y="596" width="40" height="144" rx="10" fill="url(#plAccent)"/>
+  <rect x="450" y="660" width="40" height="80" rx="10" fill="url(#plAccent)"/>
+  <rect x="510" y="556" width="40" height="184" rx="10" fill="url(#plAccent)"/>
+  <rect x="570" y="616" width="40" height="124" rx="10" fill="url(#plAccent)"/>
+  <rect x="630" y="580" width="40" height="160" rx="10" fill="url(#plAccent)"/>
+  <rect x="690" y="600" width="40" height="140" rx="10" fill="url(#plAccent)"/>
+  <line x1="322" y1="742" x2="788" y2="742" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- Table rows -->
+  <rect x="292" y="810" width="526" height="230" rx="20" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <rect x="322" y="842" width="120" height="14" rx="7" fill="#334155"/>
+  <rect x="322" y="886" width="240" height="12" rx="6" fill="#CBD5E1"/>
+  <circle cx="340" cy="930" r="12" fill="#2563EB"/>
+  <rect x="366" y="924" width="200" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="720" y="922" width="60" height="18" rx="9" fill="#DCFCE7"/>
+  <circle cx="340" cy="972" r="12" fill="#0EA5E9"/>
+  <rect x="366" y="966" width="170" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="720" y="964" width="60" height="18" rx="9" fill="#FEF3C7"/>
+  <circle cx="340" cy="1014" r="12" fill="#8B5CF6"/>
+  <rect x="366" y="1008" width="220" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="720" y="1006" width="60" height="18" rx="9" fill="#DCFCE7"/>
+
+  <!-- Donut -->
+  <rect x="292" y="1066" width="250" height="330" rx="20" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <circle cx="417" cy="1216" r="70" fill="none" stroke="#E2E8F0" stroke-width="26"/>
+  <circle cx="417" cy="1216" r="70" fill="none" stroke="#2563EB" stroke-width="26" stroke-dasharray="300 440" transform="rotate(-90 417 1216)"/>
+
+  <!-- Activity -->
+  <rect x="568" y="1066" width="250" height="330" rx="20" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <rect x="596" y="1096" width="120" height="14" rx="7" fill="#334155"/>
+  <rect x="596" y="1136" width="196" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="596" y="1168" width="160" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="596" y="1200" width="184" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="596" y="1232" width="140" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="596" y="1264" width="170" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="596" y="1296" width="120" height="12" rx="6" fill="#CBD5E1"/>
+</svg>

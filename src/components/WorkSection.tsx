@@ -7,100 +7,15 @@ import {
   ArrowDown,
 } from 'lucide-react';
 
-export interface CaseStudyItem {
-  id: string;
-  number: string;
-  client: string;
-  category: string;
-  desc: string;
-  metric: string;
-  metricLabel: string;
-  metricIconType: 'arrow-up-right' | 'bar-chart' | 'arrow-down';
-  image: string;
-  link?: string;
-  challenge: string;
-  solution: string;
-  results: string[];
-}
-
-export const caseStudiesData: CaseStudyItem[] = [
-  // 01: Window Cleaning Business (Local Services) — Hello to Marketing case study
-  {
-    id: 'window-cleaning-google-ads-7-percent-ctr',
-    number: '01',
-    client: 'Window Cleaning Business',
-    category: 'LOCAL SERVICES',
-    desc: 'A targeted Google Search campaign for a UK window cleaning business delivering a 7.07% click-through rate and a 2.87% conversion rate.',
-    metric: '7.07%',
-    metricLabel: 'Click-Through Rate',
-    metricIconType: 'arrow-up-right',
-    image: '/work/window_cleaning.png',
-    link: 'https://hellotomarketing.com/case-studies/window-cleaning-google-ads-7-percent-ctr',
-    challenge:
-      'A UK window cleaning business needed a predictable flow of qualified local leads without wasting budget on broad, low-intent search terms.',
-    solution:
-      'Built a tightly targeted Google Search campaign with local-intent keywords, negative keyword sculpting and conversion-focused ad copy.',
-    results: [
-      '7.07% click-through rate on Google Search',
-      '2.87% conversion rate on qualified local searches',
-      '85.6% Google Ads optimisation score',
-      'Scalable cost per qualified lead for the client',
-    ],
-  },
-  // 02: Jewelry E-Commerce Store (E-Commerce) — Hello to Marketing case study
-  {
-    id: 'jewelry-ecommerce-google-shopping-32k-revenue',
-    number: '02',
-    client: 'Jewelry E-Commerce Store',
-    category: 'E-COMMERCE',
-    desc: 'Turned a jewelry Google Shopping campaign into a consistent revenue engine — €32,131 in tracked sales at 1.90x ROAS.',
-    metric: '€32K+',
-    metricLabel: 'Tracked Revenue',
-    metricIconType: 'bar-chart',
-    image: '/work/jewelry_shopping.png',
-    link: 'https://hellotomarketing.com/case-studies/jewelry-ecommerce-google-shopping-32k-revenue',
-    challenge:
-      'A jewelry e-commerce brand needed its Google Shopping spend to convert into reliable, measurable revenue instead of scattered sales.',
-    solution:
-      'Optimised the Shopping feed and campaign structure with Target ROAS bidding, product segmentation and ongoing negative keyword management.',
-    results: [
-      '€32,131 in tracked sales from Google Shopping',
-      '1.90x ROAS sustained across the campaign',
-      '609 conversions at €27.73 each',
-      'Shopping campaign running eligible with a healthy optimisation score',
-    ],
-  },
-  // 03: Dutch SaaS Brand (B2B SaaS) — Hello to Marketing case study
-  {
-    id: 'saas-google-ads-286-conversions',
-    number: '03',
-    client: 'Dutch SaaS Brand',
-    category: 'B2B SAAS',
-    desc: 'Turned a niche B2B SaaS offer into a steady lead engine — 286 qualified conversions at just €7.18 each.',
-    metric: '286',
-    metricLabel: 'Conversions at €7.18 CPA',
-    metricIconType: 'arrow-down',
-    image: '/work/saas_ads.png',
-    link: 'https://hellotomarketing.com/case-studies/saas-google-ads-286-conversions',
-    challenge:
-      'A Dutch rental and reservation SaaS brand needed qualified demo and trial conversions without an inflated cost per acquisition.',
-    solution:
-      'Built Search and Performance Max campaigns around high-intent keywords, with conversion tracking and bidding focused on qualified sign-ups.',
-    results: [
-      '286 qualified conversions at €7.18 cost per conversion',
-      '2.09K clicks driving the conversion engine',
-      'Search + Performance Max campaign structure',
-      'Lower-funnel focus to protect budget efficiency',
-    ],
-  },
-];
+import { caseStudiesData } from '../data/caseStudies';
 
 interface WorkSectionProps {
   onStartProjectClick?: () => void;
   onViewAllProjects?: () => void;
+  onViewCaseStudy?: (slug: string) => void;
 }
 
-export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) => {
+export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects, onViewCaseStudy }) => {
 
   const renderMetricIcon = (type: 'arrow-up-right' | 'bar-chart' | 'arrow-down') => {
     switch (type) {
@@ -218,7 +133,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) =
 
                     {/* Client Title */}
                     <h3
-                      onClick={() => onViewAllProjects?.()}
+                      onClick={() => onViewCaseStudy?.(study.slug)}
                       className="text-lg sm:text-[20px] xl:text-[22px] font-black text-[#0F172A] tracking-tight leading-[1.18] mb-2.5 hover:text-[#2563EB] transition-colors cursor-pointer"
                     >
                       {study.client}
@@ -279,7 +194,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) =
                   <motion.div
                     whileHover={{ scale: 1.03, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => onViewAllProjects?.()}
+                    onClick={() => onViewCaseStudy?.(study.slug)}
                     className="absolute left-0 bottom-3 sm:bottom-4 z-20 bg-white rounded-2xl py-3 px-4 shadow-[0_12px_32px_-6px_rgba(15,23,42,0.14)] border border-slate-100/90 flex items-center gap-3 cursor-pointer hover:shadow-[0_16px_36px_-6px_rgba(37,99,235,0.22)] transition-shadow duration-300"
                   >
                     {/* Circle Icon Badge */}
@@ -315,7 +230,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onViewAllProjects }) =
                 ) : (
                   <button
                     type="button"
-                    onClick={() => onViewAllProjects?.()}
+                    onClick={() => onViewCaseStudy?.(study.slug)}
                     className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold text-[#0F172A] hover:text-[#2563EB] transition-colors mt-5 self-start group cursor-pointer select-none"
                   >
                     <span>View Case Study</span>

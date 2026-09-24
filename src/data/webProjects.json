@@ -1,0 +1,131 @@
+[
+    {
+        "title": "Meridian Corporate Website",
+        "slug": "meridian-corporate-website",
+        "category": "CORPORATE",
+        "excerpt": "A conversion-focused corporate rebuild that cut load time under a second and lifted qualified enquiries by 41%.",
+        "image": "/work/website-mockup.svg",
+        "caseStudySlug": "meridian-corporate-website",
+        "results": [
+            {
+                "label": "Enquiries",
+                "value": "+41%"
+            },
+            {
+                "label": "Load Time",
+                "value": "<1s"
+            },
+            {
+                "label": "Performance",
+                "value": "98"
+            }
+        ]
+    },
+    {
+        "title": "Detaily SaaS Marketing Site",
+        "slug": "detaily-marketing-site",
+        "category": "SAAS WEBSITE",
+        "excerpt": "A product-led marketing site with pricing, onboarding flow and demo booking, engineered to convert trials.",
+        "image": "/work/saas-platform-mockup.svg",
+        "caseStudySlug": "detaily-field-service-crm",
+        "results": [
+            {
+                "label": "Demo Signups",
+                "value": "+2.1x"
+            },
+            {
+                "label": "Bounce Rate",
+                "value": "-34%"
+            },
+            {
+                "label": "Load Time",
+                "value": "0.8s"
+            }
+        ]
+    },
+    {
+        "title": "NovaPulse App Landing Page",
+        "slug": "novapulse-landing-page",
+        "category": "LANDING PAGE",
+        "excerpt": "A high-conversion app landing page with animated hero, feature walkthroughs and store badges that drove installs.",
+        "image": "/work/saas-dashboard-mockup.svg",
+        "caseStudySlug": "novapulse-fitness-app",
+        "results": [
+            {
+                "label": "Install Rate",
+                "value": "+63%"
+            },
+            {
+                "label": "Scroll Depth",
+                "value": "78%"
+            },
+            {
+                "label": "Load Time",
+                "value": "0.7s"
+            }
+        ]
+    },
+    {
+        "title": "Atelier Fashion Store",
+        "slug": "atelier-fashion-store",
+        "category": "E-COMMERCE",
+        "excerpt": "A minimal, fast storefront with a frictionless checkout and mobile-first product experience.",
+        "image": "/industries/ECOMMERCE.png",
+        "results": [
+            {
+                "label": "Cart Uplift",
+                "value": "+27%"
+            },
+            {
+                "label": "Mobile Sales",
+                "value": "+44%"
+            },
+            {
+                "label": "Load Time",
+                "value": "1.1s"
+            }
+        ]
+    },
+    {
+        "title": "Bloom Dental Clinic",
+        "slug": "bloom-dental-clinic",
+        "category": "LOCAL BUSINESS",
+        "excerpt": "A warm, trust-first clinic website with online booking and location SEO built in.",
+        "image": "/industries/HEALTHCARE.png",
+        "results": [
+            {
+                "label": "Bookings",
+                "value": "+52%"
+            },
+            {
+                "label": "Local Rank",
+                "value": "Top 3"
+            },
+            {
+                "label": "Load Time",
+                "value": "0.9s"
+            }
+        ]
+    },
+    {
+        "title": "Summit Realty Portal",
+        "slug": "summit-realty-portal",
+        "category": "REAL ESTATE",
+        "excerpt": "A searchable property portal with map view, saved listings and instant enquiry flows.",
+        "image": "/industries/REALSTATE.png",
+        "results": [
+            {
+                "label": "Leads",
+                "value": "+38%"
+            },
+            {
+                "label": "Time on Site",
+                "value": "+2.4x"
+            },
+            {
+                "label": "Load Time",
+                "value": "1.0s"
+            }
+        ]
+    }
+]

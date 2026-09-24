@@ -19,6 +19,7 @@ const AllBlogsPage = lazy(() => import('./components/AllBlogsPage').then(m => ({
 const AllServicesPage = lazy(() => import('./components/AllServicesPage').then(m => ({ default: m.AllServicesPage })));
 const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
 const PortfolioPage = lazy(() => import('./components/PortfolioPage').then(m => ({ default: m.PortfolioPage })));
+const CaseStudyPage = lazy(() => import('./components/CaseStudyPage').then(m => ({ default: m.CaseStudyPage })));
 const BrandAiWithFaisalPage = lazy(() => import('./components/BrandAiWithFaisalPage').then(m => ({ default: m.BrandAiWithFaisalPage })));
 const BrandSwiftOutletPage = lazy(() => import('./components/BrandSwiftOutletPage').then(m => ({ default: m.BrandSwiftOutletPage })));
 const BrandHelloToMarketingPage = lazy(() => import('./components/BrandHelloToMarketingPage').then(m => ({ default: m.BrandHelloToMarketingPage })));
@@ -37,6 +38,7 @@ export type AppRoute =
   | 'services'
   | 'service-detail'
   | 'portfolio'
+  | 'case-study'
   | 'brand-ai-with-faisal'
   | 'brand-swift-outlet'
   | 'brand-hello-to-marketing'
@@ -69,6 +71,18 @@ export const App: React.FC = () => {
     return 'how-ai-search-is-changing-seo-forever';
   });
 
+  // Determine initial case-study slug if deep linked
+  const [selectedCaseStudySlug, setSelectedCaseStudySlug] = useState<string | undefined>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/case-studies/')) {
+        const slug = path.replace('/case-studies/', '').replace(/\/$/, '');
+        if (slug) return slug;
+      }
+    }
+    return undefined;
+  });
+
   // Determine initial route from URL pathname or hash
   const [route, setRoute] = useState<AppRoute>(() => {
     if (typeof window !== 'undefined') {
@@ -89,6 +103,9 @@ export const App: React.FC = () => {
       }
       if (path === '/portfolio' || hash === '#portfolio') {
         return 'portfolio';
+      }
+      if (path.startsWith('/case-studies/')) {
+        return 'case-study';
       }
       if (path.startsWith('/brands/')) {
         const brand = path.replace('/brands/', '').split('/')[0];
@@ -136,12 +153,14 @@ export const App: React.FC = () => {
       document.title = "Ecom with Faisal | E-commerce Growth & Store Scaling - Cluster Cloud";
     } else if (route === 'portfolio') {
       document.title = "Portfolio | Case Studies & Client Results - Cluster Cloud";
+    } else if (route === 'case-study') {
+      document.title = `${selectedCaseStudySlug ? selectedCaseStudySlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Case Study'} | Cluster Cloud`;
     } else if (route === 'blog') {
       document.title = "Insights & Strategy | Cluster Cloud Growth Blog";
     } else {
       document.title = "Cluster Cloud | Strategy, Digital & Growth Studio";
     }
-  }, [route, selectedServiceId]);
+  }, [route, selectedServiceId, selectedCaseStudySlug]);
 
   // Listen for browser Back and Forward button events
   useEffect(() => {
@@ -169,6 +188,11 @@ export const App: React.FC = () => {
         window.scrollTo(0, 0);
       } else if (path === '/portfolio' || hash === '#portfolio') {
         setRoute('portfolio');
+        window.scrollTo(0, 0);
+      } else if (path.startsWith('/case-studies/')) {
+        const slug = path.replace('/case-studies/', '').replace(/\/$/, '');
+        if (slug) setSelectedCaseStudySlug(slug);
+        setRoute('case-study');
         window.scrollTo(0, 0);
       } else if (path.startsWith('/brands/')) {
         const brand = path.replace('/brands/', '').split('/')[0];
@@ -204,6 +228,15 @@ export const App: React.FC = () => {
   const handleViewAllBlogs = useCallback(() => {
     setRoute('allblogs');
     window.history.pushState(null, '', '/blogs');
+    window.scrollTo(0, 0);
+    lenis.scrollTo(0, { duration: 0.6, immediate: true });
+  }, []);
+
+  // Navigate to a dedicated case study page
+  const handleSelectCaseStudy = useCallback((slug: string) => {
+    setSelectedCaseStudySlug(slug);
+    setRoute('case-study');
+    window.history.pushState(null, '', `/case-studies/${slug}`);
     window.scrollTo(0, 0);
     lenis.scrollTo(0, { duration: 0.6, immediate: true });
   }, []);
@@ -274,6 +307,13 @@ export const App: React.FC = () => {
       setRoute('portfolio');
       window.scrollTo(0, 0);
       lenis.scrollTo(0, { duration: 0.6, immediate: true });
+    } else if (targetRoute === 'case-study') {
+      const slug = targetSection || selectedCaseStudySlug || 'novapulse-fitness-app';
+      setSelectedCaseStudySlug(slug);
+      window.history.pushState(null, '', `/case-studies/${slug}`);
+      setRoute('case-study');
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, { duration: 0.6, immediate: true });
     } else if (targetRoute === 'allblogs') {
       window.history.pushState(null, '', '/blogs');
       setRoute('allblogs');
@@ -304,7 +344,7 @@ export const App: React.FC = () => {
         lenis.scrollTo(0, { duration: 0.6, immediate: true });
       }
     }
-  }, [selectedArticleSlug]);
+  }, [selectedArticleSlug, selectedCaseStudySlug]);
 
   // Dedicated Service Detail Page
   if (route === 'service-detail') {
@@ -522,6 +562,40 @@ export const App: React.FC = () => {
     );
   }
 
+  // Dedicated Case Study page
+  if (route === 'case-study') {
+    return (
+      <ErrorBoundary>
+        <div className="relative min-h-screen w-full overflow-x-hidden bg-[#F8FAFC] text-[#0F172A] antialiased selection:bg-blue-100 selection:text-blue-900">
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 rounded-full border-3 border-[#2563EB] border-t-transparent animate-spin" /></div>}>
+            <CaseStudyPage
+              caseStudySlug={selectedCaseStudySlug}
+              onNavigate={handleNavigate}
+              onNavigateHome={(section) => handleNavigate('home', section)}
+              onNavigateContact={() => handleNavigate('contact')}
+              onNavigatePortfolio={() => handleNavigate('portfolio')}
+              onViewCaseStudy={handleSelectCaseStudy}
+              onOpenSearch={handleOpenSearch}
+              onOpenGetStarted={handleOpenGetStarted}
+            />
+          </Suspense>
+
+          <Suspense fallback={null}>
+            {isSearchOpen && (
+              <SearchModal isOpen={isSearchOpen} onClose={handleCloseSearch} />
+            )}
+          </Suspense>
+
+          <Suspense fallback={null}>
+            {isGetStartedOpen && (
+              <GetStartedModal isOpen={isGetStartedOpen} onClose={handleCloseGetStarted} />
+            )}
+          </Suspense>
+        </div>
+      </ErrorBoundary>
+    );
+  }
+
   // Dedicated Portfolio page
   if (route === 'portfolio') {
     return (
@@ -532,6 +606,7 @@ export const App: React.FC = () => {
               onNavigate={handleNavigate}
               onNavigateHome={(section) => handleNavigate('home', section)}
               onNavigateContact={() => handleNavigate('contact')}
+              onViewCaseStudy={handleSelectCaseStudy}
               onOpenSearch={handleOpenSearch}
               onOpenGetStarted={handleOpenGetStarted}
             />
@@ -697,6 +772,7 @@ export const App: React.FC = () => {
         <WorkSection
           onStartProjectClick={handleOpenGetStarted}
           onViewAllProjects={() => handleNavigate('portfolio')}
+          onViewCaseStudy={handleSelectCaseStudy}
         />
       </Suspense>
 

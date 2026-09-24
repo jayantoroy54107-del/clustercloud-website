@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1560" width="900" height="1560" role="img" aria-label="SaaS dashboard app mockup">
+  <defs>
+    <linearGradient id="saasBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="saasScreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#111C34"/>
+    </linearGradient>
+    <linearGradient id="saasBar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="1560" fill="url(#saasBg)"/>
+  <circle cx="720" cy="240" r="220" fill="#3B82F6" opacity="0.22"/>
+  <circle cx="180" cy="1320" r="240" fill="#38BDF8" opacity="0.16"/>
+
+  <!-- Phone frame -->
+  <rect x="205" y="70" width="490" height="1420" rx="64" fill="#0B1220" stroke="#334155" stroke-width="2"/>
+  <rect x="225" y="90" width="450" height="1380" rx="48" fill="url(#saasScreen)"/>
+  <rect x="375" y="108" width="150" height="16" rx="8" fill="#1E293B"/>
+
+  <!-- Header -->
+  <rect x="260" y="170" width="180" height="16" rx="8" fill="#334155"/>
+  <circle cx="630" cy="178" r="22" fill="#1E293B"/>
+  <circle cx="630" cy="171" r="7" fill="#64748B"/>
+  <path d="M616 194 a14 14 0 0 1 28 0 z" fill="#64748B"/>
+
+  <!-- Search bar -->
+  <rect x="260" y="215" width="380" height="56" rx="28" fill="#0B1220" stroke="#1E293B"/>
+  <circle cx="292" cy="243" r="9" fill="none" stroke="#475569" stroke-width="3"/>
+  <line x1="299" y1="250" x2="308" y2="259" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Stat cards -->
+  <rect x="260" y="300" width="182" height="120" rx="20" fill="#152238" stroke="#1E293B"/>
+  <rect x="458" y="300" width="182" height="120" rx="20" fill="#152238" stroke="#1E293B"/>
+  <rect x="282" y="326" width="70" height="12" rx="6" fill="#475569"/>
+  <rect x="282" y="352" width="110" height="26" rx="8" fill="#38BDF8"/>
+  <rect x="282" y="392" width="120" height="10" rx="5" fill="#334155"/>
+  <rect x="480" y="326" width="70" height="12" rx="6" fill="#475569"/>
+  <rect x="480" y="352" width="90" height="26" rx="8" fill="#22D3EE"/>
+  <rect x="480" y="392" width="120" height="10" rx="5" fill="#334155"/>
+
+  <!-- Chart card -->
+  <rect x="260" y="446" width="380" height="300" rx="22" fill="#152238" stroke="#1E293B"/>
+  <rect x="288" y="476" width="120" height="14" rx="7" fill="#475569"/>
+  <rect x="300" y="620" width="34" height="90" rx="10" fill="url(#saasBar)"/>
+  <rect x="348" y="580" width="34" height="130" rx="10" fill="url(#saasBar)"/>
+  <rect x="396" y="640" width="34" height="70" rx="10" fill="url(#saasBar)"/>
+  <rect x="444" y="540" width="34" height="170" rx="10" fill="url(#saasBar)"/>
+  <rect x="492" y="600" width="34" height="110" rx="10" fill="url(#saasBar)"/>
+  <rect x="540" y="560" width="34" height="150" rx="10" fill="url(#saasBar)"/>
+  <line x1="288" y1="712" x2="612" y2="712" stroke="#1E293B" stroke-width="2"/>
+
+  <!-- List rows -->
+  <rect x="260" y="774" width="380" height="72" rx="18" fill="#152238" stroke="#1E293B"/>
+  <circle cx="300" cy="810" r="18" fill="#2563EB"/>
+  <rect x="334" y="796" width="150" height="12" rx="6" fill="#475569"/>
+  <rect x="334" y="818" width="100" height="10" rx="5" fill="#334155"/>
+  <rect x="560" y="802" width="52" height="16" rx="8" fill="#22C55E" opacity="0.85"/>
+
+  <rect x="260" y="862" width="380" height="72" rx="18" fill="#152238" stroke="#1E293B"/>
+  <circle cx="300" cy="898" r="18" fill="#0EA5E9"/>
+  <rect x="334" y="884" width="170" height="12" rx="6" fill="#475569"/>
+  <rect x="334" y="906" width="90" height="10" rx="5" fill="#334155"/>
+  <rect x="560" y="890" width="52" height="16" rx="8" fill="#F59E0B" opacity="0.9"/>
+
+  <rect x="260" y="950" width="380" height="72" rx="18" fill="#152238" stroke="#1E293B"/>
+  <circle cx="300" cy="986" r="18" fill="#8B5CF6"/>
+  <rect x="334" y="972" width="140" height="12" rx="6" fill="#475569"/>
+  <rect x="334" y="994" width="110" height="10" rx="5" fill="#334155"/>
+  <rect x="560" y="978" width="52" height="16" rx="8" fill="#22C55E" opacity="0.85"/>
+
+  <rect x="260" y="1038" width="380" height="72" rx="18" fill="#152238" stroke="#1E293B"/>
+  <circle cx="300" cy="1074" r="18" fill="#F43F5E"/>
+  <rect x="334" y="1060" width="160" height="12" rx="6" fill="#475569"/>
+  <rect x="334" y="1082" width="100" height="10" rx="5" fill="#334155"/>
+  <rect x="560" y="1066" width="52" height="16" rx="8" fill="#22C55E" opacity="0.85"/>
+
+  <!-- Bottom nav -->
+  <rect x="260" y="1290" width="380" height="90" rx="26" fill="#0B1220" stroke="#1E293B"/>
+  <circle cx="320" cy="1335" r="14" fill="#2563EB"/>
+  <circle cx="410" cy="1335" r="14" fill="#334155"/>
+  <circle cx="500" cy="1335" r="14" fill="#334155"/>
+  <circle cx="590" cy="1335" r="14" fill="#334155"/>
+</svg>

@@ -11,6 +11,7 @@ export type NavRoute =
   | 'services'
   | 'service-detail'
   | 'portfolio'
+  | 'case-study'
   | 'brand-ai-with-faisal'
   | 'brand-swift-outlet'
   | 'brand-hello-to-marketing'
