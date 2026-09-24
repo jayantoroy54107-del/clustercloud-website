@@ -58,7 +58,7 @@ export const caseStudiesData: CaseStudyItem[] = [
         metric: '120K',
         metricLabel: 'Active Users',
         metricIconType: 'arrow-up-right',
-        image: '/work/saas-dashboard-mockup.svg',
+        image: '/casestudy/app.png',
         challenge:
             'A fitness startup had a validated concept but no technical team, a tight runway and a hard launch window. They needed a polished product on both iOS and Android without doubling their build cost.',
         solution:
@@ -90,7 +90,7 @@ export const caseStudiesData: CaseStudyItem[] = [
             { value: '14 wks', label: 'Time to Launch' },
         ],
         gallery: [
-            { src: '/work/saas-dashboard-mockup.svg', caption: 'Daily activity dashboard' },
+            { src: '/casestudy/app.png', caption: 'Daily activity dashboard' },
             { src: '/work/swiftoutlet/foodcal-ai-icon.png', caption: 'AI nutrition companion module' },
         ],
         testimonial: {
@@ -112,7 +112,7 @@ export const caseStudiesData: CaseStudyItem[] = [
         metric: '3x',
         metricLabel: 'Faster Dispatch',
         metricIconType: 'bar-chart',
-        image: '/work/saas-platform-mockup.svg',
+        image: '/casestudy/saas.png',
         challenge:
             'A fast-growing field-services company was running operations on spreadsheets and group chats. Dispatch took hours, jobs slipped through the cracks and there was no visibility for owners.',
         solution:
@@ -144,7 +144,7 @@ export const caseStudiesData: CaseStudyItem[] = [
             { value: '99.9%', label: 'Uptime' },
         ],
         gallery: [
-            { src: '/work/saas-platform-mockup.svg', caption: 'Dispatch & operations dashboard' },
+            { src: '/casestudy/saas.png', caption: 'Dispatch & operations dashboard' },
             { src: '/work/swiftoutlet/detailing-crm-icon.svg', caption: 'Detaily platform mark' },
         ],
         testimonial: {
@@ -166,7 +166,7 @@ export const caseStudiesData: CaseStudyItem[] = [
         metric: '+41%',
         metricLabel: 'Qualified Enquiries',
         metricIconType: 'arrow-up-right',
-        image: '/work/website-mockup.svg',
+        image: '/casestudy/website.png',
         challenge:
             'A growing B2B company had an outdated website that loaded in seconds, failed to explain its services clearly and converted almost no visitors into enquiries.',
         solution:
@@ -198,7 +198,7 @@ export const caseStudiesData: CaseStudyItem[] = [
             { value: '6 wks', label: 'Delivery' },
         ],
         gallery: [
-            { src: '/work/website-mockup.svg', caption: 'Home page design' },
+            { src: '/casestudy/website.png', caption: 'Home page design' },
         ],
         testimonial: {
             quote:
