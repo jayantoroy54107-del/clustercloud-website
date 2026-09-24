@@ -53,6 +53,14 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onSelectArticl
       ? articles
       : articles.filter((a) => a.category === selectedCategory || a.tag.includes(selectedCategory));
 
+  // Homepage shows only 5 blogs total; the rest live on the "View All Blogs" page.
+  // The featured card counts as one, so the grid shows the remaining 4 when viewing ALL.
+  const HOMEPAGE_LIMIT = 5;
+  const gridArticles =
+    selectedCategory === 'ALL'
+      ? filteredArticles.filter((a) => a.id !== featuredArticle?.id).slice(0, HOMEPAGE_LIMIT - 1)
+      : filteredArticles.slice(0, HOMEPAGE_LIMIT);
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopiedLink(true);
@@ -269,7 +277,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({ onSelectArticl
         {/* 3. Bottom 4-Card Article Grid                                             */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 mt-12 sm:mt-16">
-          {filteredArticles.map((article) => (
+          {gridArticles.map((article) => (
             <motion.div
               key={article.id}
               initial={{ opacity: 0, y: 15 }}

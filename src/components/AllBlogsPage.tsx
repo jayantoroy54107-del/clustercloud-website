@@ -188,7 +188,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar py-4 mt-6">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 py-4 mt-6">
             {categories.map((cat) => {
               const isActive = selectedCategory === cat.name;
               return (
@@ -196,7 +196,7 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({
                   key={cat.name}
                   type="button"
                   onClick={() => setSelectedCategory(cat.name)}
-                  className={`shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-[13px] font-extrabold tracking-wide uppercase transition-all duration-200 cursor-pointer select-none ${isActive
+                  className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-[11px] sm:text-[13px] font-extrabold tracking-wide uppercase transition-all duration-200 cursor-pointer select-none ${isActive
                     ? 'bg-[#2563EB] text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)]'
                     : 'bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50'
                     }`}
